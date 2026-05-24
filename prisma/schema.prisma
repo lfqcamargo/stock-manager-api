@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  moduleFormat = "cjs"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+enum UserRole {
+  admin
+  manager
+  employee
+}
+
+model TempCompany {
+  id             String    @id @default(uuid())
+  companyName    String    @map("company_name")
+  companyCnpj    String    @unique @map("company_cnpj")
+  userName       String    @map("user_name")
+  userEmail      String    @unique @map("user_email")
+  userPassword   String    @map("user_password")
+  token          String    @unique
+  expirationDate DateTime  @map("expiration_date")
+
+  @@map("temp_companies")
+}
+
+model TempPasswordToken {
+  id             String    @id @default(uuid())
+  token          String    @unique
+  expirationDate DateTime  @map("expiration_date")
+
+  companyId      String    @map("company_id")
+  company        Company   @relation(fields: [companyId], references: [id])
+
+  userId         String    @map("user_id")
+  user           User      @relation(fields: [userId], references: [id])
+
+  @@map("temp_password_tokens")
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  cnpj      String   @unique
+  photo     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  TempPasswordTokens TempPasswordToken[]
+  users              User[]
+
+  @@map("companies")
+}
+
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  role       UserRole
+  active     Boolean
+  photo      String?
+
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  lastLogin  DateTime? @map("last_login")
+
+  companyId  String    @map("company_id")
+  company    Company   @relation(fields: [companyId], references: [id])
+
+  tempPasswordTokens TempPasswordToken[]
+  @@map("users")
+}
+
+
+
+enum EmailStatus {
+  pending
+  sent
+  failed
+}
+
+model Email {
+  id          String      @id @default(uuid())
+  to          String
+  subject     String
+  body        String
+  from        String?
+  status      EmailStatus @default(pending)
+  observation String?
+  retryCount  Int         @default(0) @map("retry_count")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  sentAt      DateTime?   @map("sent_at")
+
+  @@map("emails")
+}

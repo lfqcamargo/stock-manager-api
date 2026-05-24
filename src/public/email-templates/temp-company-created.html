@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f6f8; padding: 40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background-color: #2c3e50; padding: 32px 40px; text-align: center;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 24px; letter-spacing: 0.5px;">StockManagers</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 40px; color: #333333; font-size: 15px; line-height: 1.7;">
+              <p style="margin: 0 0 16px;">Olá, <strong>{{userName}}</strong>!</p>
+              <p style="margin: 0 0 16px;">
+                Seja bem-vindo à <strong>StockManagers</strong>. Seu cadastro temporário foi criado com sucesso.
+              </p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-left: 4px solid #2c3e50; border-radius: 4px; margin: 24px 0;">
+                <tr>
+                  <td style="padding: 16px 20px; font-size: 14px; color: #555555;">
+                    <strong style="display: block; margin-bottom: 8px; color: #2c3e50;">Dados da empresa</strong>
+                    <span style="display: block;">🏢 <strong>Razão social:</strong> {{companyName}}</span>
+                    <span style="display: block; margin-top: 4px;">📄 <strong>CNPJ:</strong> {{companyCnpj}}</span>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 24px;">
+                Para concluir seu cadastro e acessar a plataforma, clique no botão abaixo:
+              </p>
+              <table cellpadding="0" cellspacing="0" style="margin: 0 0 24px;">
+                <tr>
+                  <td style="border-radius: 4px; background-color: #2c3e50;">
+                    <a href="{{confirmationLink}}"
+                       style="display: inline-block; padding: 14px 28px; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; border-radius: 4px;">
+                      Confirmar Cadastro
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fff8e1; border: 1px solid #ffe082; border-radius: 4px; margin: 0 0 24px;">
+                <tr>
+                  <td style="padding: 14px 18px; font-size: 14px; color: #7a5c00;">
+                    ⏳ <strong>Este link expira em:</strong> {{formattedExpiration}}
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0; font-size: 13px; color: #888888;">
+                Se você não solicitou este cadastro, pode ignorar este e-mail com segurança.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #f4f6f8; padding: 24px 40px; text-align: center; font-size: 13px; color: #aaaaaa; border-top: 1px solid #e9ecef;">
+              <p style="margin: 0;">© {{year}} StockManagers. Todos os direitos reservados.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
