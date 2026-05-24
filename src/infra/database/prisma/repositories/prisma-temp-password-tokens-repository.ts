@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { DomainEvents } from '@/core/events/domain-events';
 import { TempPasswordTokensRepository } from '@/domain/user/application/repositories/temp-password-tokens-repository';
 import { TempPasswordToken } from '@/domain/user/enterprise/entities/temp-password-token';
 
@@ -9,9 +10,12 @@ import { PrismaService } from '../prisma.service';
 export class PrismaTempPasswordTokensRepository implements TempPasswordTokensRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: TempPasswordToken): Promise<void> {
-    const prismaPasswordToken = PrismaTempPasswordTokensMapper.toPrisma(data);
+  async create(tempTokenPassword: TempPasswordToken): Promise<void> {
+    const prismaPasswordToken =
+      PrismaTempPasswordTokensMapper.toPrisma(tempTokenPassword);
     await this.prisma.tempPasswordToken.create({ data: prismaPasswordToken });
+
+    DomainEvents.dispatchEventsForAggregate(tempTokenPassword.id);
   }
 
   async findByToken(token: string): Promise<TempPasswordToken | null> {

@@ -5,6 +5,7 @@ import { ConfirmationCreateUserUseCase } from '@/domain/user/application/use-cas
 import { CreateTempCompanyUseCase } from '@/domain/user/application/use-cases/create-temp-company';
 import { ExchangePasswordForTokenUseCase } from '@/domain/user/application/use-cases/exchange-password-for-token';
 import { GenerateNewPasswordTokenUseCase } from '@/domain/user/application/use-cases/generate-new-password-token';
+import { RefreshTokenUseCase } from '@/domain/user/application/use-cases/refresh-token';
 
 import { AppConfigModule } from '../../../config/app.config.module';
 import { CryptographyModule } from '../../../cryptography/cryptography.module';
@@ -16,6 +17,7 @@ import { CreateTempCompanyController } from './create-temp-company.controller';
 import { ExchangePasswordForTokenController } from './exchange-password-for-token.controller';
 import { GenerateNewPasswordTokenController } from './generate-new-password-token.controller';
 import { LogoutController } from './logout.controller';
+import { RefreshSessionController } from './refresh-session.controller';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, AppConfigModule, EnvModule],
@@ -25,6 +27,7 @@ import { LogoutController } from './logout.controller';
     AuthenticateUserUseCase,
     GenerateNewPasswordTokenUseCase,
     ExchangePasswordForTokenUseCase,
+    RefreshTokenUseCase,
   ],
   controllers: [
     CreateTempCompanyController,
@@ -33,6 +36,7 @@ import { LogoutController } from './logout.controller';
     LogoutController,
     GenerateNewPasswordTokenController,
     ExchangePasswordForTokenController,
+    RefreshSessionController,
   ],
 })
 export class AuthModule {}

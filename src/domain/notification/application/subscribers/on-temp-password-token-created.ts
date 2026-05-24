@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { TempPasswordTokenCreatedEvent } from 'src/domain/user/enterprise/events/temp-password-token-created.event';
 
 import { DomainEvents } from '@/core/events/domain-events';
 import { AppConfig } from '@/domain/shared/application/config/app-config';
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository';
+import { TempPasswordTokenCreatedEvent } from '@/domain/user/enterprise/events/temp-password-token-created.event';
 
 import { EmailHtml } from '../email/email';
 import { SendEmailUseCase } from '../use-cases/send-email';
@@ -28,7 +28,6 @@ export class OnTempPasswordTokenCreated {
 
   private async sendPasswordChangeEmail(event: unknown) {
     if (!(event instanceof TempPasswordTokenCreatedEvent)) return;
-
     const { tempPasswordToken, userId } = event;
 
     const user = await this._usersRepository.findById(userId);
@@ -43,7 +42,7 @@ export class OnTempPasswordTokenCreated {
     });
 
     await this._sendEmail.execute({
-      to: userId,
+      to: user.email,
       subject: emailData.subject,
       body: emailData.body,
     });

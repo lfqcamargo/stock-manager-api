@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@/core/entities/aggregate-root';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { DomainEvents } from '@/core/events/domain-events';
 import { Optional } from '@/core/types/optional';
 
 import { PasswordChangeEvent } from '../events/password-change.event';
@@ -114,6 +115,7 @@ export class User extends AggregateRoot<UserProps> {
 
   updateLastLogin(): void {
     this.addDomainEvent(new UpdateLastLoginUserEvent(this));
+    DomainEvents.dispatchEventsForAggregate(this.id);
   }
 
   public static create(

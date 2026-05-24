@@ -54,7 +54,7 @@ describe('On Temp Password Token Created', () => {
     const sentEmail = fakeEmailSender.sentEmails[0];
 
     expect(sentEmail).toBeDefined();
-    expect(sentEmail.to).toBe(user.id.toString());
+    expect(sentEmail.to).toBe(user.email);
     expect(sentEmail.body).toContain(user.name);
     expect(sentEmail.body).toContain(tempPasswordToken.token);
   });

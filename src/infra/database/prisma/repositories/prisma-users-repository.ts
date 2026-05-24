@@ -38,5 +38,7 @@ export class PrismaUsersRepository implements UsersRepository {
       where: { id: user.id.toString() },
       data: PrismaUserMapper.toPrisma(user),
     });
+
+    DomainEvents.dispatchEventsForAggregate(user.id);
   }
 }
