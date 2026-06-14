@@ -20,11 +20,11 @@ describe('Create Temp Company (E2E)', () => {
 
   test('[POST] /auth/create-temp-company', async () => {
     const companyData = {
-      companyCnpj: '12345678910121',
-      companyName: 'Teste',
-      userName: 'Teste',
+      companyCnpj: '11222333000181',
+      companyName: 'Empresa Teste',
+      userName: 'Usuario Teste',
       userEmail: 'lfqcamargo@gmail.com',
-      userPassword: '123456789',
+      userPassword: '12345678',
     };
 
     const response = await request(app.getHttpServer())

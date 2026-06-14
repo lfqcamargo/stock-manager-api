@@ -22,7 +22,7 @@ type ConfirmationCreateUserUseCaseResponse = Either<
   | AlreadyExistsEmailError
   | TokenExpiratedError,
   {
-    company: Company;
+    email: string;
   }
 >;
 
@@ -71,7 +71,8 @@ export class ConfirmationCreateUserUseCase {
     company.users.push(user);
 
     await this._companiesRepository.create(company);
+    await this._tempCompaniesRepository.delete(tempCompany);
 
-    return right({ company });
+    return right({ email: user.email });
   }
 }

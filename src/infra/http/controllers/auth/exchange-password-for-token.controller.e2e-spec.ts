@@ -54,7 +54,7 @@ describe('Exchange Password For Token (E2E)', () => {
         password: 'new-password-123',
       });
 
-    expect(response.statusCode).toBe(204);
+    expect(response.statusCode).toBe(200);
 
     const userOnDatabase = await prisma.user.findUnique({
       where: {

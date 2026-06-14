@@ -17,7 +17,7 @@ export class ExchangePasswordForTokenController {
   ) {}
 
   @Patch()
-  @HttpCode(204)
+  @HttpCode(200)
   async handle(@Body(bodyValidationPipe) body: ExchangePasswordForTokenBody) {
     const { token, password } = body;
 
@@ -29,5 +29,7 @@ export class ExchangePasswordForTokenController {
     if (result.isLeft()) {
       throw mapUseCaseErrorToHttpException(result.value);
     }
+
+    return { email: result.value.user.email };
   }
 }

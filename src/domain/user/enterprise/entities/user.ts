@@ -56,11 +56,11 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.companyId;
   }
 
-  get createdAt(): Date | undefined {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
-  get updatedAt(): Date | undefined {
+  get updatedAt(): Date {
     return this.props.updatedAt;
   }
 
@@ -113,9 +113,13 @@ export class User extends AggregateRoot<UserProps> {
     this.touch();
   }
 
-  updateLastLogin(): void {
+  public updateLastLogin(): void {
     this.addDomainEvent(new UpdateLastLoginUserEvent(this));
     DomainEvents.dispatchEventsForAggregate(this.id);
+  }
+
+  public isAdmin(): boolean {
+    return this.props.role === UserRole.ADMIN;
   }
 
   public static create(

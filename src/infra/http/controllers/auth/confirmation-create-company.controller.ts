@@ -25,5 +25,7 @@ export class ConfirmationCreateCompanyController {
     if (result.isLeft()) {
       console.log(result.value instanceof Error);
     }
+
+    return result.value;
   }
 }

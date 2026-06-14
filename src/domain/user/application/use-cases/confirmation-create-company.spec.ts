@@ -43,6 +43,7 @@ describe('Confirmation Create Company Use Case', () => {
     expect(company.users[0].email).toEqual(tempCompany.userEmail);
     expect(company.users[0].name).toEqual(tempCompany.userName);
     expect(inMemoryCompaniesRepository.items).toHaveLength(1);
+    expect(inMemoryTempCompaniesRepository.items).toHaveLength(0);
   });
 
   it('should not be able to confirm with an invalid token', async () => {
