@@ -59,12 +59,21 @@ export class RefreshTokenUseCase {
     }
 
     const accessToken = await this._encrypter.encrypt(
-      { userId: user.id.toString() },
+      {
+        companyId: user.companyId.toString(),
+        userId: user.id.toString(),
+        role: user.role,
+      },
       { expiresIn: accessExpiresIn },
     );
 
     const refreshToken = await this._encrypter.encrypt(
-      { userId: user.id.toString(), typ: 'refresh' },
+      {
+        companyId: user.companyId.toString(),
+        userId: user.id.toString(),
+        role: user.role,
+        typ: 'refresh',
+      },
       { expiresIn: refreshExpiresIn },
     );
 

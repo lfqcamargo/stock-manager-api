@@ -5,6 +5,7 @@ import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/us
 import { GetProfileCompanyUseCase } from '@/domain/user/application/use-cases/get-profile-company';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
+import { CompanyPresenter } from '@/infra/presenter/company';
 
 @Controller('/companies/me')
 export class GetProfileCompanyController {
@@ -36,14 +37,7 @@ export class GetProfileCompanyController {
     const { company } = result.value;
 
     return {
-      company: {
-        id: company.id.toString(),
-        name: company.name,
-        cnpj: company.cnpj,
-        photo: company.photo,
-        createdAt: company.createdAt,
-        updatedAt: company.updatedAt,
-      },
+      company: CompanyPresenter.toHTTP(company),
     };
   }
 }

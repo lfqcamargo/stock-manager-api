@@ -4,6 +4,7 @@ import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/us
 import { GetProfileUserUseCase } from '@/domain/user/application/use-cases/get-profile-user';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
+import { UserPresenter } from '@/infra/presenter/user';
 
 @Controller('/users/me')
 export class GetProfileUserController {
@@ -30,18 +31,7 @@ export class GetProfileUserController {
     const { user: userDomain } = result.value;
 
     return {
-      user: {
-        id: userDomain.id.toString(),
-        name: userDomain.name,
-        email: userDomain.email,
-        role: userDomain.role,
-        active: userDomain.isActive,
-        photo: userDomain.photo,
-        companyId: userDomain.companyId.toString(),
-        createdAt: userDomain.createdAt,
-        updatedAt: userDomain.updatedAt,
-        lastLogin: userDomain.lastLogin,
-      },
+      user: UserPresenter.toHTTP(userDomain),
     };
   }
 }
