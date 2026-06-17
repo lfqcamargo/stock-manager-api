@@ -5,7 +5,7 @@ import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/us
 import { GetProfileCompanyUseCase } from '@/domain/user/application/use-cases/get-profile-company';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { CompanyPresenter } from '@/infra/presenter/company';
+import { CompanyPresenter } from '@/infra/presenter/company-presenter';
 
 @Controller('/companies/me')
 export class GetProfileCompanyController {

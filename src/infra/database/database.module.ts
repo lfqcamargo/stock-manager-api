@@ -4,6 +4,7 @@ import { EmailsRepository } from '@/domain/notification/application/repositories
 import { CompaniesRepository } from '@/domain/user/application/repositories/companies-repository';
 import { TempCompaniesRepository } from '@/domain/user/application/repositories/temp-companies-repository';
 import { TempPasswordTokensRepository } from '@/domain/user/application/repositories/temp-password-tokens-repository';
+import { TempUsersRepository } from '@/domain/user/application/repositories/temp-users-repository';
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository';
 
 import { PrismaService } from './prisma/prisma.service';
@@ -11,6 +12,7 @@ import { PrismaCompaniesRepository } from './prisma/repositories/prisma-companie
 import { PrismaEmailsRepository } from './prisma/repositories/prisma-emails-repository';
 import { PrismaTempCompaniesRepository } from './prisma/repositories/prisma-temp-comapanies-repository';
 import { PrismaTempPasswordTokensRepository } from './prisma/repositories/prisma-temp-password-tokens-repository';
+import { PrismaTempUsersRepository } from './prisma/repositories/prisma-temp-users-repository';
 import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository';
 
 @Module({
@@ -19,6 +21,10 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     {
       provide: TempCompaniesRepository,
       useClass: PrismaTempCompaniesRepository,
+    },
+    {
+      provide: TempUsersRepository,
+      useClass: PrismaTempUsersRepository,
     },
     { provide: CompaniesRepository, useClass: PrismaCompaniesRepository },
     { provide: UsersRepository, useClass: PrismaUsersRepository },
@@ -31,6 +37,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
   exports: [
     PrismaService,
     TempCompaniesRepository,
+    TempUsersRepository,
     CompaniesRepository,
     UsersRepository,
     EmailsRepository,

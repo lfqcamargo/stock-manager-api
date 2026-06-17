@@ -16,32 +16,34 @@
           </tr>
           <tr>
             <td style="padding: 40px; color: #333333; font-size: 15px; line-height: 1.7;">
-              <p style="margin: 0 0 16px;">Olá, <strong>{{userName}}</strong>!</p>
+              <p style="margin: 0 0 16px;">Olá, <strong>{{name}}</strong>!</p>
               <p style="margin: 0 0 16px;">
-                Informamos que a senha da sua conta na <strong>StockManagers</strong> foi alterada com sucesso.
+                Seja bem-vindo à <strong>StockManagers</strong>. Seu cadastro temporário foi criado com sucesso.
               </p>
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px; margin: 24px 0;">
-                <tr>
-                  <td style="padding: 16px 20px; font-size: 14px; color: #2e7d32;">
-                    ✔️ <strong>Ação concluída:</strong> Sua senha foi atualizada em {{formattedNow}}.
-                  </td>
-                </tr>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-left: 4px solid #2c3e50; border-radius: 4px; margin: 24px 0;">
               </table>
               <p style="margin: 0 0 24px;">
-                Se você realizou esta alteração, não é necessária nenhuma ação adicional. Agora você pode acessar a plataforma com sua nova senha:
+                Para concluir seu cadastro e acessar a plataforma, clique no botão abaixo:
               </p>
               <table cellpadding="0" cellspacing="0" style="margin: 0 0 24px;">
                 <tr>
                   <td style="border-radius: 4px; background-color: #2c3e50;">
-                    <a href="{{loginLink}}"
+                    <a href="{{confirmationLink}}"
                        style="display: inline-block; padding: 14px 28px; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; border-radius: 4px;">
-                      Acessar Plataforma
+                      Confirmar Cadastro
                     </a>
                   </td>
                 </tr>
               </table>
-              <p style="margin: 0; font-size: 13px; color: #d32f2f; font-weight: bold;">
-                ⚠️ Se você NÃO solicitou esta alteração, entre em contato com nosso suporte imediatamente.
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fff8e1; border: 1px solid #ffe082; border-radius: 4px; margin: 0 0 24px;">
+                <tr>
+                  <td style="padding: 14px 18px; font-size: 14px; color: #7a5c00;">
+                    ⏳ <strong>Este link expira em:</strong> {{formattedExpiration}}
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0; font-size: 13px; color: #888888;">
+                Se você não solicitou este cadastro, pode ignorar este e-mail com segurança.
               </p>
             </td>
           </tr>

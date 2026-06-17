@@ -12,11 +12,11 @@ import { AlreadyExistsEmailError } from './errors/already-exists-email-error';
 import { ResourceTokenNotFoundError } from './errors/resource-token-not-found-error';
 import { TokenExpiratedError } from './errors/token-expirated-error';
 
-interface ConfirmationCreateUserUseCaseRequest {
+interface ConfirmationCreateCompanyUserUseCaseRequest {
   token: string;
 }
 
-type ConfirmationCreateUserUseCaseResponse = Either<
+type ConfirmationCreateCompanyUserUseCaseResponse = Either<
   | AlreadyExistsCnpjError
   | ResourceTokenNotFoundError
   | AlreadyExistsEmailError
@@ -27,7 +27,7 @@ type ConfirmationCreateUserUseCaseResponse = Either<
 >;
 
 @Injectable()
-export class ConfirmationCreateUserUseCase {
+export class ConfirmationCreateCompanyUserUseCase {
   constructor(
     private readonly _tempCompaniesRepository: TempCompaniesRepository,
     private readonly _companiesRepository: CompaniesRepository,
@@ -36,7 +36,7 @@ export class ConfirmationCreateUserUseCase {
 
   async execute({
     token,
-  }: ConfirmationCreateUserUseCaseRequest): Promise<ConfirmationCreateUserUseCaseResponse> {
+  }: ConfirmationCreateCompanyUserUseCaseRequest): Promise<ConfirmationCreateCompanyUserUseCaseResponse> {
     const tempCompany = await this._tempCompaniesRepository.findByToken(token);
     if (!tempCompany) return left(new ResourceTokenNotFoundError());
 

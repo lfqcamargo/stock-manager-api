@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 
-import { ConfirmationCreateUserUseCase } from '@/domain/user/application/use-cases/confirmation-create-company';
+import { ConfirmationCreateCompanyUserUseCase } from '@/domain/user/application/use-cases/confirmation-create-company';
 import { Public } from '@/infra/auth/public';
 
 import {
@@ -12,7 +12,7 @@ import {
 @Public()
 export class ConfirmationCreateCompanyController {
   constructor(
-    private readonly _confirmationCreateUserUseCase: ConfirmationCreateUserUseCase,
+    private readonly _confirmationCreateCompanyUserUseCase: ConfirmationCreateCompanyUserUseCase,
   ) {}
 
   @Post()
@@ -20,7 +20,9 @@ export class ConfirmationCreateCompanyController {
   async handle(@Body(bodyValidationPipe) body: ConfirmationCreateCompanyBody) {
     const { token } = body;
 
-    const result = await this._confirmationCreateUserUseCase.execute({ token });
+    const result = await this._confirmationCreateCompanyUserUseCase.execute({
+      token,
+    });
 
     if (result.isLeft()) {
       console.log(result.value instanceof Error);

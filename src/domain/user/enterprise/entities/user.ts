@@ -3,7 +3,6 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { DomainEvents } from '@/core/events/domain-events';
 import { Optional } from '@/core/types/optional';
 
-import { PasswordChangeEvent } from '../events/password-change.event';
 import { UpdateLastLoginUserEvent } from '../events/update-last-login-user.event';
 
 export enum UserRole {
@@ -73,14 +72,8 @@ export class User extends AggregateRoot<UserProps> {
     this.touch();
   }
 
-  public updateEmail(email: string): void {
-    this.props.email = email;
-    this.touch();
-  }
-
   public updatePassword(password: string): void {
     this.props.password = password;
-    this.addDomainEvent(new PasswordChangeEvent(this));
     this.touch();
   }
 

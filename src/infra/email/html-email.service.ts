@@ -5,8 +5,8 @@ import {
   EmailData,
   EmailHtml,
   GenerateNewPasswordToken,
-  PasswordChanged,
   TempCompanyCreated,
+  TempUserCreated,
 } from '@/domain/notification/application/email/email';
 import { AppConfig } from '@/domain/shared/application/config/app-config';
 
@@ -77,20 +77,20 @@ export class HtmlEmailService implements EmailHtml {
     };
   }
 
-  passwordChanged(data: PasswordChanged): EmailData {
-    const template = loadTemplate('password-changed');
-    const loginLink = `${data.appUrl}`;
-    const formattedNow = formatDatePtBR(new Date());
+  tempUserCreated(data: TempUserCreated): EmailData {
+    const template = loadTemplate('temp-user-created');
+    const confirmationLink = `${this._appConfig.appUrl}/confirmation-create-user?token=${data.token}`;
+    const formattedExpiration = formatDatePtBR(data.expiration);
 
     const body = renderTemplate(template, {
-      userName: data.userName,
-      loginLink,
-      formattedNow,
+      name: data.name,
+      confirmationLink,
+      formattedExpiration,
       year: String(new Date().getFullYear()),
     });
 
     return {
-      subject: '✔️ Sua senha foi alterada com sucesso - StockManagers',
+      subject: `Welcome to ${data.name}!`,
       body: body.trim(),
     };
   }

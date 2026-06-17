@@ -13,7 +13,6 @@ export class InMemoryUsersRepository implements UsersRepository {
   async create(user: User): Promise<void> {
     this.items.push(user);
 
-    DomainEvents.dispatchEventsForAggregate(user.id);
     return Promise.resolve();
   }
 
@@ -140,8 +139,14 @@ export class InMemoryUsersRepository implements UsersRepository {
       this.items[userIndex] = user;
     }
 
-    DomainEvents.dispatchEventsForAggregate(user.id);
+    return Promise.resolve();
+  }
 
+  async delete(user: User): Promise<void> {
+    this.items = this.items.filter(
+      (item) => item.id.toString() !== user.id.toString(),
+    );
+    DomainEvents.dispatchEventsForAggregate(user.id);
     return Promise.resolve();
   }
 }

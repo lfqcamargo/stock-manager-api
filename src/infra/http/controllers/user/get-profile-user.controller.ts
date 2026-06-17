@@ -1,10 +1,10 @@
-import { Controller, Get, HttpCode, NotFoundException } from '@nestjs/common';
+import { Controller, Get, HttpCode } from '@nestjs/common';
 
-import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 import { GetProfileUserUseCase } from '@/domain/user/application/use-cases/get-profile-user';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { UserPresenter } from '@/infra/presenter/user';
+import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
+import { UserPresenter } from '@/infra/presenter/user-presenter';
 
 @Controller('/users/me')
 export class GetProfileUserController {
@@ -17,16 +17,7 @@ export class GetProfileUserController {
       userAuthenticateId: user.userId,
     });
 
-    if (result.isLeft()) {
-      const error = result.value;
-
-      switch (error.constructor) {
-        case UserNotFoundError:
-          throw new NotFoundException(error.message);
-        default:
-          throw new NotFoundException(error.message);
-      }
-    }
+    if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);
 
     const { user: userDomain } = result.value;
 

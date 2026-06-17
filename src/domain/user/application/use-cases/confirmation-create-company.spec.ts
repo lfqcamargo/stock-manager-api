@@ -5,7 +5,7 @@ import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-compani
 import { InMemoryTempCompaniesRepository } from 'test/repositories/in-memory-temp-companies-repository';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 
-import { ConfirmationCreateUserUseCase } from './confirmation-create-company';
+import { ConfirmationCreateCompanyUserUseCase } from './confirmation-create-company';
 import { AlreadyExistsCnpjError } from './errors/already-exists-cnpj-error';
 import { AlreadyExistsEmailError } from './errors/already-exists-email-error';
 import { ResourceTokenNotFoundError } from './errors/resource-token-not-found-error';
@@ -14,7 +14,7 @@ import { TokenExpiratedError } from './errors/token-expirated-error';
 let inMemoryTempCompaniesRepository: InMemoryTempCompaniesRepository;
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
-let sut: ConfirmationCreateUserUseCase;
+let sut: ConfirmationCreateCompanyUserUseCase;
 
 describe('Confirmation Create Company Use Case', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Confirmation Create Company Use Case', () => {
     inMemoryCompaniesRepository = new InMemoryCompaniesRepository();
     inMemoryUsersRepository = new InMemoryUsersRepository();
 
-    sut = new ConfirmationCreateUserUseCase(
+    sut = new ConfirmationCreateCompanyUserUseCase(
       inMemoryTempCompaniesRepository,
       inMemoryCompaniesRepository,
       inMemoryUsersRepository,

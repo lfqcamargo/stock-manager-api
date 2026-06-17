@@ -45,4 +45,5 @@ export abstract class UsersRepository {
     };
   }>;
   abstract update(user: User): Promise<void>;
+  abstract delete(user: User): Promise<void>;
 }

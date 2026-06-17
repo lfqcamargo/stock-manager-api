@@ -41,4 +41,11 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
     });
     return company ? PrismaCompanyMapper.toDomain(company) : null;
   }
+
+  async update(company: Company): Promise<void> {
+    await this._prisma.company.update({
+      where: { id: company.id.toString() },
+      data: PrismaCompanyMapper.toPrisma(company),
+    });
+  }
 }

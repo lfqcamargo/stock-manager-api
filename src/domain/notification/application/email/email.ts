@@ -25,8 +25,10 @@ export interface GenerateNewPasswordToken {
   appUrl: string;
 }
 
-export interface PasswordChanged {
-  userName: string;
+export interface TempUserCreated {
+  name: string;
+  token: string;
+  expiration: Date;
   appUrl: string;
 }
 
@@ -53,5 +55,10 @@ export abstract class EmailHtml {
     appUrl,
   }: GenerateNewPasswordToken): EmailData;
 
-  abstract passwordChanged({ userName, appUrl }: PasswordChanged): EmailData;
+  abstract tempUserCreated({
+    name,
+    token,
+    expiration,
+    appUrl,
+  }: TempUserCreated): EmailData;
 }

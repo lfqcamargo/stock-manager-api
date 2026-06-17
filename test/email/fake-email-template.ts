@@ -5,6 +5,7 @@ import {
   GenerateNewPasswordToken,
   PasswordChanged,
   TempCompanyCreated,
+  TempUserCreated,
 } from '@/domain/notification/application/email/email';
 
 export class FakeEmailTemplate extends EmailHtml {
@@ -47,6 +48,19 @@ export class FakeEmailTemplate extends EmailHtml {
     return {
       subject: `Password Changed for ${userName}`,
       body: `Hello ${userName},\n\nYour password has been changed successfully.\n\nBest regards,\nThe Team`,
+    };
+  }
+
+  tempUserCreated({
+    name,
+    token,
+    expiration,
+    appUrl,
+  }: TempUserCreated): EmailData {
+    return {
+      subject: `Welcome to ${name}!`,
+      body: `Hello, \n\nYour user "${name}" has been created. Visit our app at ${appUrl} to get started.\n\nBest regards,\nThe Team
+      Please use the following token to complete your registration: ${token}. This token will expire on ${expiration.toLocaleString()}.\n\nBest regards,\nThe Team`,
     };
   }
 }

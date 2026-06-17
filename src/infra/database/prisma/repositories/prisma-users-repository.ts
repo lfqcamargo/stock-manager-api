@@ -1,7 +1,6 @@
 import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
-import { DomainEvents } from '@/core/events/domain-events';
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import {
   FetchUsersFilterParams,
@@ -20,8 +19,6 @@ export class PrismaUsersRepository implements UsersRepository {
     await this._prisma.user.create({
       data: PrismaUserMapper.toPrisma(user),
     });
-
-    DomainEvents.dispatchEventsForAggregate(user.id);
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -154,7 +151,13 @@ export class PrismaUsersRepository implements UsersRepository {
       where: { id: user.id.toString() },
       data: PrismaUserMapper.toPrisma(user),
     });
+  }
 
-    DomainEvents.dispatchEventsForAggregate(user.id);
+  async delete(user: User): Promise<void> {
+    await this._prisma.user.delete({
+      where: { id: user.id.toString() },
+    });
+
+    return Promise.resolve();
   }
 }

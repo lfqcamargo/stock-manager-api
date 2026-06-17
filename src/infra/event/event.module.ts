@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
 import { OnConfirmationCompanyCreated } from '@/domain/notification/application/subscribers/on-confirmation-company-created';
-import { OnPasswordChanged } from '@/domain/notification/application/subscribers/on-password-changed';
 import { OnTempCompanyCreated } from '@/domain/notification/application/subscribers/on-temp-company-created';
 import { OnTempPasswordTokenCreated } from '@/domain/notification/application/subscribers/on-temp-password-token-created';
+import { OnTempUserCreated } from '@/domain/notification/application/subscribers/on-temp-user-created';
 import { OnUpdateLastLoginUser } from '@/domain/user/application/subscribers/on-update-last-login-user';
 
 import { DatabaseModule } from '../database/database.module';
@@ -17,7 +17,7 @@ import { EnvModule } from '../env/env.module';
     OnConfirmationCompanyCreated,
     OnUpdateLastLoginUser,
     OnTempPasswordTokenCreated,
-    OnPasswordChanged,
+    OnTempUserCreated,
   ],
 })
 export class EventModule {}
