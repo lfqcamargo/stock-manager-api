@@ -31,15 +31,22 @@ async function hashPassword(password: string): Promise<string> {
   return await hash(password, 8);
 }
 
-export async function seedUsers(
-  prisma: PrismaClient,
-  companies: {
-    techSolutions: Company;
-    metalurgica: Company;
-    distribuidoraNordeste: Company;
-  }
-) {
+export async function seedUsers(prisma: PrismaClient) {
   console.log("👥 Criando usuários...");
+
+  const techSolutions = await prisma.company.findUnique({
+    where: { cnpj: "12.345.678/0001-90" }
+  });
+  const metalurgica = await prisma.company.findUnique({
+    where: { cnpj: "23.456.789/0001-12" }
+  });
+  const distribuidoraNordeste = await prisma.company.findUnique({
+    where: { cnpj: "34.567.890/0001-45" }
+  });
+
+  if (!techSolutions || !metalurgica || !distribuidoraNordeste) {
+    throw new Error("Could not find all companies in the database");
+  }
 
   const password = await hashPassword("senha123");
 
@@ -318,21 +325,24 @@ export async function seedUsers(
     },
   ];
 
-  for (const userData of techSolutionsUsers) {
+  const techSolutionsUserData = techSolutionsUsers.map(userData => {
     const dates = getUserDates();
-    await prisma.user.create({
-      data: {
-        ...userData,
-        password,
-        companyId: companies.techSolutions.id,
-        createdAt: dates.createdAt,
-        lastLogin: dates.lastLogin,
-      },
-    });
-  }
+    return {
+      ...userData,
+      password,
+      companyId: techSolutions.id,
+      createdAt: dates.createdAt,
+      lastLogin: dates.lastLogin,
+    };
+  });
+
+  await prisma.user.createMany({
+    data: techSolutionsUserData,
+    skipDuplicates: true,
+  });
 
   console.log(
-    `✅ ${techSolutionsUsers.length} usuários criados para ${companies.techSolutions.name}`
+    `✅ ${techSolutionsUsers.length} usuários criados para ${techSolutions.name}`
   );
 
   // ==============================================
@@ -604,21 +614,24 @@ export async function seedUsers(
     },
   ];
 
-  for (const userData of metalurgicaUsers) {
+  const metalurgicaUserData = metalurgicaUsers.map(userData => {
     const dates = getUserDates();
-    await prisma.user.create({
-      data: {
-        ...userData,
-        password,
-        companyId: companies.metalurgica.id,
-        createdAt: dates.createdAt,
-        lastLogin: dates.lastLogin,
-      },
-    });
-  }
+    return {
+      ...userData,
+      password,
+      companyId: metalurgica.id,
+      createdAt: dates.createdAt,
+      lastLogin: dates.lastLogin,
+    };
+  });
+
+  await prisma.user.createMany({
+    data: metalurgicaUserData,
+    skipDuplicates: true,
+  });
 
   console.log(
-    `✅ ${metalurgicaUsers.length} usuários criados para ${companies.metalurgica.name}`
+    `✅ ${metalurgicaUsers.length} usuários criados para ${metalurgica.name}`
   );
 
   // ==============================================
@@ -897,20 +910,23 @@ export async function seedUsers(
     },
   ];
 
-  for (const userData of distribuidoraUsers) {
+  const distribuidoraUserData = distribuidoraUsers.map(userData => {
     const dates = getUserDates();
-    await prisma.user.create({
-      data: {
-        ...userData,
-        password,
-        companyId: companies.distribuidoraNordeste.id,
-        createdAt: dates.createdAt,
-        lastLogin: dates.lastLogin,
-      },
-    });
-  }
+    return {
+      ...userData,
+      password,
+      companyId: distribuidoraNordeste.id,
+      createdAt: dates.createdAt,
+      lastLogin: dates.lastLogin,
+    };
+  });
+
+  await prisma.user.createMany({
+    data: distribuidoraUserData,
+    skipDuplicates: true,
+  });
 
   console.log(
-    `✅ ${distribuidoraUsers.length} usuários criados para ${companies.distribuidoraNordeste.name}`
+    `✅ ${distribuidoraUsers.length} usuários criados para ${distribuidoraNordeste.name}`
   );
 }

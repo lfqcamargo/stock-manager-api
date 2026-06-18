@@ -1,11 +1,13 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 
 import { ConflictError } from '@/core/errors/conflict-error';
+import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { ResourceExpiratedError } from '@/core/errors/resource-expirated-error';
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
 import { UseCaseError } from '@/core/errors/use-case-error';
@@ -25,6 +27,10 @@ export function mapUseCaseErrorToHttpException(error: UseCaseError) {
 
   if (error instanceof ResourceNotFoundError) {
     return new NotFoundException(error.message);
+  }
+
+  if (error instanceof NotAllowedError) {
+    return new ForbiddenException(error.message);
   }
 
   return new InternalServerErrorException(error.error ?? 'Bad request');

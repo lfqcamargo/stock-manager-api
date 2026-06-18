@@ -33,7 +33,8 @@ export class InMemoryUsersRepository implements UsersRepository {
       name,
       role,
       active,
-      createdAt,
+      createdAtStart,
+      createdAtEnd,
       lastLogin,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
@@ -74,10 +75,11 @@ export class InMemoryUsersRepository implements UsersRepository {
     if (active !== undefined) {
       users = users.filter((user) => user.isActive === active);
     }
-    if (createdAt) {
-      users = users.filter(
-        (user) => user.createdAt.toDateString() === createdAt.toDateString(),
-      );
+    if (createdAtStart) {
+      users = users.filter((user) => user.createdAt >= createdAtStart);
+    }
+    if (createdAtEnd) {
+      users = users.filter((user) => user.createdAt <= createdAtEnd);
     }
     if (lastLogin) {
       users = users.filter(

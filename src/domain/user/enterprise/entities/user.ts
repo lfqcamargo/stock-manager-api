@@ -115,6 +115,14 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.role === UserRole.ADMIN;
   }
 
+  public isManager(): boolean {
+    return this.props.role === UserRole.MANAGER;
+  }
+
+  public isEmployee(): boolean {
+    return this.props.role === UserRole.EMPLOYEE;
+  }
+
   public static create(
     props: Optional<UserProps, 'createdAt' | 'updatedAt'>,
     id?: UniqueEntityID,

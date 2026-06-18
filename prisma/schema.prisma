@@ -14,11 +14,19 @@ datasource db {
   provider = "postgresql"
 }
 
+model Email {
+  id          String      @id @default(uuid())
+  to          String
+  subject     String
+  body        String
+  from        String?
+  status      EmailStatus @default(pending)
+  observation String?
+  retryCount  Int         @default(0) @map("retry_count")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  sentAt      DateTime?   @map("sent_at")
 
-enum UserRole {
-  ADMIN
-  MANAGER
-  EMPLOYEE
+  @@map("emails")
 }
 
 model TempCompany {
@@ -72,6 +80,9 @@ model Company {
   TempPasswordTokens TempPasswordToken[]
   users              User[]
 
+  groups             Group[]
+  materials          Material[]
+
   @@map("companies")
 }
 
@@ -96,24 +107,80 @@ model User {
 }
 
 
+model Group {
+  id          String     @id @default(uuid())
+  code        String
+  name        String
+  description String?
+  active      Boolean
+
+  companyId   String     @map("company_id")
+
+  company     Company    @relation(fields: [companyId], references: [id])
+  material    Material[]
+
+  @@map("groups")
+}
+
+model Material {
+  id          String       @id @default(uuid())
+  code        String
+  name        String
+  description String?
+  active      Boolean
+  
+  companyId   String       @map("company_id")
+  groupId     String       @map("group_id")
+
+  unit        UnitMeasure
+  company     Company      @relation(fields: [companyId], references: [id])
+  group       Group        @relation(fields: [groupId], references: [id])
+
+  @@unique([companyId, code])
+  @@map("materials")
+}
+
+
+enum UnitMeasure {
+  UN
+  KG
+  G
+  MG
+  TON
+  L
+  ML
+  M
+  CM
+  MM
+  M2
+  M3
+  CX
+  PC
+  PCT
+  FD
+  BDJ
+  RL
+  SC
+  LT
+  GAL
+  JAR
+  TBL
+  KIT
+}
+
+enum MovementDirection {
+  IN
+  OUT
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
 
 enum EmailStatus {
   pending
   sent
   failed
-}
-
-model Email {
-  id          String      @id @default(uuid())
-  to          String
-  subject     String
-  body        String
-  from        String?
-  status      EmailStatus @default(pending)
-  observation String?
-  retryCount  Int         @default(0) @map("retry_count")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  sentAt      DateTime?   @map("sent_at")
-
-  @@map("emails")
 }

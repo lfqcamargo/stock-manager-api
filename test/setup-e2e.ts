@@ -46,6 +46,7 @@ beforeAll(async () => {
     env: {
       ...process.env,
       DATABASE_URL: databaseURL,
+      PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: '1',
     },
   });
 
@@ -67,6 +68,7 @@ beforeEach(async () => {
     env: {
       ...process.env,
       DATABASE_URL: process.env.DATABASE_URL,
+      PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: '1',
     },
   });
 });
