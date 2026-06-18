@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('admin', 'manager', 'employee');
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'MANAGER', 'EMPLOYEE');
 
 -- CreateEnum
 CREATE TYPE "EmailStatus" AS ENUM ('pending', 'sent', 'failed');
@@ -16,6 +16,20 @@ CREATE TABLE "temp_companies" (
     "expiration_date" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "temp_companies_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "temp_users" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" "UserRole" NOT NULL,
+    "token" TEXT NOT NULL,
+    "expiration_date" TIMESTAMP(3) NOT NULL,
+    "company_id" TEXT NOT NULL,
+
+    CONSTRAINT "temp_users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -82,6 +96,12 @@ CREATE UNIQUE INDEX "temp_companies_user_email_key" ON "temp_companies"("user_em
 
 -- CreateIndex
 CREATE UNIQUE INDEX "temp_companies_token_key" ON "temp_companies"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "temp_users_email_key" ON "temp_users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "temp_users_token_key" ON "temp_users"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "temp_password_tokens_token_key" ON "temp_password_tokens"("token");

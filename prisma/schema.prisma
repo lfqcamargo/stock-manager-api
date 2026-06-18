@@ -16,9 +16,9 @@ datasource db {
 
 
 enum UserRole {
-  admin
-  manager
-  employee
+  ADMIN
+  MANAGER
+  EMPLOYEE
 }
 
 model TempCompany {

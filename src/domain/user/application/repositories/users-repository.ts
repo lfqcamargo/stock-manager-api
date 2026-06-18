@@ -9,7 +9,8 @@ export interface FetchUsersFilterParams {
   password?: string;
   role?: UserRole;
   active?: boolean;
-  createdAt?: Date;
+  createdAtStart?: Date;
+  createdAtEnd?: Date;
   lastLogin?: Date;
 }
 
@@ -24,7 +25,8 @@ export abstract class UsersRepository {
       name,
       role,
       active,
-      createdAt,
+      createdAtStart,
+      createdAtEnd,
       lastLogin,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,

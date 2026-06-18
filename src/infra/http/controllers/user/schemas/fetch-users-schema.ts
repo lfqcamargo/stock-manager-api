@@ -9,12 +9,17 @@ const fetchUsersQuerySchema = z.object({
 
   email: z.string().optional(),
   name: z.string().optional(),
-  role: z.nativeEnum(UserRole).optional(),
+  role: z
+    .string()
+    .optional()
+    .transform((val) => val?.toLocaleUpperCase())
+    .pipe(z.nativeEnum(UserRole).optional()),
   active: z
     .string()
     .transform((val) => val === 'true')
     .optional(),
-  createdAt: z.coerce.date().optional(),
+  createdAtStart: z.coerce.date().optional(),
+  createdAtEnd: z.coerce.date().optional(),
   lastLogin: z.coerce.date().optional(),
   deletedAt: z.coerce.date().optional(),
 });

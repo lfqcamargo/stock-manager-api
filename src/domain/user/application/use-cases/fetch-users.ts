@@ -18,7 +18,8 @@ interface FetchUsersUseCaseRequest extends PaginationParams {
   name?: string;
   role?: UserRole;
   active?: boolean;
-  createdAt?: Date;
+  createdAtStart?: Date;
+  createdAtEnd?: Date;
   lastLogin?: Date;
 }
 
@@ -54,7 +55,8 @@ export class FetchUsersCompanyIdUseCase {
     name,
     role,
     active,
-    createdAt,
+    createdAtStart,
+    createdAtEnd,
     lastLogin,
   }: FetchUsersUseCaseRequest): Promise<FetchUsersUseCaseResult> {
     const user = await this._usersRepository.findById(authenticatedUserId);
@@ -71,7 +73,8 @@ export class FetchUsersCompanyIdUseCase {
         name,
         role,
         active,
-        createdAt,
+        createdAtStart,
+        createdAtEnd,
         lastLogin,
       },
       { page, itemsPerPage },

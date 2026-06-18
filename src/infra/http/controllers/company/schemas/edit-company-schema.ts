@@ -8,7 +8,7 @@ const editCompanyBodySchema = z.object({
     .min(3)
     .max(255)
     .transform((s) => s.trim()),
-  photo: z.string().max(100).nullable().optional(),
+  photo: z.string().nullable().optional(),
 });
 
 export type EditCompanyBody = z.infer<typeof editCompanyBodySchema>;

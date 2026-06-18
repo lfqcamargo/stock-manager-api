@@ -16,7 +16,8 @@
     "test": "vitest run --project unit",
     "test:e2e": "vitest run -c ./vitest.e2e.config.ts",
     "test:watch": "vitest --project unit",
-    "test:e2e:watch": "vitest -c ./vitest.e2e.config.ts"
+    "test:e2e:watch": "vitest -c ./vitest.e2e.config.ts",
+    "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
   },
   "keywords": [],
   "type": "commonjs",

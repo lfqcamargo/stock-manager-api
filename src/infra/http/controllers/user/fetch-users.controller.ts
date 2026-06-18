@@ -32,10 +32,12 @@ export class FetchUsersController {
       authenticatedUserId: userId,
       page: query.page,
       itemsPerPage: query.itemsPerPage,
+      email: query.email,
       name: query.name,
       role: query.role,
       active: query.active,
-      createdAt: query.createdAt,
+      createdAtStart: query.createdAtStart,
+      createdAtEnd: query.createdAtEnd,
       lastLogin: query.lastLogin,
     });
 

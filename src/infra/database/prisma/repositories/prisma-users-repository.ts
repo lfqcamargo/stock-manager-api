@@ -6,7 +6,7 @@ import {
   FetchUsersFilterParams,
   UsersRepository,
 } from '@/domain/user/application/repositories/users-repository';
-import { User } from '@/domain/user/enterprise/entities/user';
+import { User, UserRole } from '@/domain/user/enterprise/entities/user';
 
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 import { PrismaService } from '../prisma.service';
@@ -42,7 +42,8 @@ export class PrismaUsersRepository implements UsersRepository {
       name,
       role,
       active,
-      createdAt,
+      createdAtStart,
+      createdAtEnd,
       lastLogin,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
@@ -82,8 +83,14 @@ export class PrismaUsersRepository implements UsersRepository {
       whereClause.active = active;
     }
 
-    if (createdAt) {
-      whereClause.createdAt = { gte: createdAt };
+    if (createdAtStart || createdAtEnd) {
+      whereClause.createdAt = {};
+      if (createdAtStart) {
+        whereClause.createdAt.gte = createdAtStart;
+      }
+      if (createdAtEnd) {
+        whereClause.createdAt.lte = createdAtEnd;
+      }
     }
 
     if (lastLogin) {
@@ -104,15 +111,15 @@ export class PrismaUsersRepository implements UsersRepository {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     const totalAdmin = await this._prisma.user.count({
-      where: { companyId, role: 'admin' },
+      where: { companyId, role: UserRole.ADMIN },
     });
 
     const totalMaanger = await this._prisma.user.count({
-      where: { companyId, role: 'manager' },
+      where: { companyId, role: UserRole.MANAGER },
     });
 
     const totalEmployee = await this._prisma.user.count({
-      where: { companyId, role: 'employee' },
+      where: { companyId, role: UserRole.EMPLOYEE },
     });
 
     const totalActive = await this._prisma.user.count({

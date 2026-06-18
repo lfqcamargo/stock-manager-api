@@ -11,10 +11,15 @@ import { Env } from './env/env';
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: false,
+    bodyParser: true,
   });
   app.useStaticAssets(join(__dirname, '..', '..', 'public'));
 
   app.use(cookieParser.default());
+
+  // Increase body parser limits to handle base64 images
+  app.useBodyParser('json', { limit: '10mb' });
+  app.useBodyParser('urlencoded', { limit: '10mb', extended: true });
 
   app.enableCors({
     origin: true,
