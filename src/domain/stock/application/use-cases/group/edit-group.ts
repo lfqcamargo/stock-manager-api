@@ -55,6 +55,16 @@ export class EditGroupUseCase {
     );
     if (!group) return left(new GroupNotFoundError());
 
+    if (group.code !== code) {
+      const groupCode = await this._groupsRepository.findByCode(
+        user.companyId.toString(),
+        code,
+      );
+      if (groupCode) return left(new AlreadyExistsGroupError('Code'));
+
+      group.code = code;
+    }
+
     if (group.name !== name) {
       const groupName = await this._groupsRepository.findByName(
         user.companyId.toString(),
@@ -67,7 +77,6 @@ export class EditGroupUseCase {
 
     if (group.active !== active) group.active = active;
 
-    group.code = code;
     group.description = description;
 
     await this._groupsRepository.update(group);

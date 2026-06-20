@@ -1,7 +1,6 @@
 import { makeGroup } from 'test/factories/make-group';
 import { makeUser } from 'test/factories/make-user';
 import { InMemoryGroupsRepository } from 'test/repositories/in-memory-groups-repository';
-import { InMemoryMaterialsRepository } from 'test/repositories/in-memory-materials-repository';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,20 +14,14 @@ import { GroupNotFoundError } from './errors/group-not-found-error';
 
 let usersRepository: InMemoryUsersRepository;
 let groupsRepository: InMemoryGroupsRepository;
-let materialsRepository: InMemoryMaterialsRepository;
 let sut: EditGroupUseCase;
 
 describe('EditGroupUseCase', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository();
     groupsRepository = new InMemoryGroupsRepository();
-    materialsRepository = new InMemoryMaterialsRepository();
 
-    sut = new EditGroupUseCase(
-      usersRepository,
-      groupsRepository,
-      materialsRepository,
-    );
+    sut = new EditGroupUseCase(usersRepository, groupsRepository);
   });
 
   it('should edit a group successfully when user is admin', async () => {
@@ -143,6 +136,32 @@ describe('EditGroupUseCase', () => {
       authenticateId: user.id.toString(),
       groupId: group.id.toString(),
       name: 'Group B', // same name as other group
+      description: '',
+      active: true,
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(AlreadyExistsGroupError);
+  });
+
+  it('should return AlreadyExistsGroupError if new code already exists', async () => {
+    const user = makeUser({ role: UserRole.ADMIN });
+    await usersRepository.create(user);
+
+    const group = makeGroup({ companyId: user.companyId, code: 'CODE1' });
+    const otherGroup = makeGroup({
+      companyId: user.companyId,
+      code: 'CODE2',
+    });
+
+    await groupsRepository.create(group);
+    await groupsRepository.create(otherGroup);
+
+    const result = await sut.execute({
+      code: 'CODE2', // same code as other group
+      authenticateId: user.id.toString(),
+      groupId: group.id.toString(),
+      name: 'Group Name',
       description: '',
       active: true,
     });
