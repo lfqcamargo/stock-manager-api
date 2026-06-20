@@ -20,8 +20,9 @@ const fetchUsersQuerySchema = z.object({
     .optional(),
   createdAtStart: z.coerce.date().optional(),
   createdAtEnd: z.coerce.date().optional(),
-  lastLogin: z.coerce.date().optional(),
   deletedAt: z.coerce.date().optional(),
+  orderBy: z.enum(['name', 'email', 'role', 'active', 'createdAt']).optional(),
+  orderDirection: z.enum(['asc', 'desc']).optional(),
 });
 
 export type FetchUsersQuery = z.infer<typeof fetchUsersQuerySchema>;

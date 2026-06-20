@@ -38,7 +38,10 @@ export class FetchUsersController {
       active: query.active,
       createdAtStart: query.createdAtStart,
       createdAtEnd: query.createdAtEnd,
-      lastLogin: query.lastLogin,
+      orderBy:
+        query.orderBy && query.orderDirection
+          ? { field: query.orderBy, direction: query.orderDirection }
+          : undefined,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

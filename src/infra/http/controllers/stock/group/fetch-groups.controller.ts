@@ -26,6 +26,7 @@ export class FetchGroupsController {
       code: query.code,
       name: query.name,
       description: query.description,
+      active: query.active,
       orderBy:
         query.orderBy && query.orderDirection
           ? { field: query.orderBy, direction: query.orderDirection }

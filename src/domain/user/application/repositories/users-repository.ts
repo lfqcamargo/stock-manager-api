@@ -11,7 +11,10 @@ export interface FetchUsersFilterParams {
   active?: boolean;
   createdAtStart?: Date;
   createdAtEnd?: Date;
-  lastLogin?: Date;
+  orderBy?: {
+    field: 'name' | 'email' | 'role' | 'active' | 'createdAt';
+    direction: 'asc' | 'desc';
+  };
 }
 
 export abstract class UsersRepository {
@@ -27,7 +30,7 @@ export abstract class UsersRepository {
       active,
       createdAtStart,
       createdAtEnd,
-      lastLogin,
+      orderBy,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
   ): Promise<{

@@ -20,7 +20,10 @@ interface FetchUsersUseCaseRequest extends PaginationParams {
   active?: boolean;
   createdAtStart?: Date;
   createdAtEnd?: Date;
-  lastLogin?: Date;
+  orderBy?: {
+    field: 'name' | 'email' | 'role' | 'active' | 'createdAt';
+    direction: 'asc' | 'desc';
+  };
 }
 
 type FetchUsersUseCaseResult = Either<
@@ -38,7 +41,6 @@ type FetchUsersUseCaseResult = Either<
       totalEmployee: number;
       totalActive: number;
       totalInactive: number;
-      lastCreated: Date;
     };
   }
 >;
@@ -57,7 +59,7 @@ export class FetchUsersCompanyIdUseCase {
     active,
     createdAtStart,
     createdAtEnd,
-    lastLogin,
+    orderBy,
   }: FetchUsersUseCaseRequest): Promise<FetchUsersUseCaseResult> {
     const user = await this._usersRepository.findById(authenticatedUserId);
     if (!user) return left(new UserNotFoundError());
@@ -75,7 +77,7 @@ export class FetchUsersCompanyIdUseCase {
         active,
         createdAtStart,
         createdAtEnd,
-        lastLogin,
+        orderBy,
       },
       { page, itemsPerPage },
     );

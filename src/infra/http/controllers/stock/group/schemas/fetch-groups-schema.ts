@@ -8,6 +8,7 @@ const fetchGroupsQuerySchema = z.object({
   code: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
+  active: z.coerce.boolean().optional(),
   orderBy: z.enum(['name', 'description', 'code', 'active']).optional(),
   orderDirection: z.enum(['asc', 'desc']).optional(),
 });

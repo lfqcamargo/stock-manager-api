@@ -44,7 +44,7 @@ export class PrismaUsersRepository implements UsersRepository {
       active,
       createdAtStart,
       createdAtEnd,
-      lastLogin,
+      orderBy,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
   ): Promise<{
@@ -93,15 +93,13 @@ export class PrismaUsersRepository implements UsersRepository {
       }
     }
 
-    if (lastLogin) {
-      whereClause.lastLogin = { gte: lastLogin };
-    }
-
     const users = await this._prisma.user.findMany({
       where: whereClause,
       skip: (page - 1) * itemsPerPage,
       take: itemsPerPage,
-      orderBy: { createdAt: 'desc' },
+      orderBy: orderBy
+        ? { [orderBy.field]: orderBy.direction }
+        : { name: 'asc' },
     });
 
     const totalItems = await this._prisma.user.count({

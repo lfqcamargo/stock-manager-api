@@ -18,6 +18,7 @@ interface FetchGroupsUseCaseRequest extends PaginationParams {
   code?: string;
   name?: string;
   description?: string;
+  active?: boolean;
   orderBy?: {
     field: 'name' | 'description' | 'code' | 'active';
     direction: 'asc' | 'desc';
@@ -52,6 +53,7 @@ export class FetchGroupsUseCase {
     code,
     name,
     description,
+    active,
     orderBy,
     page = 1,
     itemsPerPage = 20,
@@ -65,6 +67,7 @@ export class FetchGroupsUseCase {
         code,
         name,
         description,
+        active,
         orderBy,
       },
       { page, itemsPerPage },
