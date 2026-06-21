@@ -8,7 +8,7 @@ import { User } from './user';
 export interface CompanyProps {
   name: string;
   cnpj: string;
-  photo?: string | null;
+  photoUrl?: string | null;
 
   createdAt: Date;
   updatedAt: Date;
@@ -25,8 +25,8 @@ export class Company extends AggregateRoot<CompanyProps> {
     return this.props.cnpj;
   }
 
-  get photo(): string | null | undefined {
-    return this.props.photo;
+  get photoUrl(): string | null | undefined {
+    return this.props.photoUrl;
   }
 
   get createdAt(): Date | undefined {
@@ -55,8 +55,8 @@ export class Company extends AggregateRoot<CompanyProps> {
     this.touch();
   }
 
-  public updatePhoto(photo: string | null): void {
-    this.props.photo = photo;
+  public updatePhotoUrl(photoUrl: string | null): void {
+    this.props.photoUrl = photoUrl;
     this.touch();
   }
 

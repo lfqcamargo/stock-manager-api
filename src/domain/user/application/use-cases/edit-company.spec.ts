@@ -1,7 +1,6 @@
 import { makeCompany } from 'test/factories/make-company';
 import { makeUser } from 'test/factories/make-user';
 import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository';
-import { InMemoryTempCompaniesRepository } from 'test/repositories/in-memory-temp-companies-repository';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,18 +14,12 @@ import { UserNotFoundError } from './errors/user-not-found-error';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository;
-let inMemoryTempCompaniesRepository: InMemoryTempCompaniesRepository;
 let sut: EditCompanyUseCase;
 
 describe('Edit company', () => {
   beforeEach(() => {
-    inMemoryTempCompaniesRepository = new InMemoryTempCompaniesRepository();
     inMemoryUsersRepository = new InMemoryUsersRepository();
-
-    inMemoryCompaniesRepository = new InMemoryCompaniesRepository(
-      inMemoryTempCompaniesRepository,
-      inMemoryUsersRepository,
-    );
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository();
 
     sut = new EditCompanyUseCase(
       inMemoryCompaniesRepository,
@@ -45,14 +38,14 @@ describe('Edit company', () => {
       companyId: company.id.toString(),
       authenticateUserId: user.id.toString(),
       name: 'New name',
-      photo: 'new-photo',
+      photoUrl: 'new-photo',
     });
 
     expect(result.isRight()).toBe(true);
     if (result.isRight()) {
       const updated = result.value.company;
       expect(updated.name).toBe('New name');
-      expect(updated.photo).toBe('new-photo');
+      expect(updated.photoUrl).toBe('new-photo');
     }
   });
 
@@ -64,7 +57,7 @@ describe('Edit company', () => {
       companyId: company.id.toString(),
       authenticateUserId: 'non-existent-user-id',
       name: 'New name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -79,7 +72,7 @@ describe('Edit company', () => {
       companyId: 'non-existent-company-id',
       authenticateUserId: user.id.toString(),
       name: 'New name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -99,7 +92,7 @@ describe('Edit company', () => {
       companyId: anotherCompany.id.toString(),
       authenticateUserId: user.id.toString(),
       name: 'New name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -120,7 +113,7 @@ describe('Edit company', () => {
       companyId: company.id.toString(),
       authenticateUserId: user.id.toString(),
       name: 'New name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);

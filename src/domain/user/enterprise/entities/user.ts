@@ -17,7 +17,7 @@ export interface UserProps {
   password: string;
   role: UserRole;
   active: boolean;
-  photo?: string | null;
+  photoUrl?: string | null;
 
   createdAt: Date;
   updatedAt: Date;
@@ -47,8 +47,8 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.active;
   }
 
-  get photo(): string | null | undefined {
-    return this.props.photo;
+  get photoUrl(): string | null | undefined {
+    return this.props.photoUrl;
   }
 
   get companyId(): UniqueEntityID {
@@ -92,8 +92,8 @@ export class User extends AggregateRoot<UserProps> {
     this.touch();
   }
 
-  public updatePhoto(photo: string | null): void {
-    this.props.photo = photo;
+  public updatePhotoUrl(photoUrl: string | null): void {
+    this.props.photoUrl = photoUrl;
     this.touch();
   }
 

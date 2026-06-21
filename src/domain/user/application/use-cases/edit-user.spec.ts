@@ -19,7 +19,7 @@ describe('Edit User', () => {
     sut = new EditUserUseCase(inMemoryUsersRepository);
   });
 
-  it('should allow user to edit their own name and photo', async () => {
+  it('should allow user to edit their own name and photoUrl', async () => {
     const user = makeUser();
     await inMemoryUsersRepository.create(user);
 
@@ -27,13 +27,13 @@ describe('Edit User', () => {
       userId: user.id.toString(),
       authenticateUserId: user.id.toString(),
       name: 'Updated Name',
-      photo: 'new-photo-id',
+      photoUrl: 'new-photo-url',
     });
 
     expect(result.isRight()).toBe(true);
     if (result.isRight()) {
       expect(result.value.user.name).toBe('Updated Name');
-      expect(result.value.user.photo).toBe('new-photo-id');
+      expect(result.value.user.photoUrl).toBe('new-photo-url');
     }
   });
 
@@ -53,7 +53,7 @@ describe('Edit User', () => {
       userId: targetUser.id.toString(),
       authenticateUserId: admin.id.toString(),
       name: 'Changed Name',
-      photo: 'new-photo-id',
+      photoUrl: 'new-photo-url',
       role: UserRole.ADMIN,
       active: false,
     });
@@ -84,7 +84,7 @@ describe('Edit User', () => {
       userId: user2.id.toString(),
       authenticateUserId: user1.id.toString(),
       name: 'New Name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -99,7 +99,7 @@ describe('Edit User', () => {
       userId: 'non-existent-id',
       authenticateUserId: admin.id.toString(),
       name: 'Name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -114,7 +114,7 @@ describe('Edit User', () => {
       userId: targetUser.id.toString(),
       authenticateUserId: 'non-existent-id',
       name: 'Name',
-      photo: null,
+      photoUrl: null,
     });
 
     expect(result.isLeft()).toBe(true);
@@ -138,7 +138,7 @@ describe('Edit User', () => {
       userId: targetUser.id.toString(),
       authenticateUserId: admin.id.toString(),
       name: 'Changed Name',
-      photo: null,
+      photoUrl: null,
       role: UserRole.ADMIN,
       active: false,
     });

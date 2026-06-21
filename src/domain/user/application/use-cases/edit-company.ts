@@ -14,7 +14,7 @@ interface EditCompanyUseCaseRequest {
   companyId: string;
   authenticateUserId: string;
   name: string;
-  photo: string | null;
+  photoUrl?: string | null;
 }
 
 type EditCompanyUseCaseResponse = Either<
@@ -35,7 +35,7 @@ export class EditCompanyUseCase {
     companyId,
     authenticateUserId,
     name,
-    photo,
+    photoUrl,
   }: EditCompanyUseCaseRequest): Promise<EditCompanyUseCaseResponse> {
     const company = await this._companiesRepository.findById(companyId);
     if (!company) return left(new CompanyNotFoundError());
@@ -48,8 +48,8 @@ export class EditCompanyUseCase {
     if (user.role !== UserRole.ADMIN) return left(new UserNotAdminError());
 
     company.updateName(name);
-    if (photo !== undefined) {
-      company.updatePhoto(photo);
+    if (photoUrl !== undefined) {
+      company.updatePhotoUrl(photoUrl);
     }
 
     await this._companiesRepository.update(company);

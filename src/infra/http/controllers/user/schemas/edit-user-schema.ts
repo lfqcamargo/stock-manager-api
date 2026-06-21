@@ -16,7 +16,7 @@ const editUserBodySchema = z.object({
   email: z.email().optional(),
   role: z.nativeEnum(UserRole).optional(),
   active: z.boolean().optional(),
-  photo: z.string().nullable().optional(),
+  photoUrl: z.string().nullable().optional(),
 });
 
 export type EditUserBody = z.infer<typeof editUserBodySchema>;

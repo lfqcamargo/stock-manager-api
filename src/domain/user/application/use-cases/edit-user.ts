@@ -12,7 +12,7 @@ interface EditUserUseCaseRequest {
   userId: string;
   authenticateUserId: string;
   name: string;
-  photo: string | null;
+  photoUrl?: string | null;
   role?: UserRole;
   active?: boolean;
 }
@@ -32,7 +32,7 @@ export class EditUserUseCase {
     userId,
     authenticateUserId,
     name,
-    photo,
+    photoUrl,
     role,
     active,
   }: EditUserUseCaseRequest): Promise<EditUserUseCaseResponse> {
@@ -50,8 +50,8 @@ export class EditUserUseCase {
     }
 
     user.updateName(name);
-    if (photo !== undefined) {
-      user.updatePhoto(photo);
+    if (photoUrl !== undefined) {
+      user.updatePhotoUrl(photoUrl);
     }
 
     if (authUser.role === UserRole.ADMIN) {

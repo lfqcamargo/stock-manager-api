@@ -17,7 +17,7 @@ export function makeCompany(
     {
       name: faker.company.name(),
       cnpj: faker.string.numeric(14),
-      photo: faker.helpers.maybe(() => faker.image.url()),
+      photoUrl: faker.helpers.maybe(() => faker.image.url()),
 
       ...override,
     },

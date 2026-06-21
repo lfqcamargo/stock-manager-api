@@ -12,7 +12,7 @@ export class PrismaUserMapper {
         password: raw.password,
         role: raw.role as UserRole,
         active: raw.active,
-        photo: raw.photo ?? null,
+        photoUrl: raw.photoUrl ?? null,
 
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
@@ -32,7 +32,7 @@ export class PrismaUserMapper {
       password: user.password,
       role: user.role,
       active: user.isActive,
-      photo: user.photo ?? null,
+      photoUrl: user.photoUrl ?? null,
 
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

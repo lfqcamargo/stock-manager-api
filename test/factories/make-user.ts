@@ -21,7 +21,7 @@ export function makeUser(
       password: faker.internet.password(),
       role: UserRole.ADMIN,
       active: true,
-      photo: faker.helpers.maybe(() => faker.image.url()),
+      photoUrl: faker.helpers.maybe(() => faker.image.url()),
       createdAt: new Date(),
       updatedAt: new Date(),
       companyId: new UniqueEntityID(),

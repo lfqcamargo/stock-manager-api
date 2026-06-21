@@ -29,7 +29,7 @@ export class EditCompanyController {
       companyId,
       authenticateUserId: userId,
       name: body.name,
-      photo: body.photo ?? null,
+      photoUrl: body.photoUrl ?? null,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

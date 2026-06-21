@@ -24,7 +24,7 @@ export class EditUserController {
     @CurrentUser() user: UserPayload,
   ) {
     const { userId } = user;
-    const { name, role, active, photo } = body;
+    const { name, role, active, photoUrl } = body;
 
     const result = await this._editUserUseCase.execute({
       userId: params.id,
@@ -32,7 +32,7 @@ export class EditUserController {
       name,
       role,
       active,
-      photo: photo ?? null,
+      photoUrl: photoUrl ?? null,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

@@ -9,7 +9,7 @@ export class PrismaCompanyMapper {
       {
         cnpj: raw.cnpj,
         name: raw.name,
-        photo: raw.photo ?? null,
+        photoUrl: raw.photoUrl ?? null,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -22,7 +22,7 @@ export class PrismaCompanyMapper {
       id: company.id.toString(),
       cnpj: company.cnpj,
       name: company.name,
-      photo: company.photo ?? null,
+      photoUrl: company.photoUrl ?? null,
       createdAt: company.createdAt,
       updatedAt: company.updatedAt,
     };
