@@ -12,6 +12,7 @@ export class MaterialPresenter {
       description: material.description,
       unit: material.unit.code,
       active: material.active,
+      photoUrl: material.photoUrl,
     };
   }
 
@@ -26,6 +27,7 @@ export class MaterialPresenter {
       description: material.description,
       unit: material.unit.code,
       active: material.active,
+      photoUrl: material.photoUrl,
     };
   }
 }

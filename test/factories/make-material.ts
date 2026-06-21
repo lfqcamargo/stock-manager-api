@@ -25,6 +25,7 @@ export function makeMaterial(
         faker.helpers.arrayElement(['UN', 'KG', 'M', 'M2', 'CX']),
       ),
       active: faker.datatype.boolean(),
+      photoUrl: faker.helpers.maybe(() => faker.image.url()),
       ...override,
     },
     id,

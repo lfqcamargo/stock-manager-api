@@ -21,6 +21,7 @@ interface CreateMaterialUseCaseRequest {
   description?: string;
   unit: string;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 type CreateMaterialUseCaseResponse = Either<
@@ -48,6 +49,7 @@ export class CreateMaterialUseCase {
     description,
     unit,
     active,
+    photoUrl,
   }: CreateMaterialUseCaseRequest): Promise<CreateMaterialUseCaseResponse> {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
@@ -87,6 +89,7 @@ export class CreateMaterialUseCase {
       description,
       unit: unitMeasure,
       active,
+      photoUrl,
     });
 
     await this._materialsRepository.create(material);

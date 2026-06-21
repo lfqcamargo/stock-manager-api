@@ -12,6 +12,7 @@ export interface MaterialProps {
   description?: string | null;
   unit: UnitMeasure;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 export class Material extends AggregateRoot<MaterialProps> {
@@ -65,6 +66,14 @@ export class Material extends AggregateRoot<MaterialProps> {
 
   set active(value: boolean) {
     this.props.active = value;
+  }
+
+  get photoUrl(): string | null | undefined {
+    return this.props.photoUrl;
+  }
+
+  set photoUrl(value: string | null | undefined) {
+    this.props.photoUrl = value;
   }
 
   static create(props: MaterialProps, id?: UniqueEntityID) {

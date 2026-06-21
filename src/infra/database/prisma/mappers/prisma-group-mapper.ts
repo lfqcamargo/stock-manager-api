@@ -12,6 +12,7 @@ export class PrismaGroupMapper {
         name: raw.name,
         description: raw.description,
         active: raw.active,
+        photoUrl: raw.photoUrl ?? null,
       },
       new UniqueEntityID(raw.id),
     );
@@ -25,6 +26,7 @@ export class PrismaGroupMapper {
       name: group.name,
       description: group.description,
       active: group.active,
+      photoUrl: group.photoUrl ?? null,
     };
   }
 }

@@ -19,6 +19,7 @@ export class PrismaMaterialMapper {
         description: raw.description,
         unit: UnitMeasure.fromCode(raw.unit),
         active: raw.active,
+        photoUrl: raw.photoUrl ?? null,
       },
       new UniqueEntityID(raw.id),
     );
@@ -34,6 +35,7 @@ export class PrismaMaterialMapper {
       description: material.description,
       unit: material.unit.toString() as PrismaUnitMeasure,
       active: material.active,
+      photoUrl: material.photoUrl ?? null,
     };
   }
 }

@@ -18,6 +18,7 @@ const editGroupBodySchema = z.object({
     .transform((s) => s.trim())
     .nullable(),
   active: z.boolean(),
+  photoUrl: z.string().nullable().optional(),
 });
 
 const editGroupParamsSchema = z.object({

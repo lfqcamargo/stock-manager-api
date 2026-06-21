@@ -113,6 +113,7 @@ model Group {
   name        String
   description String?
   active      Boolean
+  photoUrl    String?    @map("photo_url")
 
   companyId   String     @map("company_id")
 
@@ -128,6 +129,7 @@ model Material {
   name        String
   description String?
   active      Boolean
+  photoUrl    String?      @map("photo_url")
   
   companyId   String       @map("company_id")
   groupId     String       @map("group_id")

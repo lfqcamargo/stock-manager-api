@@ -21,6 +21,7 @@ const createMaterialBodySchema = z.object({
   unit: z.enum(UnitMeasure.availableCodes),
   active: z.boolean().default(true),
   groupId: z.string(),
+  photoUrl: z.string().nullable().optional(),
 });
 
 export type CreateMaterialBody = z.infer<typeof createMaterialBodySchema>;

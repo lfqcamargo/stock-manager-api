@@ -29,6 +29,7 @@ export class CreateGroupController {
       name: body.name,
       description: body.description,
       active: body.active,
+      photoUrl: body.photoUrl,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

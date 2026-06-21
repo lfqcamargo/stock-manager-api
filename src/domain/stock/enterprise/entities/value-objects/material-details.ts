@@ -13,6 +13,7 @@ export interface MaterialDetailsProps {
   description?: string | null;
   unit: UnitMeasure;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 export class MaterialDetails extends ValueObject<MaterialDetailsProps> {
@@ -50,6 +51,10 @@ export class MaterialDetails extends ValueObject<MaterialDetailsProps> {
 
   get active(): boolean {
     return this.props.active;
+  }
+
+  get photoUrl(): string | null | undefined {
+    return this.props.photoUrl;
   }
 
   static create(props: MaterialDetailsProps) {

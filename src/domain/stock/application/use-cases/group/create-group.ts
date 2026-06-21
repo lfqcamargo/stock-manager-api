@@ -15,6 +15,7 @@ interface CreateGroupUseCaseRequest {
   name: string;
   description?: string;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 type CreateGroupUseCaseResponse = Either<
@@ -35,6 +36,7 @@ export class CreateGroupUseCase {
     name,
     description,
     active,
+    photoUrl,
   }: CreateGroupUseCaseRequest): Promise<CreateGroupUseCaseResponse> {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
@@ -59,6 +61,7 @@ export class CreateGroupUseCase {
       name,
       description,
       active,
+      photoUrl,
     });
 
     await this._groupsRepository.create(group);

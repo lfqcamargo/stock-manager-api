@@ -23,6 +23,7 @@ export class PrismaMaterialDetailsMapper {
       description: raw.description,
       unit: UnitMeasure.fromCode(raw.unit),
       active: raw.active,
+      photoUrl: raw.photoUrl ?? null,
     });
   }
 }

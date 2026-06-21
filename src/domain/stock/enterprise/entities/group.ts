@@ -8,6 +8,7 @@ export interface GroupProps {
   name: string;
   description?: string | null;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 export class Group extends AggregateRoot<GroupProps> {
@@ -45,6 +46,14 @@ export class Group extends AggregateRoot<GroupProps> {
 
   set active(value: boolean) {
     this.props.active = value;
+  }
+
+  get photoUrl(): string | null | undefined {
+    return this.props.photoUrl;
+  }
+
+  set photoUrl(value: string | null | undefined) {
+    this.props.photoUrl = value;
   }
 
   static create(props: GroupProps, id?: UniqueEntityID) {

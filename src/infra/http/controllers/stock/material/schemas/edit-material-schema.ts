@@ -21,6 +21,7 @@ const editMaterialBodySchema = z.object({
   unit: z.enum(UnitMeasure.availableCodes),
   active: z.boolean(),
   groupId: z.string(),
+  photoUrl: z.string().nullable().optional(),
 });
 
 const editMaterialParamsSchema = z.object({

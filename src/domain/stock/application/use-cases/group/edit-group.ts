@@ -18,6 +18,7 @@ interface EditGroupUseCaseRequest {
   name: string;
   description: string | null;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 type EditGroupUseCaseResponse = Either<
@@ -43,6 +44,7 @@ export class EditGroupUseCase {
     name,
     description,
     active,
+    photoUrl,
   }: EditGroupUseCaseRequest): Promise<EditGroupUseCaseResponse> {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
@@ -78,6 +80,9 @@ export class EditGroupUseCase {
     if (group.active !== active) group.active = active;
 
     group.description = description;
+    if (photoUrl !== undefined) {
+      group.photoUrl = photoUrl;
+    }
 
     await this._groupsRepository.update(group);
 

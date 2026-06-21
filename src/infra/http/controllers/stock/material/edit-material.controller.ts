@@ -35,6 +35,7 @@ export class EditMaterialController {
       description: body.description,
       unit: body.unit,
       active: body.active,
+      photoUrl: body.photoUrl,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

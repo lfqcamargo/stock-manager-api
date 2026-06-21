@@ -17,6 +17,7 @@ export function makeGroup(
       name: faker.commerce.product(),
       active: faker.datatype.boolean(),
       description: faker.lorem.text(),
+      photoUrl: faker.helpers.maybe(() => faker.image.url()),
       ...override,
     },
     id,

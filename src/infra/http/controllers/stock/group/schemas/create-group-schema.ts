@@ -18,6 +18,7 @@ const createGroupBodySchema = z.object({
     .transform((s) => s.trim())
     .optional(),
   active: z.boolean().default(true),
+  photoUrl: z.string().nullable().optional(),
 });
 
 export type CreateGroupBody = z.infer<typeof createGroupBodySchema>;

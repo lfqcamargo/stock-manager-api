@@ -23,6 +23,7 @@ interface EditMaterialUseCaseRequest {
   description: string | null;
   unit: string;
   active: boolean;
+  photoUrl?: string | null;
 }
 
 type EditMaterialUseCaseResponse = Either<
@@ -52,6 +53,7 @@ export class EditMaterialUseCase {
     description,
     unit,
     active,
+    photoUrl,
   }: EditMaterialUseCaseRequest): Promise<EditMaterialUseCaseResponse> {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
@@ -105,6 +107,9 @@ export class EditMaterialUseCase {
     }
 
     material.description = description;
+    if (photoUrl !== undefined) {
+      material.photoUrl = photoUrl;
+    }
     await this._materialsRepository.update(material);
 
     return right({ material: material });

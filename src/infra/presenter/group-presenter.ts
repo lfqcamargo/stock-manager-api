@@ -9,6 +9,7 @@ export class GroupPresenter {
       name: group.name,
       description: group.description,
       active: group.active,
+      photoUrl: group.photoUrl,
     };
   }
 }
