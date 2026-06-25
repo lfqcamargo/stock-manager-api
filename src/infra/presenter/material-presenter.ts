@@ -5,7 +5,6 @@ export class MaterialPresenter {
   static toHTTP(material: Material) {
     return {
       id: material.id.toString(),
-      companyId: material.companyId.toString(),
       groupId: material.groupId.toString(),
       code: material.code,
       name: material.name,
@@ -19,15 +18,14 @@ export class MaterialPresenter {
   static toHTTPDetails(material: MaterialDetails) {
     return {
       id: material.id.toString(),
-      companyId: material.companyId.toString(),
-      groupId: material.groupId.toString(),
-      group: material.group,
       code: material.code,
       name: material.name,
       description: material.description,
       unit: material.unit.code,
       active: material.active,
       photoUrl: material.photoUrl,
+      groupId: material.groupId.toString(),
+      group: material.group,
     };
   }
 }

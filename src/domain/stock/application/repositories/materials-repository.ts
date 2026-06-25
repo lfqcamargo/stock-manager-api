@@ -1,9 +1,14 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import {
+  FetchAllFilterParams,
+  Repository,
+} from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import { Material } from '@/domain/stock/enterprise/entities/material';
 
 import { MaterialDetails } from '../../enterprise/entities/value-objects/material-details';
 
-export interface FetchMaterialsFilterParams {
+export interface FetchMaterialsFilterParams extends FetchAllFilterParams {
   companyId: string;
   groupId?: string;
   code?: string;
@@ -16,9 +21,12 @@ export interface FetchMaterialsFilterParams {
   };
 }
 
-export abstract class MaterialsRepository {
-  abstract create(material: Material): Promise<void>;
-  abstract findById(companyId: string, id: string): Promise<Material | null>;
+export abstract class MaterialsRepository extends Repository<Material> {
+  abstract create(
+    material: Material,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract findById(id: string): Promise<Material | null>;
   abstract findByCode(
     companyId: string,
     code: string,
@@ -28,16 +36,9 @@ export abstract class MaterialsRepository {
     name: string,
   ): Promise<Material | null>;
   abstract fetchAll(
-    {
-      companyId,
-      groupId,
-      code,
-      name,
-      description,
-      active,
-      orderBy,
-    }: FetchMaterialsFilterParams,
-    { page, itemsPerPage }: PaginationParams,
+    filter: FetchMaterialsFilterParams,
+    paginationParams: PaginationParams,
+    options?: TransactionContextParams,
   ): Promise<{
     data: MaterialDetails[];
     meta: {
@@ -53,6 +54,12 @@ export abstract class MaterialsRepository {
     companyId: string,
     groupId: string,
   ): Promise<Material[] | null>;
-  abstract update(material: Material): Promise<void>;
-  abstract delete(material: Material): Promise<void>;
+  abstract update(
+    material: Material,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract delete(
+    id: string,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

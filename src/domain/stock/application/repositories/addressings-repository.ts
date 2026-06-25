@@ -1,9 +1,15 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import {
+  FetchAllFilterParams,
+  Repository,
+} from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import { Addressing } from '@/domain/stock/enterprise/entities/addressing';
 
 import { AddressingDetails } from '../../enterprise/entities/value-objects/addressing-details';
 
-export interface AddressingParams {
+export interface FetchAddressingsFilterParams extends FetchAllFilterParams {
+  companyId: string;
   materialId?: string;
   locationId?: string;
   subLocationId?: string;
@@ -11,25 +17,26 @@ export interface AddressingParams {
   shelfId?: string;
   positionId?: string;
   active?: boolean;
+  minAmount?: number;
+  maxAmount?: number;
   orderBy?: {
     field: 'createdAt' | 'amount' | 'active';
     direction: 'asc' | 'desc';
   };
 }
 
-export abstract class AddressingsRepository {
-  abstract create(addressing: Addressing): Promise<void>;
-  abstract findById(companyId: string, id: string): Promise<Addressing | null>;
-  abstract findByIdDetails(
-    companyId: string,
-    id: string,
-  ): Promise<AddressingDetails | null>;
+export abstract class AddressingsRepository extends Repository<Addressing> {
+  abstract create(
+    addressing: Addressing,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract findById(id: string): Promise<Addressing | null>;
   abstract fetchAll(
-    companyId: string,
-    { page, itemsPerPage }: PaginationParams,
-    params: AddressingParams,
+    filter: FetchAddressingsFilterParams,
+    paginationParams: PaginationParams,
+    options?: TransactionContextParams,
   ): Promise<{
-    data: AddressingDetails[] | null;
+    data: AddressingDetails[];
     meta: {
       totalItems: number;
       itemCount: number;
@@ -37,7 +44,17 @@ export abstract class AddressingsRepository {
       totalPages: number;
       currentPage: number;
     };
-  } | null>;
-  abstract update(addressing: Addressing): Promise<void>;
-  abstract delete(addressing: Addressing): Promise<void>;
+  }>;
+  abstract update(
+    addressing: Addressing,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract delete(
+    id: string,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchAddressingsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

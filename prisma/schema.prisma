@@ -82,6 +82,12 @@ model Company {
 
   groups             Group[]
   materials          Material[]
+  locations          Location[]
+  subLocations       SubLocation[]
+  rows               Row[]
+  shelfs             Shelf[]
+  positions          Position[]
+  addressings        Addressing[]
 
   @@map("companies")
 }
@@ -130,16 +136,122 @@ model Material {
   description String?
   active      Boolean
   photoUrl    String?      @map("photo_url")
-  
+  createdAt   DateTime     @default(now()) @map("created_at")
+
   companyId   String       @map("company_id")
   groupId     String       @map("group_id")
 
   unit        UnitMeasure
   company     Company      @relation(fields: [companyId], references: [id])
   group       Group        @relation(fields: [groupId], references: [id])
+  addressings Addressing[]
 
   @@unique([companyId, code])
   @@map("materials")
+}
+
+model Location {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String?
+
+  companyId   String   @map("company_id")
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  subLocations SubLocation[]
+  addressings  Addressing[]
+
+  @@unique([companyId, code])
+  @@map("locations")
+}
+
+model SubLocation {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String?
+
+  companyId   String   @map("company_id")
+  locationId  String   @map("location_id")
+
+  company     Company  @relation(fields: [companyId], references: [id])
+  location    Location @relation(fields: [locationId], references: [id])
+
+  addressings Addressing[]
+
+  @@unique([companyId, code])
+  @@map("sub_locations")
+}
+
+model Row {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String?
+
+  companyId   String   @map("company_id")
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  addressings Addressing[]
+
+  @@unique([companyId, code])
+  @@map("rows")
+}
+
+model Shelf {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String?
+
+  companyId   String   @map("company_id")
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  addressings Addressing[]
+
+  @@unique([companyId, code])
+  @@map("shelfs")
+}
+
+model Position {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String?
+
+  companyId   String   @map("company_id")
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  addressings Addressing[]
+
+  @@unique([companyId, code])
+  @@map("positions")
+}
+
+model Addressing {
+  id            String   @id @default(uuid())
+  amount        Float    @default(0)
+  active        Boolean
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  companyId     String   @map("company_id")
+  locationId    String   @map("location_id")
+  subLocationId String   @map("sub_location_id")
+  rowId         String   @map("row_id")
+  shelfId       String   @map("shelf_id")
+  positionId    String   @map("position_id")
+  materialId    String?  @map("material_id")
+
+  company       Company     @relation(fields: [companyId], references: [id])
+  location      Location    @relation(fields: [locationId], references: [id])
+  subLocation   SubLocation @relation(fields: [subLocationId], references: [id])
+  row           Row         @relation(fields: [rowId], references: [id])
+  shelf         Shelf       @relation(fields: [shelfId], references: [id])
+  position      Position    @relation(fields: [positionId], references: [id])
+  material      Material?   @relation(fields: [materialId], references: [id])
+
+  @@map("addressings")
 }
 
 

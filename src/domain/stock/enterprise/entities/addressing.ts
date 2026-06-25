@@ -46,7 +46,7 @@ export class Addressing extends AggregateRoot<AddressingProps> {
     return null;
   }
 
-  set materialId(value: UniqueEntityID) {
+  set materialId(value: UniqueEntityID | null) {
     this.props.materialId = value;
   }
 

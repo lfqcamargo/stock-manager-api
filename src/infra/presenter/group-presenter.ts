@@ -4,7 +4,6 @@ export class GroupPresenter {
   static toHTTP(group: Group) {
     return {
       id: group.id.toString(),
-      companyId: group.companyId.toString(),
       code: group.code,
       name: group.name,
       description: group.description,

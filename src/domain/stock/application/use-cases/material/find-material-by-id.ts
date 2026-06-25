@@ -32,11 +32,12 @@ export class FindMaterialByIdUseCase {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
 
-    const material = await this._materialsRepository.findById(
-      user.companyId.toString(),
-      materialId,
-    );
-    if (!material) return left(new MaterialNotFoundError());
+    const material = await this._materialsRepository.findById(materialId);
+    if (
+      !material ||
+      material.companyId.toString() !== user.companyId.toString()
+    )
+      return left(new MaterialNotFoundError());
 
     return right({ material: material });
   }

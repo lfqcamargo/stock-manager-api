@@ -91,7 +91,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"lfqcamargo1@gmail.com.br\",\r\n    \"password\": \"123456789\"\r\n}",
+              "raw": "{\r\n    \"email\": \"lfqcamargo@gmail.com\",\r\n    \"password\": \"123456789daro\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -303,6 +303,7 @@
             "header": [],
             "body": {
               "mode": "raw",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -435,16 +436,953 @@
               }
             },
             "url": {
-              "raw": "{{url}}/companies",
+              "raw": "{{url}}/companies/me",
               "host": [
                 "{{url}}"
               ],
               "path": [
-                "companies"
+                "companies",
+                "me"
               ]
             }
           },
           "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "Group",
+          "item": [
+            {
+              "name": "Create Group",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"4\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/groups/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "groups",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Group",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/groups/7e4d4b9a-d9d5-467d-a2cf-7f10c6c99b1d",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "groups",
+                    "7e4d4b9a-d9d5-467d-a2cf-7f10c6c99b1d"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Groups",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/groups?page=1&itemsPerPage=20 ",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "groups"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "itemsPerPage",
+                      "value": "20 "
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Group",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/groups/e32d6861-fd83-42b3-b11f-68c64593d492",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "groups",
+                    "e32d6861-fd83-42b3-b11f-68c64593d492"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Group",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Testando\",\r\n    \"code\": \"1\",\r\n    \"description\": \"\",\r\n    \"active\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/groups/e32d6861-fd83-42b3-b11f-68c64593d492",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "groups",
+                    "e32d6861-fd83-42b3-b11f-68c64593d492"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Material",
+          "item": [
+            {
+              "name": "Create Material",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 653\",\r\n    \"code\": \"24\",\r\n    \"unit\": \"KG\",\r\n    \"groupId\": \"e32d6861-fd83-42b3-b11f-68c64593d492\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/materials/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "materials",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Material",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/materials/02951d39-1e02-4ba0-93e9-70a91c6e50a3",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "materials",
+                    "02951d39-1e02-4ba0-93e9-70a91c6e50a3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Materials",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/materials/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "materials",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Material",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/materials/74a07bbc-abaa-4b0e-aea4-dc2afe8110a6",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "materials",
+                    "74a07bbc-abaa-4b0e-aea4-dc2afe8110a6"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Material",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"groupId\": \"e32d6861-fd83-42b3-b11f-68c64593d492\",\r\n    \"code\": \"24\",\r\n    \"name\": \"Teste 9874\",\r\n    \"description\": null,\r\n    \"unit\": \"KG\",\r\n    \"active\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/materials/74a07bbc-abaa-4b0e-aea4-dc2afe8110a6",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "materials",
+                    "74a07bbc-abaa-4b0e-aea4-dc2afe8110a6"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Location",
+          "item": [
+            {
+              "name": "Create Location",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 1\",\r\n    \"code\": \"1\",\r\n    \"description\": \"Teste 1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/locations/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "locations",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Location",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"3\",\r\n    \"description\": \"Teste 3\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/locations/8859dafc-8889-4c51-966f-6268d235572a",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "locations",
+                    "8859dafc-8889-4c51-966f-6268d235572a"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Locations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/locations/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "locations",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Location",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/locations/8859dafc-8889-4c51-966f-6268d235572a",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "locations",
+                    "8859dafc-8889-4c51-966f-6268d235572a"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Location",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/locations/8859dafc-8889-4c51-966f-6268d235572a",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "locations",
+                    "8859dafc-8889-4c51-966f-6268d235572a"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Sub Location",
+          "item": [
+            {
+              "name": "Create Sub Location",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locationId\": \"7223d8f2-3a08-4809-a8bc-8455771e334e\",\r\n    \"name\": \"Teste 1\",\r\n    \"code\": \"1\",\r\n    \"description\": \"Teste 1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/sub-locations/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "sub-locations",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Sub Location",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locationId\": \"b5f8278f-e942-4a2d-be37-dcde77834376\",\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"3\",\r\n    \"description\": \"Teste 3\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/sub-locations/e847fc06-57b0-4f4d-a8fe-28fcffa423f2",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "sub-locations",
+                    "e847fc06-57b0-4f4d-a8fe-28fcffa423f2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Sub Locations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/sub-locations/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "sub-locations",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Sub Location",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/sub-locations/e847fc06-57b0-4f4d-a8fe-28fcffa423f2",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "sub-locations",
+                    "e847fc06-57b0-4f4d-a8fe-28fcffa423f2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Sub Location",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/sub-locations/e847fc06-57b0-4f4d-a8fe-28fcffa423f2",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "sub-locations",
+                    "e847fc06-57b0-4f4d-a8fe-28fcffa423f2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Row",
+          "item": [
+            {
+              "name": "Create Row",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 1\",\r\n    \"code\": \"1\",\r\n    \"description\": \"Teste 1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/rows/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "rows",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Row",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"3\",\r\n    \"description\": \"Teste 3\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/rows/f661f962-4ad5-442b-902b-1dbf43517657",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "rows",
+                    "f661f962-4ad5-442b-902b-1dbf43517657"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Rows",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/rows/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "rows",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Row",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/rows/f661f962-4ad5-442b-902b-1dbf43517657",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "rows",
+                    "f661f962-4ad5-442b-902b-1dbf43517657"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Row",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/rows/f661f962-4ad5-442b-902b-1dbf43517657",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "rows",
+                    "f661f962-4ad5-442b-902b-1dbf43517657"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Shelf",
+          "item": [
+            {
+              "name": "Create Shelf",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 1\",\r\n    \"code\": \"1\",\r\n    \"description\": \"Teste 1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/shelfs/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "shelfs",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Shelf",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"3\",\r\n    \"description\": \"Teste 3\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/shelfs/86e2a8f9-23fb-4268-9a22-5c1947f3d275",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "shelfs",
+                    "86e2a8f9-23fb-4268-9a22-5c1947f3d275"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Shelf",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/shelfs/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "shelfs",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Shelf",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/shelfs/86e2a8f9-23fb-4268-9a22-5c1947f3d275",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "shelfs",
+                    "86e2a8f9-23fb-4268-9a22-5c1947f3d275"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Shelf",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/shelfs/86e2a8f9-23fb-4268-9a22-5c1947f3d275",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "shelfs",
+                    "86e2a8f9-23fb-4268-9a22-5c1947f3d275"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Position",
+          "item": [
+            {
+              "name": "Create Position",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 1\",\r\n    \"code\": \"1\",\r\n    \"description\": \"Teste 1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/positions/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "positions",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Position",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Teste 3\",\r\n    \"code\": \"3\",\r\n    \"description\": \"Teste 3\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/positions/98cad830-a210-4eec-830b-2ee55de73e54",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "positions",
+                    "98cad830-a210-4eec-830b-2ee55de73e54"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Positions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/positions/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "positions",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Position",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/positions/98cad830-a210-4eec-830b-2ee55de73e54",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "positions",
+                    "98cad830-a210-4eec-830b-2ee55de73e54"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Position",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/positions/98cad830-a210-4eec-830b-2ee55de73e54",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "positions",
+                    "98cad830-a210-4eec-830b-2ee55de73e54"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Addressing",
+          "item": [
+            {
+              "name": "Create Addressing",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locationId\": \"7223d8f2-3a08-4809-a8bc-8455771e334e\",\r\n    \"subLocationId\": \"35ac1bca-ef99-4e1b-b81b-c5409e5233c3\",\r\n    \"rowId\": \"5e0d8046-9ff1-40a9-8990-885b5cee73f3\",\r\n    \"shelfId\": \"63141fb4-81ad-4070-81c8-826bce62e65b\",\r\n    \"positionId\": \"31e81fbb-52a1-4c03-ab41-6d21866a3cf3\",\r\n    \"materialId\": \"5fe151c8-f9c1-4bcb-8276-13696684637d\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/addressings/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "addressings",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Edit Addressing",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locationId\": \"7223d8f2-3a08-4809-a8bc-8455771e334e\",\r\n    \"subLocationId\": \"35ac1bca-ef99-4e1b-b81b-c5409e5233c3\",\r\n    \"rowId\": \"5e0d8046-9ff1-40a9-8990-885b5cee73f3\",\r\n    \"shelfId\": \"63141fb4-81ad-4070-81c8-826bce62e65b\",\r\n    \"positionId\": \"31e81fbb-52a1-4c03-ab41-6d21866a3cf3\",\r\n    \"materialId\": \"\",\r\n    \"active\": false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/addressings/0d481a09-7171-4961-8f4b-e2a4aad24757",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "addressings",
+                    "0d481a09-7171-4961-8f4b-e2a4aad24757"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Addressings",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/addressings/",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "addressings",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find Addressing",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/addressings/0d481a09-7171-4961-8f4b-e2a4aad24757",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "addressings",
+                    "0d481a09-7171-4961-8f4b-e2a4aad24757"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Addressing",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/addressings/0d481a09-7171-4961-8f4b-e2a4aad24757",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "addressings",
+                    "0d481a09-7171-4961-8f4b-e2a4aad24757"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     }
@@ -457,7 +1395,24 @@
         "packages": {},
         "requests": {},
         "exec": [
-          ""
+          "// pm.sendRequest({\r",
+          "//   url: pm.environment.get('url') + '/auth/session/refresh',\r",
+          "//   method: 'POST',\r",
+          "//   header: {\r",
+          "//     'Content-Type': 'application/json',\r",
+          "//   },\r",
+          "// }, function (err, res) {\r",
+          "//   if (err) {\r",
+          "//     console.error('Refresh token error:', err);\r",
+          "//     return;\r",
+          "//   }\r",
+          "\r",
+          "//   const data = res.json();\r",
+          "\r",
+          "//   if (data.accessToken) {\r",
+          "//     pm.environment.set('accessToken', data.accessToken);\r",
+          "//   }\r",
+          "// });"
         ]
       }
     },

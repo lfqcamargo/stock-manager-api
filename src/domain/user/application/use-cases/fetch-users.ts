@@ -41,6 +41,7 @@ type FetchUsersUseCaseResult = Either<
       totalEmployee: number;
       totalActive: number;
       totalInactive: number;
+      lastCreated: Date;
     };
   }
 >;

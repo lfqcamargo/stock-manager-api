@@ -57,7 +57,7 @@ export class ConfirmationCreateUserUseCase {
       active: true,
     });
 
-    await this._tempUsersRepository.delete(tempUser);
+    await this._tempUsersRepository.delete(tempUser.id.toString());
     await this._usersRepository.create(user);
 
     return right({ user });

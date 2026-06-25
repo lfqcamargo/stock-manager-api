@@ -1,7 +1,7 @@
 import { ConflictError } from '@/core/errors/conflict-error';
 
 export class AlreadyExistsLocationError extends ConflictError {
-  constructor() {
-    super('Location already exists.');
+  constructor(field?: string) {
+    super(field ? `${field} already exists.` : 'Location already exists.');
   }
 }

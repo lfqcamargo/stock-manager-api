@@ -56,11 +56,9 @@ export class CreateMaterialUseCase {
     if (!user.isAdmin() && !user.isManager())
       return left(new UserNotAllowedError());
 
-    const group = await this._groupsRepository.findById(
-      user.companyId.toString(),
-      groupId,
-    );
-    if (!group) return left(new GroupNotFoundError());
+    const group = await this._groupsRepository.findById(groupId);
+    if (!group || group.companyId.toString() !== user.companyId.toString())
+      return left(new GroupNotFoundError());
 
     const existingMaterial = await this._materialsRepository.findByName(
       user.companyId.toString(),

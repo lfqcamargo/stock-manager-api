@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 import { DomainEvents } from '@/core/events/domain-events';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { FetchAllFilterParams } from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import { CompaniesRepository } from '@/domain/user/application/repositories/companies-repository';
 import { Company } from '@/domain/user/enterprise/entities/company';
 
@@ -12,7 +15,10 @@ import { PrismaService } from '../prisma.service';
 export class PrismaCompaniesRepository implements CompaniesRepository {
   constructor(private readonly _prisma: PrismaService) {}
 
-  async create(company: Company): Promise<void> {
+  async create(
+    company: Company,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this._prisma.$transaction(async (tx) => {
       await tx.company.create({
         data: PrismaCompanyMapper.toPrisma(company),
@@ -42,10 +48,50 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
     return company ? PrismaCompanyMapper.toDomain(company) : null;
   }
 
-  async update(company: Company): Promise<void> {
+  async fetchAll(
+    _filter: FetchAllFilterParams,
+    { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
+  ): Promise<{ data: Company[]; meta: Record<string, any> }> {
+    const [totalItems, companies] = await Promise.all([
+      this._prisma.company.count(),
+      this._prisma.company.findMany({
+        skip: (page - 1) * itemsPerPage,
+        take: itemsPerPage,
+        orderBy: { name: 'asc' },
+      }),
+    ]);
+
+    return {
+      data: companies.map((company) => PrismaCompanyMapper.toDomain(company)),
+      meta: {
+        totalItems,
+        itemCount: companies.length,
+        itemsPerPage,
+        totalPages: Math.ceil(totalItems / itemsPerPage),
+        currentPage: page,
+      },
+    };
+  }
+
+  async update(
+    company: Company,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this._prisma.company.update({
       where: { id: company.id.toString() },
       data: PrismaCompanyMapper.toPrisma(company),
     });
+  }
+
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
+    await this._prisma.company.delete({ where: { id } });
+  }
+
+  async deleteMany(
+    _filters: FetchAllFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    await this._prisma.company.deleteMany();
   }
 }

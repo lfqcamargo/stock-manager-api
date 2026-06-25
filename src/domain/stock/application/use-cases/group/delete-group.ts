@@ -40,11 +40,9 @@ export class DeleteGroupUseCase {
     if (!user.isAdmin() && !user.isManager())
       return left(new UserNotAllowedError());
 
-    const group = await this._groupsRepository.findById(
-      user.companyId.toString(),
-      groupId,
-    );
-    if (!group) return left(new GroupNotFoundError());
+    const group = await this._groupsRepository.findById(groupId);
+    if (!group || group.companyId.toString() !== user.companyId.toString())
+      return left(new GroupNotFoundError());
 
     const materials = await this._materialsRepository.fetchByGroupId(
       user.companyId.toString(),
@@ -53,7 +51,7 @@ export class DeleteGroupUseCase {
     if (materials && materials?.length > 0)
       return left(new MaterialActiveSystemError());
 
-    await this._groupsRepository.delete(group);
+    await this._groupsRepository.delete(groupId);
 
     return right(void 0);
   }

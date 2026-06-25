@@ -7,7 +7,7 @@ export interface SubLocationDetailsProps {
   id: UniqueEntityID;
   companyId: UniqueEntityID;
   location: Location;
-
+  code: string;
   name: string;
   description?: string | null;
 }
@@ -22,6 +22,10 @@ export class SubLocationDetails extends ValueObject<SubLocationDetailsProps> {
   }
   get location(): Location {
     return this.props.location;
+  }
+
+  get code(): string {
+    return this.props.code;
   }
 
   get name(): string {

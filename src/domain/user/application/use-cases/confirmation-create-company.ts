@@ -71,7 +71,7 @@ export class ConfirmationCreateCompanyUserUseCase {
     company.users.push(user);
 
     await this._companiesRepository.create(company);
-    await this._tempCompaniesRepository.delete(tempCompany);
+    await this._tempCompaniesRepository.delete(tempCompany.id.toString());
 
     return right({ email: user.email });
   }

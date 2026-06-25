@@ -1,4 +1,5 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchMaterialsFilterParams,
   MaterialsRepository,
@@ -9,16 +10,16 @@ import { MaterialDetails } from '@/domain/stock/enterprise/entities/value-object
 export class InMemoryMaterialsRepository implements MaterialsRepository {
   public items: Material[] = [];
 
-  async create(material: Material): Promise<void> {
+  async create(
+    material: Material,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     this.items.push(material);
     return Promise.resolve();
   }
 
-  async findById(companyId: string, id: string): Promise<Material | null> {
-    const material = this.items.find(
-      (item) =>
-        item.companyId.toString() === companyId && item.id.toString() === id,
-    );
+  async findById(id: string): Promise<Material | null> {
+    const material = this.items.find((item) => item.id.toString() === id);
     return Promise.resolve(material ?? null);
   }
 
@@ -51,6 +52,7 @@ export class InMemoryMaterialsRepository implements MaterialsRepository {
       orderBy,
     }: FetchMaterialsFilterParams,
     { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: MaterialDetails[];
     meta: {
@@ -125,7 +127,10 @@ export class InMemoryMaterialsRepository implements MaterialsRepository {
     return Promise.resolve(null);
   }
 
-  async update(material: Material): Promise<void> {
+  async update(
+    material: Material,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     const index = this.items.findIndex((item) => item.id === material.id);
     if (index >= 0) {
       this.items[index] = material;
@@ -133,11 +138,44 @@ export class InMemoryMaterialsRepository implements MaterialsRepository {
     return Promise.resolve();
   }
 
-  async delete(material: Material): Promise<void> {
-    const index = this.items.findIndex((item) => item.id === material.id);
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
+    const index = this.items.findIndex((item) => item.id.toString() === id);
     if (index >= 0) {
       this.items.splice(index, 1);
     }
+    return Promise.resolve();
+  }
+
+  async deleteMany(
+    {
+      companyId,
+      groupId,
+      code,
+      name,
+      description,
+      active,
+    }: FetchMaterialsFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    this.items = this.items.filter((item) => {
+      if (companyId && item.companyId.toString() !== companyId) return true;
+      if (groupId && item.groupId.toString() !== groupId) return true;
+      if (code && !item.code.toLowerCase().includes(code.toLowerCase()))
+        return true;
+      if (name && !item.name.toLowerCase().includes(name.toLowerCase()))
+        return true;
+      if (
+        description &&
+        !(item.description || '')
+          .toLowerCase()
+          .includes(description.toLowerCase())
+      )
+        return true;
+      if (active !== undefined && item.active !== active) return true;
+
+      return false;
+    });
+
     return Promise.resolve();
   }
 

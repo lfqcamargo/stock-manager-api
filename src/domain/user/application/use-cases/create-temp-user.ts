@@ -58,7 +58,7 @@ export class CreateTempUserUseCase {
     const alreadyExists = await this._tempUsersRepository.findByEmail(email);
 
     if (alreadyExists) {
-      await this._tempUsersRepository.delete(alreadyExists);
+      await this._tempUsersRepository.delete(alreadyExists.id.toString());
     }
 
     const passwordHash = await this._hashGenerator.hash(password);

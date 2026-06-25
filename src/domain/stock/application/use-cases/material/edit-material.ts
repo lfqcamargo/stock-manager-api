@@ -60,18 +60,17 @@ export class EditMaterialUseCase {
     if (!user.isAdmin() && !user.isManager())
       return left(new UserNotAllowedError());
 
-    const material = await this._materialsRepository.findById(
-      user.companyId.toString(),
-      materialId,
-    );
-    if (!material) return left(new MaterialNotFoundError());
+    const material = await this._materialsRepository.findById(materialId);
+    if (
+      !material ||
+      material.companyId.toString() !== user.companyId.toString()
+    )
+      return left(new MaterialNotFoundError());
 
     if (material.groupId.toString() !== groupId) {
-      const group = await this._groupsRepository.findById(
-        user.companyId.toString(),
-        groupId,
-      );
-      if (!group) return left(new GroupNotFoundError());
+      const group = await this._groupsRepository.findById(groupId);
+      if (!group || group.companyId.toString() !== user.companyId.toString())
+        return left(new GroupNotFoundError());
 
       material.groupId = group.id;
     }

@@ -1,3 +1,5 @@
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchGroupsFilterParams,
   GroupsRepository,
@@ -7,16 +9,16 @@ import { Group } from '@/domain/stock/enterprise/entities/group';
 export class InMemoryGroupsRepository implements GroupsRepository {
   public items: Group[] = [];
 
-  async create(group: Group): Promise<void> {
+  async create(
+    group: Group,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     this.items.push(group);
     return Promise.resolve();
   }
 
-  async findById(companyId: string, id: string): Promise<Group | null> {
-    const group = this.items.find(
-      (item) =>
-        item.id.toString() === id && item.companyId.toString() === companyId,
-    );
+  async findById(id: string): Promise<Group | null> {
+    const group = this.items.find((item) => item.id.toString() === id);
 
     return Promise.resolve(group ?? null);
   }
@@ -48,7 +50,8 @@ export class InMemoryGroupsRepository implements GroupsRepository {
       active,
       orderBy,
     }: FetchGroupsFilterParams,
-    { page, itemsPerPage },
+    { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: Group[];
     meta: {
@@ -59,7 +62,6 @@ export class InMemoryGroupsRepository implements GroupsRepository {
       currentPage: number;
       totalActiveGroups: number;
       totalEmptyGroups: number;
-      lastCreated: Date | null;
     };
   }> {
     let groups = this.items.filter(
@@ -113,7 +115,6 @@ export class InMemoryGroupsRepository implements GroupsRepository {
       currentPage: page,
       totalActiveGroups,
       totalEmptyGroups: 0,
-      lastCreated: new Date(),
     };
     return Promise.resolve({
       data: paginatedGroups,
@@ -121,7 +122,7 @@ export class InMemoryGroupsRepository implements GroupsRepository {
     });
   }
 
-  async update(group: Group) {
+  async update(group: Group, _options?: TransactionContextParams) {
     const index = this.items.findIndex((item) => item.id === group.id);
     if (index >= 0) {
       this.items[index] = group;
@@ -129,11 +130,36 @@ export class InMemoryGroupsRepository implements GroupsRepository {
     return Promise.resolve();
   }
 
-  async delete(group: Group) {
-    const index = this.items.findIndex((item) => item.id === group.id);
+  async delete(id: string, _options?: TransactionContextParams) {
+    const index = this.items.findIndex((item) => item.id.toString() === id);
     if (index >= 0) {
       this.items.splice(index, 1);
     }
+    return Promise.resolve();
+  }
+
+  async deleteMany(
+    { companyId, code, name, description, active }: FetchGroupsFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    this.items = this.items.filter((item) => {
+      if (companyId && item.companyId.toString() !== companyId) return true;
+      if (code && !item.code.toLowerCase().includes(code.toLowerCase()))
+        return true;
+      if (name && !item.name.toLowerCase().includes(name.toLowerCase()))
+        return true;
+      if (
+        description &&
+        !(item.description || '')
+          .toLowerCase()
+          .includes(description.toLowerCase())
+      )
+        return true;
+      if (active !== undefined && item.active !== active) return true;
+
+      return false;
+    });
+
     return Promise.resolve();
   }
 }

@@ -2,6 +2,7 @@ import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchUsersFilterParams,
   UsersRepository,
@@ -15,7 +16,7 @@ import { PrismaService } from '../prisma.service';
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private readonly _prisma: PrismaService) {}
 
-  async create(user: User): Promise<void> {
+  async create(user: User, _options?: TransactionContextParams): Promise<void> {
     await this._prisma.user.create({
       data: PrismaUserMapper.toPrisma(user),
     });
@@ -47,6 +48,7 @@ export class PrismaUsersRepository implements UsersRepository {
       orderBy,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: User[];
     meta: {
@@ -63,9 +65,7 @@ export class PrismaUsersRepository implements UsersRepository {
       lastCreated: Date;
     };
   }> {
-    const whereClause: Prisma.UserWhereInput = {
-      companyId,
-    };
+    const whereClause: Prisma.UserWhereInput = { companyId };
 
     if (email) {
       whereClause.email = { contains: email, mode: 'insensitive' };
@@ -151,18 +151,33 @@ export class PrismaUsersRepository implements UsersRepository {
     };
   }
 
-  async update(user: User): Promise<void> {
+  async update(user: User, _options?: TransactionContextParams): Promise<void> {
     await this._prisma.user.update({
       where: { id: user.id.toString() },
       data: PrismaUserMapper.toPrisma(user),
     });
   }
 
-  async delete(user: User): Promise<void> {
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
     await this._prisma.user.delete({
-      where: { id: user.id.toString() },
+      where: { id },
     });
+  }
 
-    return Promise.resolve();
+  async deleteMany(
+    filters: FetchUsersFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    const where: Prisma.UserWhereInput = {};
+
+    if (filters.companyId) where.companyId = filters.companyId;
+    if (filters.email)
+      where.email = { contains: filters.email, mode: 'insensitive' };
+    if (filters.name)
+      where.name = { contains: filters.name, mode: 'insensitive' };
+    if (filters.role !== undefined) where.role = filters.role;
+    if (filters.active !== undefined) where.active = filters.active;
+
+    await this._prisma.user.deleteMany({ where });
   }
 }

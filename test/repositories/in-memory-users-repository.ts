@@ -1,6 +1,6 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-
 import { DomainEvents } from '@/core/events/domain-events';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchUsersFilterParams,
   UsersRepository,
@@ -10,7 +10,7 @@ import { User, UserRole } from '@/domain/user/enterprise/entities/user';
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = [];
 
-  async create(user: User): Promise<void> {
+  async create(user: User, _options?: TransactionContextParams): Promise<void> {
     this.items.push(user);
 
     return Promise.resolve();
@@ -38,6 +38,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       lastLogin,
     }: FetchUsersFilterParams,
     { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: User[];
     meta: {
@@ -132,7 +133,7 @@ export class InMemoryUsersRepository implements UsersRepository {
     });
   }
 
-  async update(user: User): Promise<void> {
+  async update(user: User, _options?: TransactionContextParams): Promise<void> {
     const userIndex = this.items.findIndex(
       (item) => item.id.toString() === user.id.toString(),
     );
@@ -144,11 +145,42 @@ export class InMemoryUsersRepository implements UsersRepository {
     return Promise.resolve();
   }
 
-  async delete(user: User): Promise<void> {
-    this.items = this.items.filter(
-      (item) => item.id.toString() !== user.id.toString(),
-    );
-    DomainEvents.dispatchEventsForAggregate(user.id);
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
+    const user = await this.findById(id);
+
+    this.items = this.items.filter((item) => item.id.toString() !== id);
+
+    if (user) {
+      DomainEvents.dispatchEventsForAggregate(user.id);
+    }
+
+    return Promise.resolve();
+  }
+
+  async deleteMany(
+    filters: FetchUsersFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    this.items = this.items.filter((item) => {
+      if (filters.companyId && item.companyId.toString() !== filters.companyId)
+        return true;
+      if (
+        filters.email &&
+        !item.email.toLowerCase().includes(filters.email.toLowerCase())
+      )
+        return true;
+      if (
+        filters.name &&
+        !item.name.toLowerCase().includes(filters.name.toLowerCase())
+      )
+        return true;
+      if (filters.role !== undefined && item.role !== filters.role) return true;
+      if (filters.active !== undefined && item.isActive !== filters.active)
+        return true;
+
+      return false;
+    });
+
     return Promise.resolve();
   }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { FetchAllFilterParams } from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchGroupsFilterParams,
   GroupsRepository,
@@ -14,20 +16,17 @@ import { PrismaService } from '../prisma.service';
 export class PrismaGroupsRepository implements GroupsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(group: Group): Promise<void> {
+  async create(
+    group: Group,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this.prisma.group.create({
       data: PrismaGroupMapper.toPrisma(group),
     });
   }
 
-  async findById(companyId: string, id: string): Promise<Group | null> {
-    const group = await this.prisma.group.findFirst({
-      where: {
-        id,
-        companyId,
-      },
-    });
-
+  async findById(id: string): Promise<Group | null> {
+    const group = await this.prisma.group.findUnique({ where: { id } });
     return group ? PrismaGroupMapper.toDomain(group) : null;
   }
 
@@ -69,6 +68,7 @@ export class PrismaGroupsRepository implements GroupsRepository {
       orderBy,
     }: FetchGroupsFilterParams,
     { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: Group[];
     meta: {
@@ -134,16 +134,39 @@ export class PrismaGroupsRepository implements GroupsRepository {
     };
   }
 
-  async update(group: Group): Promise<void> {
+  async update(
+    group: Group,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this.prisma.group.update({
       where: { id: group.id.toString() },
       data: PrismaGroupMapper.toPrisma(group),
     });
   }
 
-  async delete(group: Group): Promise<void> {
-    await this.prisma.group.delete({
-      where: { id: group.id.toString() },
-    });
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
+    await this.prisma.group.delete({ where: { id } });
+  }
+
+  async deleteMany(
+    filters: FetchGroupsFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    const where: FetchAllFilterParams = { ...filters };
+    const prismaWhere: any = {};
+
+    if (where.companyId) prismaWhere.companyId = where.companyId;
+    if (where.code)
+      prismaWhere.code = { contains: where.code, mode: 'insensitive' };
+    if (where.name)
+      prismaWhere.name = { contains: where.name, mode: 'insensitive' };
+    if (where.description)
+      prismaWhere.description = {
+        contains: where.description,
+        mode: 'insensitive',
+      };
+    if (where.active !== undefined) prismaWhere.active = where.active;
+
+    await this.prisma.group.deleteMany({ where: prismaWhere });
   }
 }

@@ -1,8 +1,13 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import {
+  FetchAllFilterParams,
+  Repository,
+} from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 
 import { User, UserRole } from '../../enterprise/entities/user';
 
-export interface FetchUsersFilterParams {
+export interface FetchUsersFilterParams extends FetchAllFilterParams {
   companyId: string;
   email?: string;
   name?: string;
@@ -17,22 +22,17 @@ export interface FetchUsersFilterParams {
   };
 }
 
-export abstract class UsersRepository {
-  abstract create(user: User): Promise<void>;
+export abstract class UsersRepository extends Repository<User> {
+  abstract create(
+    user: User,
+    options?: TransactionContextParams,
+  ): Promise<void>;
   abstract findById(id: string): Promise<User | null>;
   abstract findByEmail(email: string): Promise<User | null>;
   abstract fetchAll(
-    {
-      companyId,
-      email,
-      name,
-      role,
-      active,
-      createdAtStart,
-      createdAtEnd,
-      orderBy,
-    }: FetchUsersFilterParams,
-    { page, itemsPerPage }: PaginationParams,
+    filter: FetchUsersFilterParams,
+    paginationParams: PaginationParams,
+    options?: TransactionContextParams,
   ): Promise<{
     data: User[];
     meta: {
@@ -49,6 +49,12 @@ export abstract class UsersRepository {
       lastCreated: Date;
     };
   }>;
-  abstract update(user: User): Promise<void>;
-  abstract delete(user: User): Promise<void>;
+  abstract update(
+    user: User,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract delete(
+    id: string,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

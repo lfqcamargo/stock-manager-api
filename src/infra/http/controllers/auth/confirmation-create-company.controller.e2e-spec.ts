@@ -31,7 +31,7 @@ describe('Confirmation Create Company (E2E)', () => {
         tempCompany.token,
       );
       if (currentTempCompany) {
-        await tempCompaniesRepository.delete(currentTempCompany);
+        await tempCompaniesRepository.delete(currentTempCompany.id.toString());
       }
     }
 

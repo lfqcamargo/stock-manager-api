@@ -32,11 +32,9 @@ export class FindGroupByIdUseCase {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
 
-    const group = await this._groupsRepository.findById(
-      user.companyId.toString(),
-      groupId,
-    );
-    if (!group) return left(new GroupNotFoundError());
+    const group = await this._groupsRepository.findById(groupId);
+    if (!group || group.companyId.toString() !== user.companyId.toString())
+      return left(new GroupNotFoundError());
 
     return right({ group: group });
   }

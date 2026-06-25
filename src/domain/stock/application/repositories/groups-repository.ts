@@ -1,7 +1,12 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import {
+  FetchAllFilterParams,
+  Repository,
+} from '@/core/repositories/repository';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import { Group } from '@/domain/stock/enterprise/entities/group';
 
-export interface FetchGroupsFilterParams {
+export interface FetchGroupsFilterParams extends FetchAllFilterParams {
   companyId: string;
   code?: string;
   name?: string;
@@ -13,21 +18,18 @@ export interface FetchGroupsFilterParams {
   };
 }
 
-export abstract class GroupsRepository {
-  abstract create(group: Group): Promise<void>;
-  abstract findById(companyId: string, id: string): Promise<Group | null>;
+export abstract class GroupsRepository extends Repository<Group> {
+  abstract create(
+    group: Group,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract findById(id: string): Promise<Group | null>;
   abstract findByCode(companyId: string, code: string): Promise<Group | null>;
   abstract findByName(companyId: string, name: string): Promise<Group | null>;
   abstract fetchAll(
-    {
-      companyId,
-      code,
-      name,
-      description,
-      active,
-      orderBy,
-    }: FetchGroupsFilterParams,
-    { page, itemsPerPage }: PaginationParams,
+    filter: FetchGroupsFilterParams,
+    paginationParams: PaginationParams,
+    options?: TransactionContextParams,
   ): Promise<{
     data: Group[];
     meta: {
@@ -40,6 +42,12 @@ export abstract class GroupsRepository {
       totalEmptyGroups: number;
     };
   }>;
-  abstract update(group: Group): Promise<void>;
-  abstract delete(group: Group): Promise<void>;
+  abstract update(
+    group: Group,
+    options?: TransactionContextParams,
+  ): Promise<void>;
+  abstract delete(
+    id: string,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

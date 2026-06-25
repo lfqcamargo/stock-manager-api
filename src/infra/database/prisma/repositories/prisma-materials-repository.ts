@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   FetchMaterialsFilterParams,
   MaterialsRepository,
@@ -16,20 +17,17 @@ import { PrismaService } from '../prisma.service';
 export class PrismaMaterialsRepository implements MaterialsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(material: Material): Promise<void> {
+  async create(
+    material: Material,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this.prisma.material.create({
       data: PrismaMaterialMapper.toPrisma(material),
     });
   }
 
-  async findById(companyId: string, id: string): Promise<Material | null> {
-    const material = await this.prisma.material.findFirst({
-      where: {
-        id,
-        companyId,
-      },
-    });
-
+  async findById(id: string): Promise<Material | null> {
+    const material = await this.prisma.material.findUnique({ where: { id } });
     return material ? PrismaMaterialMapper.toDomain(material) : null;
   }
 
@@ -72,6 +70,7 @@ export class PrismaMaterialsRepository implements MaterialsRepository {
       orderBy,
     }: FetchMaterialsFilterParams,
     { page, itemsPerPage }: PaginationParams,
+    _options?: TransactionContextParams,
   ): Promise<{
     data: MaterialDetails[];
     meta: {
@@ -83,9 +82,7 @@ export class PrismaMaterialsRepository implements MaterialsRepository {
       totalActiveMaterials: number;
     };
   }> {
-    const where: any = {
-      companyId,
-    };
+    const where: any = { companyId };
     if (groupId) where.groupId = groupId;
     if (code) where.code = { contains: code, mode: 'insensitive' };
     if (name) where.name = { contains: name, mode: 'insensitive' };
@@ -106,14 +103,9 @@ export class PrismaMaterialsRepository implements MaterialsRepository {
         skip: (page - 1) * itemsPerPage,
         take: itemsPerPage,
         orderBy: orderByClause,
-        include: {
-          group: true,
-        },
+        include: { group: true },
       }),
       this.prisma.material.count({ where: { ...where, active: true } }),
-      this.prisma.material.findFirst({
-        where,
-      }),
     ]);
 
     return {
@@ -136,10 +128,7 @@ export class PrismaMaterialsRepository implements MaterialsRepository {
     groupId: string,
   ): Promise<Material[] | null> {
     const materials = await this.prisma.material.findMany({
-      where: {
-        companyId,
-        groupId,
-      },
+      where: { companyId, groupId },
     });
 
     if (materials.length === 0) {
@@ -149,31 +138,39 @@ export class PrismaMaterialsRepository implements MaterialsRepository {
     return materials.map((material) => PrismaMaterialMapper.toDomain(material));
   }
 
-  async update(material: Material): Promise<void> {
+  async update(
+    material: Material,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
     await this.prisma.material.update({
       where: { id: material.id.toString() },
       data: PrismaMaterialMapper.toPrisma(material),
     });
   }
 
-  async delete(material: Material): Promise<void> {
-    await this.prisma.material.delete({
-      where: { id: material.id.toString() },
-    });
+  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
+    await this.prisma.material.delete({ where: { id } });
   }
 
-  toDetails(material: any) {
-    if (material instanceof MaterialDetails) return material;
-    return MaterialDetails.create({
-      companyId: material.companyId,
-      groupId: material.groupId,
-      group: material.group || '',
-      id: material.id,
-      code: material.code,
-      name: material.name,
-      description: material.description,
-      unit: material.unit,
-      active: material.active,
-    });
+  async deleteMany(
+    filters: FetchMaterialsFilterParams,
+    _options?: TransactionContextParams,
+  ): Promise<void> {
+    const where: any = {};
+
+    if (filters.companyId) where.companyId = filters.companyId;
+    if (filters.groupId) where.groupId = filters.groupId;
+    if (filters.code)
+      where.code = { contains: filters.code, mode: 'insensitive' };
+    if (filters.name)
+      where.name = { contains: filters.name, mode: 'insensitive' };
+    if (filters.description)
+      where.description = {
+        contains: filters.description,
+        mode: 'insensitive',
+      };
+    if (filters.active !== undefined) where.active = filters.active;
+
+    await this.prisma.material.deleteMany({ where });
   }
 }

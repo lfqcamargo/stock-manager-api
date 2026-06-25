@@ -51,12 +51,14 @@ export class CreateTempCompanyUseCase {
     const tempCompanyCnpj =
       await this._tempCompaniesRepository.findByCnpj(companyCnpj);
     if (tempCompanyCnpj)
-      await this._tempCompaniesRepository.delete(tempCompanyCnpj);
+      await this._tempCompaniesRepository.delete(tempCompanyCnpj.id.toString());
 
     const tempCompanyEmail =
       await this._tempCompaniesRepository.findByEmail(userEmail);
     if (tempCompanyEmail)
-      await this._tempCompaniesRepository.delete(tempCompanyEmail);
+      await this._tempCompaniesRepository.delete(
+        tempCompanyEmail.id.toString(),
+      );
 
     const hashedPassword = await this._hashGenerator.hash(userPassword);
 

@@ -34,13 +34,14 @@ export class DeleteMaterialUseCase {
     if (!user.isAdmin() && !user.isManager())
       return left(new UserNotAllowedError());
 
-    const material = await this._materialsRepository.findById(
-      user.companyId.toString(),
-      materialId,
-    );
-    if (!material) return left(new MaterialNotFoundError());
+    const material = await this._materialsRepository.findById(materialId);
+    if (
+      !material ||
+      material.companyId.toString() !== user.companyId.toString()
+    )
+      return left(new MaterialNotFoundError());
 
-    await this._materialsRepository.delete(material);
+    await this._materialsRepository.delete(materialId);
 
     return right(void 0);
   }

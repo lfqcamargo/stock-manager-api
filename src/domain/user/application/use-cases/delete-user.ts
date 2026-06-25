@@ -56,7 +56,7 @@ export class DeleteUserUseCase {
       return left(new UserNotBelongToCompanyError());
     }
 
-    await this._usersRepository.delete(targetUser);
+    await this._usersRepository.delete(userId);
     return right(null);
   }
 }
