@@ -7,7 +7,12 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Roles } from '@/infra/auth/roles.decorator';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
 
-import { bodyValidationPipe, EditRowBody, EditRowParams, paramsValidationPipe } from './schemas/edit-row-schema';
+import {
+  bodyValidationPipe,
+  EditRowBody,
+  EditRowParams,
+  paramsValidationPipe,
+} from './schemas/edit-row-schema';
 
 @Controller('rows')
 export class EditRowController {
@@ -16,7 +21,11 @@ export class EditRowController {
   @Put(':id')
   @HttpCode(204)
   @Roles(UserRole.ADMIN, UserRole.MANAGER)
-  async handle(@Param(paramsValidationPipe) { id }: EditRowParams, @Body(bodyValidationPipe) body: EditRowBody, @CurrentUser() user: UserPayload) {
+  async handle(
+    @Param(paramsValidationPipe) { id }: EditRowParams,
+    @Body(bodyValidationPipe) body: EditRowBody,
+    @CurrentUser() user: UserPayload,
+  ) {
     const result = await this._editRowUseCase.execute({
       authenticateId: user.userId,
       rowId: id,

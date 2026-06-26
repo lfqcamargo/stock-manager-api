@@ -7,7 +7,12 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Roles } from '@/infra/auth/roles.decorator';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
 
-import { bodyValidationPipe, EditShelfBody, EditShelfParams, paramsValidationPipe } from './schemas/edit-shelf-schema';
+import {
+  bodyValidationPipe,
+  EditShelfBody,
+  EditShelfParams,
+  paramsValidationPipe,
+} from './schemas/edit-shelf-schema';
 
 @Controller('shelfs')
 export class EditShelfController {
@@ -16,7 +21,11 @@ export class EditShelfController {
   @Put(':id')
   @HttpCode(204)
   @Roles(UserRole.ADMIN, UserRole.MANAGER)
-  async handle(@Param(paramsValidationPipe) { id }: EditShelfParams, @Body(bodyValidationPipe) body: EditShelfBody, @CurrentUser() user: UserPayload) {
+  async handle(
+    @Param(paramsValidationPipe) { id }: EditShelfParams,
+    @Body(bodyValidationPipe) body: EditShelfBody,
+    @CurrentUser() user: UserPayload,
+  ) {
     const result = await this._editShelfUseCase.execute({
       authenticateId: user.userId,
       shelfId: id,

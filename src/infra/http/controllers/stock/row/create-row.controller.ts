@@ -16,7 +16,10 @@ export class CreateRowController {
   @Post()
   @HttpCode(201)
   @Roles(UserRole.ADMIN, UserRole.MANAGER)
-  async handle(@Body(bodyValidationPipe) body: CreateRowBody, @CurrentUser() user: UserPayload) {
+  async handle(
+    @Body(bodyValidationPipe) body: CreateRowBody,
+    @CurrentUser() user: UserPayload,
+  ) {
     const result = await this._createRowUseCase.execute({
       authenticateId: user.userId,
       code: body.code,

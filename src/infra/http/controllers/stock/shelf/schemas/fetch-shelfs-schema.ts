@@ -13,4 +13,6 @@ const fetchShelfsQuerySchema = z.object({
 });
 
 export type FetchShelfsQuery = z.infer<typeof fetchShelfsQuerySchema>;
-export const queryValidationPipe = new ZodValidationPipe(fetchShelfsQuerySchema);
+export const queryValidationPipe = new ZodValidationPipe(
+  fetchShelfsQuerySchema,
+);

@@ -18,9 +18,7 @@ const fetchAddressingsQuerySchema = z.object({
   orderDirection: z.enum(['asc', 'desc']).optional(),
 });
 
-export type FetchAddressingsQuery = z.infer<
-  typeof fetchAddressingsQuerySchema
->;
+export type FetchAddressingsQuery = z.infer<typeof fetchAddressingsQuerySchema>;
 export const queryValidationPipe = new ZodValidationPipe(
   fetchAddressingsQuerySchema,
 );

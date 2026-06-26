@@ -41,7 +41,10 @@ export class DeletePositionUseCase {
       return left(new UserNotAllowedError());
 
     const position = await this._positionsRepository.findById(positionId);
-    if (!position || position.companyId.toString() !== user.companyId.toString())
+    if (
+      !position ||
+      position.companyId.toString() !== user.companyId.toString()
+    )
       return left(new PositionNotFoundError());
 
     const addressingsWithBalance = await this._addressingsRepository.fetchAll(

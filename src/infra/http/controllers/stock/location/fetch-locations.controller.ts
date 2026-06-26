@@ -13,9 +13,7 @@ import {
 
 @Controller('locations')
 export class FetchLocationsController {
-  constructor(
-    private readonly _fetchLocationsUseCase: FetchLocationsUseCase,
-  ) {}
+  constructor(private readonly _fetchLocationsUseCase: FetchLocationsUseCase) {}
 
   @Get()
   @HttpCode(200)

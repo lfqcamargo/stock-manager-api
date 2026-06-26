@@ -31,7 +31,9 @@ export function makePosition(
 export class PositionFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaPosition(data: Partial<PositionProps> = {}): Promise<Position> {
+  async makePrismaPosition(
+    data: Partial<PositionProps> = {},
+  ): Promise<Position> {
     const position = makePosition(data);
 
     await this.prisma.position.create({

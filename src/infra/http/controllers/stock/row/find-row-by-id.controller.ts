@@ -6,7 +6,10 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
 import { RowPresenter } from '@/infra/presenter/row-presenter';
 
-import { FindRowByIdParams, paramsValidationPipe } from './schemas/find-row-by-id-schema';
+import {
+  FindRowByIdParams,
+  paramsValidationPipe,
+} from './schemas/find-row-by-id-schema';
 
 @Controller('rows')
 export class FindRowByIdController {
@@ -14,8 +17,14 @@ export class FindRowByIdController {
 
   @Get(':id')
   @HttpCode(200)
-  async handle(@Param(paramsValidationPipe) { id }: FindRowByIdParams, @CurrentUser() user: UserPayload) {
-    const result = await this._findRowByIdUseCase.execute({ authenticateId: user.userId, rowId: id });
+  async handle(
+    @Param(paramsValidationPipe) { id }: FindRowByIdParams,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const result = await this._findRowByIdUseCase.execute({
+      authenticateId: user.userId,
+      rowId: id,
+    });
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);
     return RowPresenter.toHTTP(result.value.row);
   }

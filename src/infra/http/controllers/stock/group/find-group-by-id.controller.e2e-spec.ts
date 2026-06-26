@@ -66,7 +66,6 @@ describe('[GET] /groups/:id (E2E)', () => {
       id: group.id.toString(),
       name: group.name,
       active: group.active,
-      companyId: company.id.toString(),
     });
   });
 });

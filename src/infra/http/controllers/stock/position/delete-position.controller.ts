@@ -7,7 +7,10 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Roles } from '@/infra/auth/roles.decorator';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
 
-import { DeletePositionParams, paramsValidationPipe } from './schemas/delete-position-schema';
+import {
+  DeletePositionParams,
+  paramsValidationPipe,
+} from './schemas/delete-position-schema';
 
 @Controller('positions')
 export class DeletePositionController {
@@ -16,8 +19,14 @@ export class DeletePositionController {
   @Delete(':id')
   @HttpCode(204)
   @Roles(UserRole.ADMIN, UserRole.MANAGER)
-  async handle(@Param(paramsValidationPipe) { id }: DeletePositionParams, @CurrentUser() user: UserPayload) {
-    const result = await this._deletePositionUseCase.execute({ authenticateId: user.userId, positionId: id });
+  async handle(
+    @Param(paramsValidationPipe) { id }: DeletePositionParams,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const result = await this._deletePositionUseCase.execute({
+      authenticateId: user.userId,
+      positionId: id,
+    });
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);
   }
 }

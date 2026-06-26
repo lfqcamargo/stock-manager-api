@@ -31,7 +31,9 @@ export function makeLocation(
 export class LocationFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaLocation(data: Partial<LocationProps> = {}): Promise<Location> {
+  async makePrismaLocation(
+    data: Partial<LocationProps> = {},
+  ): Promise<Location> {
     const location = makeLocation(data);
 
     await this.prisma.location.create({

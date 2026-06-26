@@ -13,4 +13,6 @@ const fetchPositionsQuerySchema = z.object({
 });
 
 export type FetchPositionsQuery = z.infer<typeof fetchPositionsQuerySchema>;
-export const queryValidationPipe = new ZodValidationPipe(fetchPositionsQuerySchema);
+export const queryValidationPipe = new ZodValidationPipe(
+  fetchPositionsQuerySchema,
+);

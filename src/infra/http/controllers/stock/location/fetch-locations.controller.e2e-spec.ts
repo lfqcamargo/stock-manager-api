@@ -10,11 +10,9 @@ import { UserFactory } from 'test/factories/make-user';
 import { UserRole } from '@/domain/user/enterprise/entities/user';
 import { AppModule } from '@/infra/app.module';
 import { DatabaseModule } from '@/infra/database/database.module';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
 describe('[GET] /locations (E2E)', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
   let companyFactory: CompanyFactory;
   let userFactory: UserFactory;
   let jwtService: JwtService;
@@ -30,7 +28,6 @@ describe('[GET] /locations (E2E)', () => {
     app.use(cookieParser());
     app.enableCors({ credentials: true });
 
-    prisma = moduleRef.get(PrismaService);
     companyFactory = moduleRef.get(CompanyFactory);
     userFactory = moduleRef.get(UserFactory);
     jwtService = moduleRef.get(JwtService);

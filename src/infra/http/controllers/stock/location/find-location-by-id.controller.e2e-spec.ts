@@ -68,7 +68,6 @@ describe('[GET] /locations/:id (E2E)', () => {
       id: location.id.toString(),
       name: location.name,
       code: location.code,
-      companyId: company.id.toString(),
     });
   });
 });

@@ -46,7 +46,10 @@ export class EditPositionUseCase {
       return left(new UserNotAllowedError());
 
     const position = await this._positionsRepository.findById(positionId);
-    if (!position || position.companyId.toString() !== user.companyId.toString())
+    if (
+      !position ||
+      position.companyId.toString() !== user.companyId.toString()
+    )
       return left(new PositionNotFoundError());
 
     if (position.code !== code) {

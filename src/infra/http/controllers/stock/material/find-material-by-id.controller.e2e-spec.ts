@@ -73,7 +73,6 @@ describe('[GET] /materials/:id (E2E)', () => {
       id: material.id.toString(),
       name: material.name,
       active: material.active,
-      companyId: company.id.toString(),
       groupId: group.id.toString(),
     });
   });

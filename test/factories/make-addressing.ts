@@ -6,6 +6,8 @@ import {
   Addressing,
   AddressingProps,
 } from '@/domain/stock/enterprise/entities/addressing';
+import { PrismaAddressingMapper } from '@/infra/database/prisma/mappers/prisma-addressing-mapper';
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
 export function makeAddressing(
   override: Partial<AddressingProps> = {},
@@ -31,5 +33,17 @@ export function makeAddressing(
 
 @Injectable()
 export class AddressingFactory {
-  // We can add prisma methods later if needed
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAddressing(
+    data: Partial<AddressingProps> = {},
+  ): Promise<Addressing> {
+    const addressing = makeAddressing(data);
+
+    await this.prisma.addressing.create({
+      data: PrismaAddressingMapper.toPrisma(addressing),
+    });
+
+    return addressing;
+  }
 }

@@ -47,9 +47,7 @@ export class DeleteAddressingUseCase {
 
     if (addressing.amount > 0)
       return left(
-        new AddressingHasBalanceError(
-          'Cannot delete addressing with balance.',
-        ),
+        new AddressingHasBalanceError('Cannot delete addressing with balance.'),
       );
 
     await this._addressingsRepository.delete(addressingId);

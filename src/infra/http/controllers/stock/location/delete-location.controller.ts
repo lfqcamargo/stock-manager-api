@@ -14,9 +14,7 @@ import {
 
 @Controller('locations')
 export class DeleteLocationController {
-  constructor(
-    private readonly _deleteLocationUseCase: DeleteLocationUseCase,
-  ) {}
+  constructor(private readonly _deleteLocationUseCase: DeleteLocationUseCase) {}
 
   @Delete(':id')
   @HttpCode(204)

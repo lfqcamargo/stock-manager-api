@@ -6,7 +6,10 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
 import { ShelfPresenter } from '@/infra/presenter/shelf-presenter';
 
-import { FetchShelfsQuery, queryValidationPipe } from './schemas/fetch-shelfs-schema';
+import {
+  FetchShelfsQuery,
+  queryValidationPipe,
+} from './schemas/fetch-shelfs-schema';
 
 @Controller('shelfs')
 export class FetchShelfsController {
@@ -14,13 +17,19 @@ export class FetchShelfsController {
 
   @Get()
   @HttpCode(200)
-  async handle(@Query(queryValidationPipe) query: FetchShelfsQuery, @CurrentUser() user: UserPayload) {
+  async handle(
+    @Query(queryValidationPipe) query: FetchShelfsQuery,
+    @CurrentUser() user: UserPayload,
+  ) {
     const result = await this._fetchShelfsUseCase.execute({
       authenticatedId: user.userId,
       code: query.code,
       name: query.name,
       description: query.description,
-      orderBy: query.orderBy && query.orderDirection ? { field: query.orderBy, direction: query.orderDirection } : undefined,
+      orderBy:
+        query.orderBy && query.orderDirection
+          ? { field: query.orderBy, direction: query.orderDirection }
+          : undefined,
       page: query.page,
       itemsPerPage: query.itemsPerPage,
     });

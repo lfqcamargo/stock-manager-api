@@ -33,7 +33,10 @@ export class FindPositionByIdUseCase {
     if (!user) return left(new UserNotFoundError());
 
     const position = await this._positionsRepository.findById(positionId);
-    if (!position || position.companyId.toString() !== user.companyId.toString())
+    if (
+      !position ||
+      position.companyId.toString() !== user.companyId.toString()
+    )
       return left(new PositionNotFoundError());
 
     return right({ position });
