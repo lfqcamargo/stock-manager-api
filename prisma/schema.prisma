@@ -88,6 +88,8 @@ model Company {
   shelfs             Shelf[]
   positions          Position[]
   addressings        Addressing[]
+  movementTypes      MovementType[]
+  movements          Movement[]
 
   @@map("companies")
 }
@@ -254,6 +256,36 @@ model Addressing {
   @@map("addressings")
 }
 
+
+model MovementType {
+  id          String            @id @default(uuid())
+  name        String
+  direction   MovementDirection
+
+  companyId   String            @map("company_id")
+  company     Company           @relation(fields: [companyId], references: [id])
+
+  @@unique([companyId, name])
+  @@map("movement_types")
+}
+
+model Movement {
+  id              String   @id @default(uuid())
+  quantity        Float
+  date            DateTime
+  observation     String?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Desnormalizado — sem FK para preservar histórico
+  companyId       String   @map("company_id")
+  addressingId    String   @map("addressing_id")
+  movementTypeId  String   @map("movement_type_id")
+  userId          String   @map("user_id")
+
+  company         Company  @relation(fields: [companyId], references: [id])
+
+  @@map("movements")
+}
 
 enum UnitMeasure {
   UN

@@ -34,6 +34,34 @@ export class PrismaAddressingsRepository implements AddressingsRepository {
     return addressing ? PrismaAddressingMapper.toDomain(addressing) : null;
   }
 
+  async findByAddress({
+    companyId,
+    locationId,
+    subLocationId,
+    rowId,
+    shelfId,
+    positionId,
+  }: {
+    companyId: string;
+    locationId: string;
+    subLocationId: string;
+    rowId: string;
+    shelfId: string;
+    positionId: string;
+  }): Promise<Addressing | null> {
+    const addressing = await this.prisma.addressing.findFirst({
+      where: {
+        companyId,
+        locationId,
+        subLocationId,
+        rowId,
+        shelfId,
+        positionId,
+      },
+    });
+    return addressing ? PrismaAddressingMapper.toDomain(addressing) : null;
+  }
+
   async fetchAll(
     filter: FetchAddressingsFilterParams,
     { page, itemsPerPage }: PaginationParams,

@@ -20,6 +20,14 @@ import { DeleteMaterialUseCase } from '@/domain/stock/application/use-cases/mate
 import { EditMaterialUseCase } from '@/domain/stock/application/use-cases/material/edit-material';
 import { FetchMaterialsUseCase } from '@/domain/stock/application/use-cases/material/fetch-materials';
 import { FindMaterialByIdUseCase } from '@/domain/stock/application/use-cases/material/find-material-by-id';
+import { CreateMovementTypeUseCase } from '@/domain/stock/application/use-cases/movement-type/create-movement-type';
+import { DeleteMovementTypeUseCase } from '@/domain/stock/application/use-cases/movement-type/delete-movement-type';
+import { EditMovementTypeUseCase } from '@/domain/stock/application/use-cases/movement-type/edit-movement-type';
+import { FetchMovementTypesUseCase } from '@/domain/stock/application/use-cases/movement-type/fetch-movement-types';
+import { FindMovementTypeByIdUseCase } from '@/domain/stock/application/use-cases/movement-type/find-movement-type-by-id';
+import { CreateMovementUseCase } from '@/domain/stock/application/use-cases/movement/create-movement';
+import { FetchMovementsUseCase } from '@/domain/stock/application/use-cases/movement/fetch-movements';
+import { FindMovementByIdUseCase } from '@/domain/stock/application/use-cases/movement/find-movement-by-id';
 import { CreatePositionUseCase } from '@/domain/stock/application/use-cases/position/create-position';
 import { DeletePositionUseCase } from '@/domain/stock/application/use-cases/position/delete-position';
 import { EditPositionUseCase } from '@/domain/stock/application/use-cases/position/edit-position';
@@ -65,6 +73,14 @@ import { DeleteMaterialController } from './material/delete-material.controller'
 import { EditMaterialController } from './material/edit-material.controller';
 import { FetchMaterialsController } from './material/fetch-materials.controller';
 import { FindMaterialByIdController } from './material/find-material-by-id.controller';
+import { CreateMovementTypeController } from './movement-type/create-movement-type.controller';
+import { DeleteMovementTypeController } from './movement-type/delete-movement-type.controller';
+import { EditMovementTypeController } from './movement-type/edit-movement-type.controller';
+import { FetchMovementTypesController } from './movement-type/fetch-movement-types.controller';
+import { FindMovementTypeByIdController } from './movement-type/find-movement-type-by-id.controller';
+import { CreateMovementController } from './movement/create-movement.controller';
+import { FetchMovementsController } from './movement/fetch-movements.controller';
+import { FindMovementByIdController } from './movement/find-movement-by-id.controller';
 import { CreatePositionController } from './position/create-position.controller';
 import { DeletePositionController } from './position/delete-position.controller';
 import { EditPositionController } from './position/edit-position.controller';
@@ -93,6 +109,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     CreateGroupController,
     CreateLocationController,
     CreateMaterialController,
+    CreateMovementTypeController,
+    CreateMovementController,
     CreatePositionController,
     CreateRowController,
     CreateShelfController,
@@ -101,6 +119,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     FetchGroupsController,
     FetchLocationsController,
     FetchMaterialsController,
+    FetchMovementTypesController,
+    FetchMovementsController,
     FetchPositionsController,
     FetchRowsController,
     FetchShelfsController,
@@ -109,6 +129,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     FindGroupByIdController,
     FindLocationByIdController,
     FindMaterialByIdController,
+    FindMovementTypeByIdController,
+    FindMovementByIdController,
     FindPositionByIdController,
     FindRowByIdController,
     FindShelfByIdController,
@@ -117,6 +139,7 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     EditGroupController,
     EditLocationController,
     EditMaterialController,
+    EditMovementTypeController,
     EditPositionController,
     EditRowController,
     EditShelfController,
@@ -125,6 +148,7 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     DeleteGroupController,
     DeleteLocationController,
     DeleteMaterialController,
+    DeleteMovementTypeController,
     DeletePositionController,
     DeleteRowController,
     DeleteShelfController,
@@ -135,6 +159,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     CreateGroupUseCase,
     CreateLocationUseCase,
     CreateMaterialUseCase,
+    CreateMovementTypeUseCase,
+    CreateMovementUseCase,
     CreatePositionUseCase,
     CreateRowUseCase,
     CreateShelfUseCase,
@@ -143,6 +169,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     FetchGroupsUseCase,
     FetchLocationsUseCase,
     FetchMaterialsUseCase,
+    FetchMovementTypesUseCase,
+    FetchMovementsUseCase,
     FetchPositionsUseCase,
     FetchRowsUseCase,
     FetchShelfsUseCase,
@@ -151,6 +179,8 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     FindGroupByIdUseCase,
     FindLocationByIdUseCase,
     FindMaterialByIdUseCase,
+    FindMovementTypeByIdUseCase,
+    FindMovementByIdUseCase,
     FindPositionByIdUseCase,
     FindRowByIdUseCase,
     FindShelfByIdUseCase,
@@ -159,6 +189,7 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     EditGroupUseCase,
     EditLocationUseCase,
     EditMaterialUseCase,
+    EditMovementTypeUseCase,
     EditPositionUseCase,
     EditRowUseCase,
     EditShelfUseCase,
@@ -167,6 +198,7 @@ import { FindSubLocationByIdController } from './sub-location/find-sub-location-
     DeleteGroupUseCase,
     DeleteLocationUseCase,
     DeleteMaterialUseCase,
+    DeleteMovementTypeUseCase,
     DeletePositionUseCase,
     DeleteRowUseCase,
     DeleteShelfUseCase,

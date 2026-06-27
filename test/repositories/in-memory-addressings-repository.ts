@@ -25,8 +25,34 @@ export class InMemoryAddressingsRepository implements AddressingsRepository {
 
   async findById(id: string): Promise<Addressing | null> {
     const addressing = this.items.find((item) => item.id.toString() === id);
-
     return Promise.resolve(addressing ?? null);
+  }
+
+  async findByAddress({
+    companyId,
+    locationId,
+    subLocationId,
+    rowId,
+    shelfId,
+    positionId,
+  }: {
+    companyId: string;
+    locationId: string;
+    subLocationId: string;
+    rowId: string;
+    shelfId: string;
+    positionId: string;
+  }): Promise<Addressing | null> {
+    const found = this.items.find(
+      (item) =>
+        item.companyId.toString() === companyId &&
+        item.locationId.toString() === locationId &&
+        item.subLocationId.toString() === subLocationId &&
+        item.rowId.toString() === rowId &&
+        item.shelfId.toString() === shelfId &&
+        item.positionId.toString() === positionId,
+    );
+    return Promise.resolve(found ?? null);
   }
 
   async fetchAll(

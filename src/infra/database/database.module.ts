@@ -5,6 +5,8 @@ import { AddressingsRepository } from '@/domain/stock/application/repositories/a
 import { GroupsRepository } from '@/domain/stock/application/repositories/groups-repository';
 import { LocationsRepository } from '@/domain/stock/application/repositories/locations-repository';
 import { MaterialsRepository } from '@/domain/stock/application/repositories/materials-repository';
+import { MovementTypesRepository } from '@/domain/stock/application/repositories/movement-types-repository';
+import { MovementsRepository } from '@/domain/stock/application/repositories/movements-repository';
 import { PositionsRepository } from '@/domain/stock/application/repositories/positions-repository';
 import { RowsRepository } from '@/domain/stock/application/repositories/rows-repository';
 import { ShelfsRepository } from '@/domain/stock/application/repositories/shelfs-repository';
@@ -22,6 +24,8 @@ import { PrismaEmailsRepository } from './prisma/repositories/prisma-emails-repo
 import { PrismaGroupsRepository } from './prisma/repositories/prisma-groups-repository';
 import { PrismaLocationsRepository } from './prisma/repositories/prisma-locations-repository';
 import { PrismaMaterialsRepository } from './prisma/repositories/prisma-materials-repository';
+import { PrismaMovementTypesRepository } from './prisma/repositories/prisma-movement-types-repository';
+import { PrismaMovementsRepository } from './prisma/repositories/prisma-movements-repository';
 import { PrismaPositionsRepository } from './prisma/repositories/prisma-positions-repository';
 import { PrismaRowsRepository } from './prisma/repositories/prisma-rows-repository';
 import { PrismaShelfsRepository } from './prisma/repositories/prisma-shelfs-repository';
@@ -57,6 +61,11 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     { provide: ShelfsRepository, useClass: PrismaShelfsRepository },
     { provide: PositionsRepository, useClass: PrismaPositionsRepository },
     { provide: AddressingsRepository, useClass: PrismaAddressingsRepository },
+    {
+      provide: MovementTypesRepository,
+      useClass: PrismaMovementTypesRepository,
+    },
+    { provide: MovementsRepository, useClass: PrismaMovementsRepository },
   ],
   exports: [
     PrismaService,
@@ -74,6 +83,8 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
     ShelfsRepository,
     PositionsRepository,
     AddressingsRepository,
+    MovementTypesRepository,
+    MovementsRepository,
   ],
 })
 export class DatabaseModule {}

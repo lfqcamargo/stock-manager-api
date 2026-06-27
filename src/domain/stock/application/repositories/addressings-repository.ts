@@ -31,6 +31,14 @@ export abstract class AddressingsRepository extends Repository<Addressing> {
     options?: TransactionContextParams,
   ): Promise<void>;
   abstract findById(id: string): Promise<Addressing | null>;
+  abstract findByAddress(params: {
+    companyId: string;
+    locationId: string;
+    subLocationId: string;
+    rowId: string;
+    shelfId: string;
+    positionId: string;
+  }): Promise<Addressing | null>;
   abstract fetchAll(
     filter: FetchAddressingsFilterParams,
     paginationParams: PaginationParams,

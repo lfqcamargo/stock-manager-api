@@ -7,6 +7,7 @@ import { PrismaClient } from "@generated/prisma/client";
 import { createPrismaPgAdapter } from "../src/infra/database/prisma/create-prisma-pg";
 import { seedGroups } from "./seeds/seed-groups";
 import { seedMaterials } from "./seeds/seed-materials";
+import { seedAddressing } from "./seeds/seed-addressing";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = createPrismaPgAdapter(connectionString);
@@ -23,6 +24,12 @@ async function main() {
     await prisma.$transaction(async (tx) => {
       console.log("🗑️  Limpando dados existentes...");
 
+      await tx.addressing.deleteMany();
+      await tx.position.deleteMany();
+      await tx.shelf.deleteMany();
+      await tx.row.deleteMany();
+      await tx.subLocation.deleteMany();
+      await tx.location.deleteMany();
       await tx.user.deleteMany();
       await tx.material.deleteMany();
       await tx.group.deleteMany();
@@ -41,6 +48,9 @@ async function main() {
 
       await seedMaterials(tx as unknown as PrismaClient);
       console.log("✅ Materiais criados com sucesso!\n");
+
+      await seedAddressing(tx as unknown as PrismaClient);
+      console.log("✅ Endereçamentos criados com sucesso!\n");
     });
   } catch (error) {
     console.error("❌ Erro ao executar seed:", error);

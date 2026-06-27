@@ -26,6 +26,7 @@ import { RowNotFoundError } from '../row/errors/row-not-found-error';
 import { ShelfNotFoundError } from '../shelf/errors/shelf-not-found-error';
 import { SubLocationNotFoundError } from '../sub-location/errors/sub-location-not-found-error';
 import { CreateAddressingUseCase } from './create-addressing';
+import { AddressingAlreadyExistsError } from './errors/addressing-already-exists-error';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryAddressingsRepository: InMemoryAddressingsRepository;
@@ -147,6 +148,142 @@ describe('Create addressing use case', () => {
 
     expect(addressing.materialId).not.toBeNull();
     expect(addressing.materialId?.toString()).toBe(material.id.toString());
+  });
+
+  it('should not allow duplicate addressing for the same location/sub-location/row/shelf/position', async () => {
+    const adminUser = makeUser({ role: UserRole.ADMIN });
+    await inMemoryUsersRepository.create(adminUser);
+
+    const location = makeLocation({ companyId: adminUser.companyId });
+    await inMemoryLocationsRepository.create(location);
+
+    const subLocation = makeSubLocation({
+      companyId: adminUser.companyId,
+      locationId: location.id,
+    });
+    await inMemorySubLocationsRepository.create(subLocation);
+
+    const row = makeRow({ companyId: adminUser.companyId });
+    await inMemoryRowsRepository.create(row);
+
+    const shelf = makeShelf({ companyId: adminUser.companyId });
+    await inMemoryShelfsRepository.create(shelf);
+
+    const position = makePosition({ companyId: adminUser.companyId });
+    await inMemoryPositionsRepository.create(position);
+
+    const payload = {
+      authenticateId: adminUser.id.toString(),
+      locationId: location.id.toString(),
+      subLocationId: subLocation.id.toString(),
+      rowId: row.id.toString(),
+      shelfId: shelf.id.toString(),
+      positionId: position.id.toString(),
+    };
+
+    const first = await createAddressingUseCase.execute(payload);
+    expect(first.isRight()).toBe(true);
+
+    const second = await createAddressingUseCase.execute(payload);
+    expect(second.isLeft()).toBe(true);
+    expect(second.value).toBeInstanceOf(AddressingAlreadyExistsError);
+  });
+
+  it('should allow two addressings with the same location/sub-location/row/shelf but different positions', async () => {
+    const adminUser = makeUser({ role: UserRole.ADMIN });
+    await inMemoryUsersRepository.create(adminUser);
+
+    const location = makeLocation({ companyId: adminUser.companyId });
+    await inMemoryLocationsRepository.create(location);
+
+    const subLocation = makeSubLocation({
+      companyId: adminUser.companyId,
+      locationId: location.id,
+    });
+    await inMemorySubLocationsRepository.create(subLocation);
+
+    const row = makeRow({ companyId: adminUser.companyId });
+    await inMemoryRowsRepository.create(row);
+
+    const shelf = makeShelf({ companyId: adminUser.companyId });
+    await inMemoryShelfsRepository.create(shelf);
+
+    const position1 = makePosition({ companyId: adminUser.companyId });
+    const position2 = makePosition({ companyId: adminUser.companyId });
+    await inMemoryPositionsRepository.create(position1);
+    await inMemoryPositionsRepository.create(position2);
+
+    const first = await createAddressingUseCase.execute({
+      authenticateId: adminUser.id.toString(),
+      locationId: location.id.toString(),
+      subLocationId: subLocation.id.toString(),
+      rowId: row.id.toString(),
+      shelfId: shelf.id.toString(),
+      positionId: position1.id.toString(),
+    });
+    expect(first.isRight()).toBe(true);
+
+    const second = await createAddressingUseCase.execute({
+      authenticateId: adminUser.id.toString(),
+      locationId: location.id.toString(),
+      subLocationId: subLocation.id.toString(),
+      rowId: row.id.toString(),
+      shelfId: shelf.id.toString(),
+      positionId: position2.id.toString(),
+    });
+    expect(second.isRight()).toBe(true);
+
+    expect(inMemoryAddressingsRepository.items).toHaveLength(2);
+  });
+
+  it('should not allow duplicate addressing regardless of material', async () => {
+    const adminUser = makeUser({ role: UserRole.ADMIN });
+    await inMemoryUsersRepository.create(adminUser);
+
+    const location = makeLocation({ companyId: adminUser.companyId });
+    await inMemoryLocationsRepository.create(location);
+
+    const subLocation = makeSubLocation({
+      companyId: adminUser.companyId,
+      locationId: location.id,
+    });
+    await inMemorySubLocationsRepository.create(subLocation);
+
+    const row = makeRow({ companyId: adminUser.companyId });
+    await inMemoryRowsRepository.create(row);
+
+    const shelf = makeShelf({ companyId: adminUser.companyId });
+    await inMemoryShelfsRepository.create(shelf);
+
+    const position = makePosition({ companyId: adminUser.companyId });
+    await inMemoryPositionsRepository.create(position);
+
+    const material = makeMaterial({ companyId: adminUser.companyId });
+    await inMemoryMaterialsRepository.create(material);
+
+    // Primeiro sem material
+    const first = await createAddressingUseCase.execute({
+      authenticateId: adminUser.id.toString(),
+      locationId: location.id.toString(),
+      subLocationId: subLocation.id.toString(),
+      rowId: row.id.toString(),
+      shelfId: shelf.id.toString(),
+      positionId: position.id.toString(),
+    });
+    expect(first.isRight()).toBe(true);
+
+    // Segundo com material — mesmo endereço, deve ser bloqueado
+    const second = await createAddressingUseCase.execute({
+      authenticateId: adminUser.id.toString(),
+      locationId: location.id.toString(),
+      subLocationId: subLocation.id.toString(),
+      rowId: row.id.toString(),
+      shelfId: shelf.id.toString(),
+      positionId: position.id.toString(),
+      materialId: material.id.toString(),
+    });
+    expect(second.isLeft()).toBe(true);
+    expect(second.value).toBeInstanceOf(AddressingAlreadyExistsError);
   });
 
   it('should not create addressing if user is not found', async () => {

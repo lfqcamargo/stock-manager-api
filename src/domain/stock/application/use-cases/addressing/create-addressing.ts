@@ -20,6 +20,7 @@ import { PositionNotFoundError } from '../position/errors/position-not-found-err
 import { RowNotFoundError } from '../row/errors/row-not-found-error';
 import { ShelfNotFoundError } from '../shelf/errors/shelf-not-found-error';
 import { SubLocationNotFoundError } from '../sub-location/errors/sub-location-not-found-error';
+import { AddressingAlreadyExistsError } from './errors/addressing-already-exists-error';
 
 interface CreateAddressingUseCaseRequest {
   authenticateId: string;
@@ -40,7 +41,8 @@ type CreateAddressingUseCaseResponse = Either<
   | RowNotFoundError
   | ShelfNotFoundError
   | PositionNotFoundError
-  | MaterialNotFoundError,
+  | MaterialNotFoundError
+  | AddressingAlreadyExistsError,
   { addressing: Addressing }
 >;
 
@@ -105,6 +107,17 @@ export class CreateAddressingUseCase {
       if (!material || material.companyId.toString() !== companyId)
         return left(new MaterialNotFoundError());
     }
+
+    const existing = await this._addressingsRepository.findByAddress({
+      companyId,
+      locationId,
+      subLocationId,
+      rowId,
+      shelfId,
+      positionId,
+    });
+
+    if (existing) return left(new AddressingAlreadyExistsError());
 
     const addressing = Addressing.create({
       companyId: user.companyId,

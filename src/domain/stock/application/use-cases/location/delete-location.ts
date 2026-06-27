@@ -70,10 +70,15 @@ export class DeleteLocationUseCase {
       },
     );
 
-    await this._subLocationsRepository.deleteMany({
-      companyId: user.companyId.toString(),
-      locationId,
-    });
+    await this._subLocationsRepository.deleteMany(
+      {
+        companyId: user.companyId.toString(),
+        locationId,
+      },
+      {
+        commit: false,
+      },
+    );
 
     await this._locationsRepository.delete(locationId);
 
