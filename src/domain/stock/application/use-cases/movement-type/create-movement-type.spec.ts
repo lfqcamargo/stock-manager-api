@@ -4,10 +4,10 @@ import { InMemoryMovementTypesRepository } from 'test/repositories/in-memory-mov
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { MovementDirection } from '@/domain/stock/enterprise/entities/movement-type';
 import { UserNotAllowedError } from '@/domain/user/application/use-cases/errors/user-not-allowed-error';
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 import { UserRole } from '@/domain/user/enterprise/entities/user';
-import { MovementDirection } from '@/domain/stock/enterprise/entities/movement-type';
 
 import { CreateMovementTypeUseCase } from './create-movement-type';
 import { AlreadyExistsMovementTypeError } from './errors/already-exists-movement-type-error';

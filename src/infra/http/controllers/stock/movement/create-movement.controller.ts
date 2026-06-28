@@ -13,9 +13,7 @@ import {
 
 @Controller('movements')
 export class CreateMovementController {
-  constructor(
-    private readonly _createMovementUseCase: CreateMovementUseCase,
-  ) {}
+  constructor(private readonly _createMovementUseCase: CreateMovementUseCase) {}
 
   @Post()
   @HttpCode(201)

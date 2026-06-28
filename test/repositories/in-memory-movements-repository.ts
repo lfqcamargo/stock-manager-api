@@ -61,15 +61,11 @@ export class InMemoryMovementsRepository implements MovementsRepository {
       );
 
     if (userId)
-      movements = movements.filter(
-        (item) => item.userId.toString() === userId,
-      );
+      movements = movements.filter((item) => item.userId.toString() === userId);
 
-    if (dateFrom)
-      movements = movements.filter((item) => item.date >= dateFrom);
+    if (dateFrom) movements = movements.filter((item) => item.date >= dateFrom);
 
-    if (dateTo)
-      movements = movements.filter((item) => item.date <= dateTo);
+    if (dateTo) movements = movements.filter((item) => item.date <= dateTo);
 
     if (minQuantity !== undefined)
       movements = movements.filter((item) => item.quantity >= minQuantity);

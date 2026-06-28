@@ -5,6 +5,7 @@ import { makeUser } from 'test/factories/make-user';
 import { InMemoryAddressingsRepository } from 'test/repositories/in-memory-addressings-repository';
 import { InMemoryLocationsRepository } from 'test/repositories/in-memory-locations-repository';
 import { InMemorySubLocationsRepository } from 'test/repositories/in-memory-sub-locations-repository';
+import { InMemoryUnitOfWork } from 'test/repositories/in-memory-unit-of-work';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -20,6 +21,7 @@ let usersRepository: InMemoryUsersRepository;
 let locationsRepository: InMemoryLocationsRepository;
 let addressingsRepository: InMemoryAddressingsRepository;
 let subLocationsRepository: InMemorySubLocationsRepository;
+let unitOfWork: InMemoryUnitOfWork;
 let sut: DeleteLocationUseCase;
 
 describe('DeleteLocationUseCase', () => {
@@ -30,8 +32,10 @@ describe('DeleteLocationUseCase', () => {
     subLocationsRepository = new InMemorySubLocationsRepository(
       locationsRepository,
     );
+    unitOfWork = new InMemoryUnitOfWork();
 
     sut = new DeleteLocationUseCase(
+      unitOfWork,
       usersRepository,
       locationsRepository,
       addressingsRepository,

@@ -27,11 +27,9 @@ export class DeleteLocationController {
     @Param(paramsValidationPipe) { id }: DeleteLocationParams,
     @CurrentUser() user: UserPayload,
   ) {
-    const result = await this._prisma.$transaction(async (tx) => {
-      return this._deleteLocationUseCase.execute({
-        authenticateId: user.userId,
-        locationId: id,
-      });
+    const result = await this._deleteLocationUseCase.execute({
+      authenticateId: user.userId,
+      locationId: id,
     });
 
     if (result.isLeft()) throw mapUseCaseErrorToHttpException(result.value);

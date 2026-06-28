@@ -2,7 +2,10 @@ import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
-import { TransactionContextParams } from '@/core/repositories/transaction-context';
+import {
+  resolveClient,
+  TransactionContextParams,
+} from '@/core/repositories/transaction-context';
 import {
   FetchMovementsFilterParams,
   MovementsRepository,
@@ -18,9 +21,10 @@ export class PrismaMovementsRepository implements MovementsRepository {
 
   async create(
     movement: Movement,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.movement.create({
+    const client = resolveClient(this.prisma, options);
+    await client.movement.create({
       data: PrismaMovementMapper.toPrisma(movement),
     });
   }

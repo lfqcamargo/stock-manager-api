@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import {
+  MovementDirection,
   MovementType,
   MovementTypeProps,
-  MovementDirection,
 } from '@/domain/stock/enterprise/entities/movement-type';
 import { PrismaMovementTypeMapper } from '@/infra/database/prisma/mappers/prisma-movement-type-mapper';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';

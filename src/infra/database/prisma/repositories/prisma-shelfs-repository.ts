@@ -3,7 +3,10 @@ import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { FetchAllFilterParams } from '@/core/repositories/repository';
-import { TransactionContextParams } from '@/core/repositories/transaction-context';
+import {
+  resolveClient,
+  TransactionContextParams,
+} from '@/core/repositories/transaction-context';
 import {
   FetchShelfsFilterParams,
   ShelfsRepository,
@@ -92,15 +95,17 @@ export class PrismaShelfsRepository implements ShelfsRepository {
     });
   }
 
-  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
-    await this.prisma.shelf.delete({ where: { id } });
+  async delete(id: string, options?: TransactionContextParams): Promise<void> {
+    const client = resolveClient(this.prisma, options);
+    await client.shelf.delete({ where: { id } });
   }
 
   async deleteMany(
     filters: FetchShelfsFilterParams,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.shelf.deleteMany({ where: this.buildWhere(filters) });
+    const client = resolveClient(this.prisma, options);
+    await client.shelf.deleteMany({ where: this.buildWhere(filters) });
   }
 
   private buildWhere({

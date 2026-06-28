@@ -6,9 +6,7 @@ import {
 } from '@/domain/stock/application/repositories/movement-types-repository';
 import { MovementType } from '@/domain/stock/enterprise/entities/movement-type';
 
-export class InMemoryMovementTypesRepository
-  implements MovementTypesRepository
-{
+export class InMemoryMovementTypesRepository implements MovementTypesRepository {
   public items: MovementType[] = [];
 
   async create(

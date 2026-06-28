@@ -13,9 +13,7 @@ import {
 
 @Controller('movements')
 export class FetchMovementsController {
-  constructor(
-    private readonly _fetchMovementsUseCase: FetchMovementsUseCase,
-  ) {}
+  constructor(private readonly _fetchMovementsUseCase: FetchMovementsUseCase) {}
 
   @Get()
   @HttpCode(200)

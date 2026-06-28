@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { UnitOfWork } from '@/core/repositories/unit-of-work';
 import { EmailsRepository } from '@/domain/notification/application/repositories/emails-repository';
 import { AddressingsRepository } from '@/domain/stock/application/repositories/addressings-repository';
 import { GroupsRepository } from '@/domain/stock/application/repositories/groups-repository';
@@ -18,6 +19,7 @@ import { TempUsersRepository } from '@/domain/user/application/repositories/temp
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository';
 
 import { PrismaService } from './prisma/prisma.service';
+import { PrismaUnitOfWork } from './prisma/prisma-unit-of-work';
 import { PrismaAddressingsRepository } from './prisma/repositories/prisma-addressings-repository';
 import { PrismaCompaniesRepository } from './prisma/repositories/prisma-companies-repository';
 import { PrismaEmailsRepository } from './prisma/repositories/prisma-emails-repository';
@@ -38,6 +40,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
 @Module({
   providers: [
     PrismaService,
+    { provide: UnitOfWork, useClass: PrismaUnitOfWork },
     {
       provide: TempCompaniesRepository,
       useClass: PrismaTempCompaniesRepository,
@@ -69,6 +72,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
   ],
   exports: [
     PrismaService,
+    UnitOfWork,
     TempCompaniesRepository,
     TempUsersRepository,
     CompaniesRepository,

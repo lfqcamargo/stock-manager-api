@@ -53,4 +53,8 @@ export abstract class PositionsRepository extends Repository<Position> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchPositionsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

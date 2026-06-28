@@ -8,6 +8,8 @@ import { createPrismaPgAdapter } from "../src/infra/database/prisma/create-prism
 import { seedGroups } from "./seeds/seed-groups";
 import { seedMaterials } from "./seeds/seed-materials";
 import { seedAddressing } from "./seeds/seed-addressing";
+import { seedMovementTypes } from "./seeds/seed-movement-types";
+import { seedMovements } from "./seeds/seed-movements";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = createPrismaPgAdapter(connectionString);
@@ -24,6 +26,8 @@ async function main() {
     await prisma.$transaction(async (tx) => {
       console.log("🗑️  Limpando dados existentes...");
 
+      await tx.movement.deleteMany();
+      await tx.movementType.deleteMany();
       await tx.addressing.deleteMany();
       await tx.position.deleteMany();
       await tx.shelf.deleteMany();
@@ -51,6 +55,12 @@ async function main() {
 
       await seedAddressing(tx as unknown as PrismaClient);
       console.log("✅ Endereçamentos criados com sucesso!\n");
+
+      await seedMovementTypes(tx as unknown as PrismaClient);
+      console.log("✅ Tipos de movimentação criados com sucesso!\n");
+
+      await seedMovements(tx as unknown as PrismaClient);
+      console.log("✅ Movimentações criadas com sucesso!\n");
     });
   } catch (error) {
     console.error("❌ Erro ao executar seed:", error);

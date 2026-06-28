@@ -5,8 +5,8 @@ import { UsersRepository } from '@/domain/user/application/repositories/users-re
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
 import {
-  MovementType,
   MovementDirection,
+  MovementType,
 } from '../../../enterprise/entities/movement-type';
 import { MovementTypesRepository } from '../../repositories/movement-types-repository';
 

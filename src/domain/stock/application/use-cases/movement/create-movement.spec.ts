@@ -7,8 +7,8 @@ import { InMemoryMovementsRepository } from 'test/repositories/in-memory-movemen
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 import { MovementDirection } from '@/domain/stock/enterprise/entities/movement-type';
+import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
 import { AddressingNotFoundError } from '../addressing/errors/addressing-not-found-error';
 import { MovementTypeNotFoundError } from '../movement-type/errors/movement-type-not-found-error';

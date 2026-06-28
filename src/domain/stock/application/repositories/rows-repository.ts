@@ -41,4 +41,8 @@ export abstract class RowsRepository extends Repository<Row> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchRowsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

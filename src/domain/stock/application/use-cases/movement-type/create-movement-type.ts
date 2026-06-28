@@ -6,8 +6,8 @@ import { UserNotAllowedError } from '@/domain/user/application/use-cases/errors/
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
 import {
-  MovementType,
   MovementDirection,
+  MovementType,
 } from '../../../enterprise/entities/movement-type';
 import { MovementTypesRepository } from '../../repositories/movement-types-repository';
 import { AlreadyExistsMovementTypeError } from './errors/already-exists-movement-type-error';

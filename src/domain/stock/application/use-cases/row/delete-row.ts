@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { Either, left, right } from '@/core/either';
+import { UnitOfWork } from '@/core/repositories/unit-of-work';
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository';
 import { UserNotAllowedError } from '@/domain/user/application/use-cases/errors/user-not-allowed-error';
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
@@ -26,6 +27,7 @@ type DeleteRowUseCaseResponse = Either<
 @Injectable()
 export class DeleteRowUseCase {
   constructor(
+    private readonly _unitOfWork: UnitOfWork,
     private readonly _usersRepository: UsersRepository,
     private readonly _rowsRepository: RowsRepository,
     private readonly _addressingsRepository: AddressingsRepository,
@@ -45,25 +47,19 @@ export class DeleteRowUseCase {
       return left(new RowNotFoundError());
 
     const addressingsWithBalance = await this._addressingsRepository.fetchAll(
-      {
-        companyId: user.companyId.toString(),
-        rowId,
-        minAmount: 1,
-      },
+      { companyId: user.companyId.toString(), rowId, minAmount: 1 },
       { page: 1, itemsPerPage: 1 },
     );
     if (addressingsWithBalance.data.length > 0)
       return left(new AddressingHasBalanceError());
 
-    await this._addressingsRepository.deleteMany(
-      {
-        companyId: user.companyId.toString(),
-        rowId,
-      },
-      { commit: false },
-    );
-
-    await this._rowsRepository.delete(rowId);
+    await this._unitOfWork.execute(async (ctx) => {
+      await this._addressingsRepository.deleteMany(
+        { companyId: user.companyId.toString(), rowId },
+        { transactionContext: ctx },
+      );
+      await this._rowsRepository.delete(rowId, { transactionContext: ctx });
+    });
 
     return right(void 0);
   }

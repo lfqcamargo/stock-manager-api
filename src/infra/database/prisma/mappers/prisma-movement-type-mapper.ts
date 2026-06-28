@@ -1,9 +1,12 @@
-import { MovementType as PrismaMovementType, Prisma } from '@generated/prisma/client';
+import {
+  MovementType as PrismaMovementType,
+  Prisma,
+} from '@generated/prisma/client';
 
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import {
-  MovementType,
   MovementDirection,
+  MovementType,
 } from '@/domain/stock/enterprise/entities/movement-type';
 
 export class PrismaMovementTypeMapper {

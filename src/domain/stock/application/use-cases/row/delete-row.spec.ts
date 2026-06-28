@@ -3,6 +3,7 @@ import { makeRow } from 'test/factories/make-row';
 import { makeUser } from 'test/factories/make-user';
 import { InMemoryAddressingsRepository } from 'test/repositories/in-memory-addressings-repository';
 import { InMemoryRowsRepository } from 'test/repositories/in-memory-rows-repository';
+import { InMemoryUnitOfWork } from 'test/repositories/in-memory-unit-of-work';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -17,6 +18,7 @@ import { RowNotFoundError } from './errors/row-not-found-error';
 let usersRepository: InMemoryUsersRepository;
 let rowsRepository: InMemoryRowsRepository;
 let addressingsRepository: InMemoryAddressingsRepository;
+let unitOfWork: InMemoryUnitOfWork;
 let deleteRowUseCase: DeleteRowUseCase;
 
 describe('DeleteRowUseCase', () => {
@@ -24,8 +26,10 @@ describe('DeleteRowUseCase', () => {
     usersRepository = new InMemoryUsersRepository();
     rowsRepository = new InMemoryRowsRepository();
     addressingsRepository = new InMemoryAddressingsRepository();
+    unitOfWork = new InMemoryUnitOfWork();
 
     deleteRowUseCase = new DeleteRowUseCase(
+      unitOfWork,
       usersRepository,
       rowsRepository,
       addressingsRepository,

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Either, left, right } from '@/core/either';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { UnitOfWork } from '@/core/repositories/unit-of-work';
 import { UsersRepository } from '@/domain/user/application/repositories/users-repository';
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
@@ -34,6 +35,7 @@ type CreateMovementUseCaseResponse = Either<
 @Injectable()
 export class CreateMovementUseCase {
   constructor(
+    private readonly _unitOfWork: UnitOfWork,
     private readonly _usersRepository: UsersRepository,
     private readonly _movementsRepository: MovementsRepository,
     private readonly _addressingsRepository: AddressingsRepository,
@@ -90,8 +92,14 @@ export class CreateMovementUseCase {
       addressing.amount = addressing.amount - quantity;
     }
 
-    await this._addressingsRepository.update(addressing);
-    await this._movementsRepository.create(movement);
+    await this._unitOfWork.execute(async (ctx) => {
+      await this._movementsRepository.create(movement, {
+        transactionContext: ctx,
+      });
+      await this._addressingsRepository.update(addressing, {
+        transactionContext: ctx,
+      });
+    });
 
     return right({ movement });
   }

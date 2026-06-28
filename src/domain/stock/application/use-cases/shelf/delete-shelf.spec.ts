@@ -3,6 +3,7 @@ import { makeShelf } from 'test/factories/make-shelf';
 import { makeUser } from 'test/factories/make-user';
 import { InMemoryAddressingsRepository } from 'test/repositories/in-memory-addressings-repository';
 import { InMemoryShelfsRepository } from 'test/repositories/in-memory-shelfs-repository';
+import { InMemoryUnitOfWork } from 'test/repositories/in-memory-unit-of-work';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -17,6 +18,7 @@ import { ShelfNotFoundError } from './errors/shelf-not-found-error';
 let usersRepository: InMemoryUsersRepository;
 let shelfsRepository: InMemoryShelfsRepository;
 let addressingsRepository: InMemoryAddressingsRepository;
+let unitOfWork: InMemoryUnitOfWork;
 let deleteShelfUseCase: DeleteShelfUseCase;
 
 describe('DeleteShelfUseCase', () => {
@@ -24,8 +26,10 @@ describe('DeleteShelfUseCase', () => {
     usersRepository = new InMemoryUsersRepository();
     shelfsRepository = new InMemoryShelfsRepository();
     addressingsRepository = new InMemoryAddressingsRepository();
+    unitOfWork = new InMemoryUnitOfWork();
 
     deleteShelfUseCase = new DeleteShelfUseCase(
+      unitOfWork,
       usersRepository,
       shelfsRepository,
       addressingsRepository,

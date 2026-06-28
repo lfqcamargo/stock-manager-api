@@ -2,7 +2,10 @@ import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
-import { TransactionContextParams } from '@/core/repositories/transaction-context';
+import {
+  resolveClient,
+  TransactionContextParams,
+} from '@/core/repositories/transaction-context';
 import {
   FetchSubLocationsFilterParams,
   SubLocationsRepository,
@@ -131,15 +134,17 @@ export class PrismaSubLocationsRepository implements SubLocationsRepository {
     });
   }
 
-  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
-    await this.prisma.subLocation.delete({ where: { id } });
+  async delete(id: string, options?: TransactionContextParams): Promise<void> {
+    const client = resolveClient(this.prisma, options);
+    await client.subLocation.delete({ where: { id } });
   }
 
   async deleteMany(
     filters: FetchSubLocationsFilterParams,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.subLocation.deleteMany({
+    const client = resolveClient(this.prisma, options);
+    await client.subLocation.deleteMany({
       where: this.buildWhere(filters),
     });
   }

@@ -3,6 +3,7 @@ import { makePosition } from 'test/factories/make-position';
 import { makeUser } from 'test/factories/make-user';
 import { InMemoryAddressingsRepository } from 'test/repositories/in-memory-addressings-repository';
 import { InMemoryPositionsRepository } from 'test/repositories/in-memory-positions-repository';
+import { InMemoryUnitOfWork } from 'test/repositories/in-memory-unit-of-work';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -17,6 +18,7 @@ import { PositionNotFoundError } from './errors/position-not-found-error';
 let usersRepository: InMemoryUsersRepository;
 let positionsRepository: InMemoryPositionsRepository;
 let addressingsRepository: InMemoryAddressingsRepository;
+let unitOfWork: InMemoryUnitOfWork;
 let deletePositionUseCase: DeletePositionUseCase;
 
 describe('DeletePositionUseCase', () => {
@@ -24,8 +26,10 @@ describe('DeletePositionUseCase', () => {
     usersRepository = new InMemoryUsersRepository();
     positionsRepository = new InMemoryPositionsRepository();
     addressingsRepository = new InMemoryAddressingsRepository();
+    unitOfWork = new InMemoryUnitOfWork();
 
     deletePositionUseCase = new DeletePositionUseCase(
+      unitOfWork,
       usersRepository,
       positionsRepository,
       addressingsRepository,

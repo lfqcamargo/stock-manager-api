@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
-import { FindMovementTypeByIdUseCase } from './find-movement-type-by-id';
 import { MovementTypeNotFoundError } from './errors/movement-type-not-found-error';
+import { FindMovementTypeByIdUseCase } from './find-movement-type-by-id';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryMovementTypesRepository: InMemoryMovementTypesRepository;

@@ -2,7 +2,10 @@ import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
-import { TransactionContextParams } from '@/core/repositories/transaction-context';
+import {
+  resolveClient,
+  TransactionContextParams,
+} from '@/core/repositories/transaction-context';
 import {
   AddressingsRepository,
   FetchAddressingsFilterParams,
@@ -114,23 +117,26 @@ export class PrismaAddressingsRepository implements AddressingsRepository {
 
   async update(
     addressing: Addressing,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.addressing.update({
+    const client = resolveClient(this.prisma, options);
+    await client.addressing.update({
       where: { id: addressing.id.toString() },
       data: PrismaAddressingMapper.toPrisma(addressing),
     });
   }
 
-  async delete(id: string, _options?: TransactionContextParams): Promise<void> {
-    await this.prisma.addressing.delete({ where: { id } });
+  async delete(id: string, options?: TransactionContextParams): Promise<void> {
+    const client = resolveClient(this.prisma, options);
+    await client.addressing.delete({ where: { id } });
   }
 
   async deleteMany(
     filters: FetchAddressingsFilterParams,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.addressing.deleteMany({
+    const client = resolveClient(this.prisma, options);
+    await client.addressing.deleteMany({
       where: this.buildWhere(filters),
     });
   }

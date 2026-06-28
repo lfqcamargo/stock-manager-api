@@ -47,4 +47,8 @@ export abstract class ShelfsRepository extends Repository<Shelf> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchShelfsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }
