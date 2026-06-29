@@ -4,6 +4,7 @@ import { makeUser } from 'test/factories/make-user';
 import { InMemoryAddressingsRepository } from 'test/repositories/in-memory-addressings-repository';
 import { InMemoryMovementTypesRepository } from 'test/repositories/in-memory-movement-types-repository';
 import { InMemoryMovementsRepository } from 'test/repositories/in-memory-movements-repository';
+import { InMemoryUnitOfWork } from 'test/repositories/in-memory-unit-of-work';
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,6 +16,7 @@ import { MovementTypeNotFoundError } from '../movement-type/errors/movement-type
 import { CreateMovementUseCase } from './create-movement';
 import { InsufficientBalanceError } from './errors/insufficient-balance-error';
 
+let inMemoryUnitOfWork: InMemoryUnitOfWork;
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryMovementsRepository: InMemoryMovementsRepository;
 let inMemoryAddressingsRepository: InMemoryAddressingsRepository;
@@ -23,11 +25,13 @@ let sut: CreateMovementUseCase;
 
 describe('CreateMovementUseCase', () => {
   beforeEach(() => {
+    inMemoryUnitOfWork = new InMemoryUnitOfWork();
     inMemoryUsersRepository = new InMemoryUsersRepository();
     inMemoryMovementsRepository = new InMemoryMovementsRepository();
     inMemoryAddressingsRepository = new InMemoryAddressingsRepository();
     inMemoryMovementTypesRepository = new InMemoryMovementTypesRepository();
     sut = new CreateMovementUseCase(
+      inMemoryUnitOfWork,
       inMemoryUsersRepository,
       inMemoryMovementsRepository,
       inMemoryAddressingsRepository,

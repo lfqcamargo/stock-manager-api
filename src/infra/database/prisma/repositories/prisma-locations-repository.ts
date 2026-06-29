@@ -115,9 +115,10 @@ export class PrismaLocationsRepository implements LocationsRepository {
 
   async deleteMany(
     filters: FetchLocationsFilterParams,
-    _options?: TransactionContextParams,
+    options?: TransactionContextParams,
   ): Promise<void> {
-    await this.prisma.location.deleteMany({
+    const client = resolveClient(this.prisma, options);
+    await client.location.deleteMany({
       where: this.buildWhere(filters),
     });
   }

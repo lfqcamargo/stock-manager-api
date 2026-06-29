@@ -57,4 +57,8 @@ export abstract class UsersRepository extends Repository<User> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchUsersFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

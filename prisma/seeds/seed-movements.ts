@@ -29,7 +29,7 @@ export async function seedMovements(prisma: PrismaClient) {
           active: true,
         },
         select: { id: true, amount: true, materialId: true },
-        take: 20,
+        take: 300,
       }),
       prisma.movementType.findMany({
         where: { companyId: company.id },
@@ -61,7 +61,16 @@ export async function seedMovements(prisma: PrismaClient) {
     );
 
     let createdCount = 0;
-    const baseDate = new Date("2025-01-01T08:00:00.000Z");
+    const now = new Date();
+    const baseDate = new Date(now.getFullYear(), now.getMonth(), 1, 8, 0, 0, 0);
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
+    /** Retorna uma Date dentro do mês atual, nunca excedendo o último dia. */
+    const dateInMonth = (offsetDays: number): Date => {
+      const d = new Date(baseDate);
+      d.setDate(1 + (offsetDays % lastDayOfMonth));
+      return d;
+    };
 
     for (const addressing of addressings) {
       const userId = users[createdCount % users.length].id;
@@ -71,8 +80,7 @@ export async function seedMovements(prisma: PrismaClient) {
       for (let i = 0; i < inQuantities.length; i++) {
         const qty = inQuantities[i];
         const inType = inTypes[i % inTypes.length];
-        const movDate = new Date(baseDate);
-        movDate.setDate(movDate.getDate() + createdCount * 3 + i);
+        const movDate = dateInMonth(createdCount * 3 + i);
 
         await prisma.movement.create({
           data: {
@@ -101,8 +109,7 @@ export async function seedMovements(prisma: PrismaClient) {
         }
 
         const outType = outTypes[i % outTypes.length];
-        const movDate = new Date(baseDate);
-        movDate.setDate(movDate.getDate() + createdCount * 3 + inQuantities.length + i);
+        const movDate = dateInMonth(createdCount * 3 + inQuantities.length + i);
 
         await prisma.movement.create({
           data: {

@@ -53,4 +53,8 @@ export abstract class LocationsRepository extends Repository<Location> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchLocationsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

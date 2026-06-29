@@ -50,4 +50,8 @@ export abstract class GroupsRepository extends Repository<Group> {
     id: string,
     options?: TransactionContextParams,
   ): Promise<void>;
+  abstract deleteMany(
+    filters: FetchGroupsFilterParams,
+    options?: TransactionContextParams,
+  ): Promise<void>;
 }

@@ -7,6 +7,7 @@ import { EditCompanyUseCase } from '@/domain/user/application/use-cases/edit-com
 import { EditUserUseCase } from '@/domain/user/application/use-cases/edit-user';
 import { FetchUsersCompanyIdUseCase } from '@/domain/user/application/use-cases/fetch-users';
 import { GetProfileUserUseCase } from '@/domain/user/application/use-cases/get-profile-user';
+import { ImportUsersCsvUseCase } from '@/domain/user/application/use-cases/import-users-csv';
 
 import { AppConfigModule } from '../../../config/app.config.module';
 import { CryptographyModule } from '../../../cryptography/cryptography.module';
@@ -19,6 +20,7 @@ import { DeleteUserController } from './delete-user.controller';
 import { EditUserController } from './edit-user.controller';
 import { FetchUsersController } from './fetch-users.controller';
 import { GetProfileUserController } from './get-profile-user.controller';
+import { ImportUsersCsvController } from './import-users-csv.controller';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, AppConfigModule, EnvModule],
@@ -30,6 +32,7 @@ import { GetProfileUserController } from './get-profile-user.controller';
     EditCompanyController,
     FetchUsersController,
     DeleteUserController,
+    ImportUsersCsvController,
   ],
   providers: [
     GetProfileUserUseCase,
@@ -39,6 +42,7 @@ import { GetProfileUserController } from './get-profile-user.controller';
     EditCompanyUseCase,
     FetchUsersCompanyIdUseCase,
     DeleteUserUseCase,
+    ImportUsersCsvUseCase,
   ],
 })
 export class UserModule {}
