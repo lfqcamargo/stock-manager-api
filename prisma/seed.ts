@@ -23,6 +23,9 @@ async function main() {
   console.log("🌱 Iniciando seed do banco de dados...\n");
 
   try {
+    // ─────────────────────────────────────────────────────────────────────────
+    // Fase 1 — Limpeza e criação dos dados base (dentro de uma transação curta)
+    // ─────────────────────────────────────────────────────────────────────────
     await prisma.$transaction(async (tx) => {
       console.log("🗑️  Limpando dados existentes...");
 
@@ -52,16 +55,24 @@ async function main() {
 
       await seedMaterials(tx as unknown as PrismaClient);
       console.log("✅ Materiais criados com sucesso!\n");
-
-      await seedAddressing(tx as unknown as PrismaClient);
-      console.log("✅ Endereçamentos criados com sucesso!\n");
-
-      await seedMovementTypes(tx as unknown as PrismaClient);
-      console.log("✅ Tipos de movimentação criados com sucesso!\n");
-
-      await seedMovements(tx as unknown as PrismaClient);
-      console.log("✅ Movimentações criadas com sucesso!\n");
     });
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Fase 2 — Endereçamentos (volume médio, fora da transação anterior)
+    // ─────────────────────────────────────────────────────────────────────────
+    await seedAddressing(prisma);
+    console.log("✅ Endereçamentos criados com sucesso!\n");
+
+    await seedMovementTypes(prisma);
+    console.log("✅ Tipos de movimentação criados com sucesso!\n");
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Fase 3 — Movimentações (alto volume, nunca dentro de transação com timeout)
+    // ─────────────────────────────────────────────────────────────────────────
+    await seedMovements(prisma);
+    console.log("✅ Movimentações criadas com sucesso!\n");
+
+    console.log("🎉 Seed concluído com sucesso!");
   } catch (error) {
     console.error("❌ Erro ao executar seed:", error);
     throw error;
