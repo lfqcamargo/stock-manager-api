@@ -53,14 +53,17 @@ export class CreateMovementUseCase {
     const user = await this._usersRepository.findById(authenticateId);
     if (!user) return left(new UserNotFoundError());
 
-    const addressing = await this._addressingsRepository.findById(addressingId);
+    const addressingDetails =
+      await this._addressingsRepository.findByIdWithDetails(addressingId);
     if (
-      !addressing ||
-      addressing.companyId.toString() !== user.companyId.toString()
+      !addressingDetails ||
+      addressingDetails.companyId.toString() !== user.companyId.toString()
     )
       return left(new AddressingNotFoundError());
 
-    if (!addressing.active) return left(new AddressingNotFoundError());
+    if (!addressingDetails.active) return left(new AddressingNotFoundError());
+
+    if (!addressingDetails.material) return left(new AddressingNotFoundError());
 
     const movementType =
       await this._movementTypesRepository.findById(movementTypeId);
@@ -72,7 +75,7 @@ export class CreateMovementUseCase {
 
     if (
       movementType.direction === MovementDirection.OUT &&
-      addressing.amount < quantity
+      addressingDetails.amount < quantity
     )
       return left(new InsufficientBalanceError());
 
@@ -84,7 +87,42 @@ export class CreateMovementUseCase {
       quantity,
       date: date ?? new Date(),
       observation,
+
+      movementTypeName: movementType.name,
+      movementTypeDirection:
+        movementType.direction === MovementDirection.IN ? 'IN' : 'OUT',
+
+      userName: user.name,
+
+      locationId: addressingDetails.location.id.toString(),
+      locationCode: addressingDetails.location.code,
+      locationName: addressingDetails.location.name,
+
+      subLocationId: addressingDetails.subLocation.id.toString(),
+      subLocationCode: addressingDetails.subLocation.code,
+      subLocationName: addressingDetails.subLocation.name,
+
+      rowId: addressingDetails.row.id.toString(),
+      rowCode: addressingDetails.row.code,
+      rowName: addressingDetails.row.name,
+
+      shelfId: addressingDetails.shelf.id.toString(),
+      shelfCode: addressingDetails.shelf.code,
+      shelfName: addressingDetails.shelf.name,
+
+      positionId: addressingDetails.position.id.toString(),
+      positionCode: addressingDetails.position.code,
+      positionName: addressingDetails.position.name,
+
+      materialId: addressingDetails.material.id.toString(),
+      materialCode: addressingDetails.material.code,
+      materialName: addressingDetails.material.name,
+      materialDescription: addressingDetails.material.description ?? '',
+      materialUnit: String(addressingDetails.material.unit),
     });
+
+    const addressing = await this._addressingsRepository.findById(addressingId);
+    if (!addressing) return left(new AddressingNotFoundError());
 
     if (movementType.direction === MovementDirection.IN) {
       addressing.amount = addressing.amount + quantity;

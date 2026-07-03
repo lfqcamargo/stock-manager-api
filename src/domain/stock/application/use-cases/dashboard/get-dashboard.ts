@@ -70,7 +70,15 @@ export class GetDashboardUseCase {
 
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    const endOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+      999,
+    );
     const thirtyDaysAgo = new Date(now);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
     thirtyDaysAgo.setHours(0, 0, 0, 0);
@@ -198,7 +206,12 @@ export class GetDashboardUseCase {
     // Low stock items — aggregate by material
     const materialAmountMap = new Map<
       string,
-      { name: string; code: string; totalAmount: number; addressingCount: number }
+      {
+        name: string;
+        code: string;
+        totalAmount: number;
+        addressingCount: number;
+      }
     >();
     for (const a of addressingsWithMaterial) {
       if (!a.material) continue;
@@ -215,13 +228,22 @@ export class GetDashboardUseCase {
         });
       }
     }
-    const lowStockItems: LowStockItem[] = Array.from(materialAmountMap.entries())
-      .map(([materialId, data]) => ({ materialId, materialName: data.name, materialCode: data.code, ...data }))
+    const lowStockItems: LowStockItem[] = Array.from(
+      materialAmountMap.entries(),
+    )
+      .map(([materialId, data]) => ({
+        materialId,
+        materialName: data.name,
+        materialCode: data.code,
+        ...data,
+      }))
       .sort((a, b) => a.totalAmount - b.totalAmount)
       .slice(0, 5);
 
     // Resolve addressing details for recent movements
-    const addressingIds = [...new Set(recentMovementsRaw.map((m) => m.addressingId))];
+    const addressingIds = [
+      ...new Set(recentMovementsRaw.map((m) => m.addressingId)),
+    ];
     const addressings = await this._prisma.addressing.findMany({
       where: { id: { in: addressingIds } },
       select: {
@@ -239,7 +261,7 @@ export class GetDashboardUseCase {
         id: m.id,
         quantity: m.quantity,
         date: m.date.toISOString(),
-        direction: (mt?.direction ?? 'IN') as 'IN' | 'OUT',
+        direction: mt?.direction ?? 'IN',
         movementTypeName: mt?.name ?? '',
         materialName: addr?.material?.name ?? null,
         addressingLocation: addr?.location?.name ?? '',

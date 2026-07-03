@@ -15,6 +15,36 @@ export class PrismaMovementMapper {
         date: raw.date,
         observation: raw.observation,
         createdAt: raw.createdAt,
+
+        movementTypeName: raw.movementTypeName,
+        movementTypeDirection: raw.movementTypeDirection as 'IN' | 'OUT',
+        userName: raw.userName,
+
+        locationId: raw.locationId,
+        locationCode: raw.locationCode,
+        locationName: raw.locationName,
+
+        subLocationId: raw.subLocationId,
+        subLocationCode: raw.subLocationCode,
+        subLocationName: raw.subLocationName,
+
+        rowId: raw.rowId,
+        rowCode: raw.rowCode,
+        rowName: raw.rowName,
+
+        shelfId: raw.shelfId,
+        shelfCode: raw.shelfCode,
+        shelfName: raw.shelfName,
+
+        positionId: raw.positionId,
+        positionCode: raw.positionCode,
+        positionName: raw.positionName,
+
+        materialId: raw.materialId,
+        materialCode: raw.materialCode,
+        materialName: raw.materialName,
+        materialDescription: raw.materialDescription,
+        materialUnit: raw.materialUnit,
       },
       new UniqueEntityID(raw.id),
     );
@@ -31,6 +61,36 @@ export class PrismaMovementMapper {
       date: movement.date,
       observation: movement.observation,
       createdAt: movement.createdAt,
+
+      movementTypeName: movement.movementTypeName,
+      movementTypeDirection: movement.movementTypeDirection,
+      userName: movement.userName,
+
+      locationId: movement.locationId,
+      locationCode: movement.locationCode,
+      locationName: movement.locationName,
+
+      subLocationId: movement.subLocationId,
+      subLocationCode: movement.subLocationCode,
+      subLocationName: movement.subLocationName,
+
+      rowId: movement.rowId,
+      rowCode: movement.rowCode,
+      rowName: movement.rowName,
+
+      shelfId: movement.shelfId,
+      shelfCode: movement.shelfCode,
+      shelfName: movement.shelfName,
+
+      positionId: movement.positionId,
+      positionCode: movement.positionCode,
+      positionName: movement.positionName,
+
+      materialId: movement.materialId,
+      materialCode: movement.materialCode,
+      materialName: movement.materialName,
+      materialDescription: movement.materialDescription,
+      materialUnit: movement.materialUnit,
     };
   }
 }

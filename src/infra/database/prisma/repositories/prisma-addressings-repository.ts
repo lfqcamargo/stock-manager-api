@@ -30,6 +30,23 @@ export class PrismaAddressingsRepository implements AddressingsRepository {
     });
   }
 
+  async findByIdWithDetails(id: string): Promise<AddressingDetails | null> {
+    const addressing = await this.prisma.addressing.findUnique({
+      where: { id },
+      include: {
+        location: true,
+        subLocation: true,
+        row: true,
+        shelf: true,
+        position: true,
+        material: true,
+      },
+    });
+    return addressing
+      ? PrismaAddressingDetailsMapper.toDomain(addressing)
+      : null;
+  }
+
   async findById(id: string): Promise<Addressing | null> {
     const addressing = await this.prisma.addressing.findUnique({
       where: { id },

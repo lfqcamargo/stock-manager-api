@@ -6,7 +6,6 @@ import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/us
 
 import { Group } from '../../../enterprise/entities/group';
 import { GroupsRepository } from '../../repositories/groups-repository';
-import { GroupNotFoundError } from './errors/group-not-found-error';
 
 interface PaginationParams {
   page?: number;
@@ -26,7 +25,7 @@ interface FetchGroupsUseCaseRequest extends PaginationParams {
 }
 
 type FetchGroupsUseCaseResponse = Either<
-  UserNotFoundError | GroupNotFoundError,
+  UserNotFoundError,
   {
     groups: Group[];
     meta: {
@@ -73,10 +72,17 @@ export class FetchGroupsUseCase {
       { page, itemsPerPage },
     );
 
-    if (!result?.data || result.data.length === 0) {
-      return left(new GroupNotFoundError());
-    }
-
-    return right({ groups: result.data, meta: result.meta });
+    return right({
+      groups: result?.data ?? [],
+      meta: result?.meta ?? {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage,
+        totalPages: 0,
+        currentPage: page,
+        totalActiveGroups: 0,
+        totalEmptyGroups: 0,
+      },
+    });
   }
 }

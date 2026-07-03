@@ -11,16 +11,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
 import {
-  MaterialCsvRow,
   ImportMaterialsCsvUseCase,
+  MaterialCsvRow,
 } from '@/domain/stock/application/use-cases/material/import-materials-csv';
 import { UserRole } from '@/domain/user/enterprise/entities/user';
 import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Roles } from '@/infra/auth/roles.decorator';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
-import { parseCsvBuffer } from '@/infra/http/utils/parse-csv-buffer';
 import { parseBool } from '@/infra/http/utils/parse-bool';
+import { parseCsvBuffer } from '@/infra/http/utils/parse-csv-buffer';
 
 @Controller('csv/materials')
 export class ImportMaterialsCsvController {

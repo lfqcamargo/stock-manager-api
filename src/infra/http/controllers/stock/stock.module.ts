@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { GetDashboardUseCase } from '@/domain/stock/application/use-cases/dashboard/get-dashboard';
 import { CreateAddressingUseCase } from '@/domain/stock/application/use-cases/addressing/create-addressing';
 import { DeleteAddressingUseCase } from '@/domain/stock/application/use-cases/addressing/delete-addressing';
 import { EditAddressingUseCase } from '@/domain/stock/application/use-cases/addressing/edit-addressing';
 import { FetchAddressingsUseCase } from '@/domain/stock/application/use-cases/addressing/fetch-addressings';
 import { FindAddressingByIdUseCase } from '@/domain/stock/application/use-cases/addressing/find-addressing-by-id';
 import { ImportAddressingsCsvUseCase } from '@/domain/stock/application/use-cases/addressing/import-addressings-csv';
+import { GetDashboardUseCase } from '@/domain/stock/application/use-cases/dashboard/get-dashboard';
 import { CreateGroupUseCase } from '@/domain/stock/application/use-cases/group/create-group';
 import { DeleteGroupUseCase } from '@/domain/stock/application/use-cases/group/delete-group';
 import { EditGroupUseCase } from '@/domain/stock/application/use-cases/group/edit-group';
@@ -63,13 +63,13 @@ import { CryptographyModule } from '@/infra/cryptography/cryptography.module';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { EnvModule } from '@/infra/env/env.module';
 
-import { GetDashboardController } from './dashboard/get-dashboard.controller';
 import { CreateAddressingController } from './addressing/create-addressing.controller';
 import { DeleteAddressingController } from './addressing/delete-addressing.controller';
 import { EditAddressingController } from './addressing/edit-addressing.controller';
 import { FetchAddressingsController } from './addressing/fetch-addressings.controller';
 import { FindAddressingByIdController } from './addressing/find-addressing-by-id.controller';
 import { ImportAddressingsCsvController } from './addressing/import-addressings-csv.controller';
+import { GetDashboardController } from './dashboard/get-dashboard.controller';
 import { CreateGroupController } from './group/create-group.controller';
 import { DeleteGroupController } from './group/delete-group.controller';
 import { EditGroupController } from './group/edit-group.controller';

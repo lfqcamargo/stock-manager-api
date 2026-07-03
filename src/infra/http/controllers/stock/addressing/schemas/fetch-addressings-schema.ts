@@ -1,5 +1,6 @@
 import z from 'zod';
 
+import { zodBooleanQuery } from '@/infra/http/pipes/zod-boolean-query';
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 
 const fetchAddressingsQuerySchema = z.object({
@@ -11,7 +12,7 @@ const fetchAddressingsQuerySchema = z.object({
   shelfId: z.string().optional(),
   positionId: z.string().optional(),
   materialId: z.string().optional(),
-  active: z.coerce.boolean().optional(),
+  active: zodBooleanQuery,
   minAmount: z.coerce.number().optional(),
   maxAmount: z.coerce.number().optional(),
   orderBy: z.enum(['createdAt', 'amount', 'active']).optional(),

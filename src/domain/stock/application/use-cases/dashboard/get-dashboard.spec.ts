@@ -11,7 +11,9 @@ import { GetDashboardUseCase } from './get-dashboard';
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 /** Build a minimal PrismaService mock that satisfies every call the use-case makes. */
-function makePrismaMock(overrides: Partial<ReturnType<typeof buildDefaultMock>> = {}) {
+function makePrismaMock(
+  overrides: Partial<ReturnType<typeof buildDefaultMock>> = {},
+) {
   const defaults = buildDefaultMock();
   const merged = { ...defaults, ...overrides };
 
@@ -201,7 +203,9 @@ describe('GetDashboardUseCase', () => {
     const user = makeUser();
     await usersRepository.create(user);
 
-    const ids = Array.from({ length: 7 }, () => new UniqueEntityID().toString());
+    const ids = Array.from({ length: 7 }, () =>
+      new UniqueEntityID().toString(),
+    );
     const addressings = ids.map((id, i) => ({
       amount: 10 - i, // 10, 9, 8, 7, 6, 5, 4 — will be sorted asc
       materialId: id,
@@ -300,7 +304,8 @@ describe('GetDashboardUseCase', () => {
     // make addressing.findMany return details for the recent movement
     (prisma.addressing.findMany as ReturnType<typeof vi.fn>)
       .mockResolvedValueOnce([]) // first call: low-stock
-      .mockResolvedValueOnce([   // second call: recent-movements
+      .mockResolvedValueOnce([
+        // second call: recent-movements
         {
           id: addressingId,
           material: { name: 'Parafuso' },

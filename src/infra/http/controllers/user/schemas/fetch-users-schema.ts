@@ -16,7 +16,11 @@ const fetchUsersQuerySchema = z.object({
     .pipe(z.nativeEnum(UserRole).optional()),
   active: z
     .string()
-    .transform((val) => val === 'true')
+    .transform((val) => {
+      if (val === 'true') return true;
+      if (val === 'false') return false;
+      return undefined;
+    })
     .optional(),
   createdAtStart: z.coerce.date().optional(),
   createdAtEnd: z.coerce.date().optional(),

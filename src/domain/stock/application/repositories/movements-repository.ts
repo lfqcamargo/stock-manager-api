@@ -9,7 +9,14 @@ import { Movement } from '@/domain/stock/enterprise/entities/movement';
 export interface FetchMovementsFilterParams extends FetchAllFilterParams {
   companyId: string;
   addressingId?: string;
+  locationId?: string;
+  subLocationId?: string;
+  rowId?: string;
+  shelfId?: string;
+  positionId?: string;
+  materialId?: string;
   movementTypeId?: string;
+  direction?: 'IN' | 'OUT';
   userId?: string;
   dateFrom?: Date;
   dateTo?: Date;

@@ -276,11 +276,42 @@ model Movement {
   observation     String?
   createdAt       DateTime @default(now()) @map("created_at")
 
-  // Desnormalizado — sem FK para preservar histórico
+  // Desnormalizado — sem FK para preservar histórico completo do momento da movimentação
   companyId       String   @map("company_id")
   addressingId    String   @map("addressing_id")
   movementTypeId  String   @map("movement_type_id")
   userId          String   @map("user_id")
+
+  movementTypeName      String            @map("movement_type_name")
+  movementTypeDirection MovementDirection @map("movement_type_direction")
+
+  userName        String   @map("user_name")
+
+  locationId      String   @map("location_id")
+  locationCode    String   @map("location_code")
+  locationName    String   @map("location_name")
+
+  subLocationId   String   @map("sub_location_id")
+  subLocationCode String   @map("sub_location_code")
+  subLocationName String   @map("sub_location_name")
+
+  rowId           String   @map("row_id")
+  rowCode         String   @map("row_code")
+  rowName         String   @map("row_name")
+
+  shelfId         String   @map("shelf_id")
+  shelfCode       String   @map("shelf_code")
+  shelfName       String   @map("shelf_name")
+
+  positionId      String   @map("position_id")
+  positionCode    String   @map("position_code")
+  positionName    String   @map("position_name")
+
+  materialId          String   @map("material_id")
+  materialCode        String   @map("material_code")
+  materialName        String   @map("material_name")
+  materialDescription String   @map("material_description")
+  materialUnit        String   @map("material_unit")
 
   company         Company  @relation(fields: [companyId], references: [id])
 

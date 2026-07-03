@@ -8,7 +8,6 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { UserNotFoundError } from '@/domain/user/application/use-cases/errors/user-not-found-error';
 
-import { GroupNotFoundError } from './errors/group-not-found-error';
 import { FetchGroupsUseCase } from './fetch-groups';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -81,7 +80,7 @@ describe('FetchGroupsUseCase', () => {
     expect(result.value).toBeInstanceOf(UserNotFoundError);
   });
 
-  it('should return GroupNotFoundError if group does not exist', async () => {
+  it('should return empty groups list when no groups exist', async () => {
     const user = makeUser();
     await inMemoryUsersRepository.create(user);
 
@@ -91,7 +90,10 @@ describe('FetchGroupsUseCase', () => {
       itemsPerPage: 10,
     });
 
-    expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(GroupNotFoundError);
+    expect(result.isRight()).toBe(true);
+    if (result.isRight()) {
+      expect(result.value.groups).toHaveLength(0);
+      expect(result.value.meta.totalItems).toBe(0);
+    }
   });
 });

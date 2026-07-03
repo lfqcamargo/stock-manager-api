@@ -19,11 +19,6 @@ function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function randomFloat(min: number, max: number, decimals = 2): number {
-  const val = Math.random() * (max - min) + min;
-  return parseFloat(val.toFixed(decimals));
-}
-
 function randomFrom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -124,10 +119,10 @@ export async function seedMovements(prisma: PrismaClient) {
   for (const company of companies) {
     console.log(`\n🏢 Movimentações para empresa: ${company.name}`);
 
-    const [users, addressings, movementTypes, materials] = await Promise.all([
+    const [users, addressings, movementTypes] = await Promise.all([
       prisma.user.findMany({
         where: { companyId: company.id },
-        select: { id: true },
+        select: { id: true, name: true },
       }),
       prisma.addressing.findMany({
         where: {
@@ -135,15 +130,21 @@ export async function seedMovements(prisma: PrismaClient) {
           materialId: { not: null },
           active: true,
         },
-        select: { id: true, amount: true, materialId: true },
+        select: {
+          id: true,
+          amount: true,
+          materialId: true,
+          location:    { select: { id: true, code: true, name: true } },
+          subLocation: { select: { id: true, code: true, name: true } },
+          row:         { select: { id: true, code: true, name: true } },
+          shelf:       { select: { id: true, code: true, name: true } },
+          position:    { select: { id: true, code: true, name: true } },
+          material:    { select: { id: true, code: true, name: true, description: true, unit: true } },
+        },
       }),
       prisma.movementType.findMany({
         where: { companyId: company.id },
         select: { id: true, direction: true, name: true },
-      }),
-      prisma.material.findMany({
-        where: { companyId: company.id },
-        select: { id: true, unit: true },
       }),
     ]);
 
@@ -160,51 +161,99 @@ export async function seedMovements(prisma: PrismaClient) {
       continue;
     }
 
-    // Mapa materialId -> unit para calcular quantidades corretas
-    const unitByMaterial = new Map(materials.map(m => [m.id, m.unit]));
-
     // Saldo em memória para não negativar
     const balances = new Map<string, number>(addressings.map(a => [a.id, a.amount]));
 
     // Prepara movimentos em memória para depois criar em lote
     const movementsToCreate: {
-      companyId: string;
-      addressingId: string;
-      movementTypeId: string;
-      userId: string;
-      quantity: number;
-      date: Date;
-      observation: string | null;
+      companyId:            string;
+      addressingId:         string;
+      movementTypeId:       string;
+      userId:               string;
+      quantity:             number;
+      date:                 Date;
+      observation:          string | null;
+      movementTypeName:     string;
+      movementTypeDirection: MovementDirection;
+      userName:             string;
+      locationId:           string;
+      locationCode:         string;
+      locationName:         string;
+      subLocationId:        string;
+      subLocationCode:      string;
+      subLocationName:      string;
+      rowId:                string;
+      rowCode:              string;
+      rowName:              string;
+      shelfId:              string;
+      shelfCode:            string;
+      shelfName:            string;
+      positionId:           string;
+      positionCode:         string;
+      positionName:         string;
+      materialId:           string;
+      materialCode:         string;
+      materialName:         string;
+      materialDescription:  string;
+      materialUnit:         string;
     }[] = [];
 
     // Mapa de saldo final para atualizar os addressings
     const finalBalances = new Map<string, number>(balances);
 
     for (const addressing of addressings) {
-      const unit     = unitByMaterial.get(addressing.materialId!) ?? "UN";
-      const range    = getRange(unit);
-      const nMovs    = randomInt(4, 12); // 4–12 movimentações por endereçamento
-      const nIn      = Math.ceil(nMovs * 0.6);  // ~60% entradas
-      const nOut     = nMovs - nIn;             // ~40% saídas
+      // Ignora endereçamentos sem material (tipagem garante, mas por segurança)
+      if (!addressing.material) continue;
+
+      const unit  = String(addressing.material.unit);
+      const range = getRange(unit);
+      const nMovs = randomInt(4, 12); // 4–12 movimentações por endereçamento
+      const nIn   = Math.ceil(nMovs * 0.6);  // ~60% entradas
+      const nOut  = nMovs - nIn;             // ~40% saídas
 
       let currentBalance = finalBalances.get(addressing.id) ?? 0;
+
+      const baseFields = {
+        companyId:          company.id,
+        addressingId:       addressing.id,
+        locationId:         addressing.location.id,
+        locationCode:       addressing.location.code,
+        locationName:       addressing.location.name,
+        subLocationId:      addressing.subLocation.id,
+        subLocationCode:    addressing.subLocation.code,
+        subLocationName:    addressing.subLocation.name,
+        rowId:              addressing.row.id,
+        rowCode:            addressing.row.code,
+        rowName:            addressing.row.name,
+        shelfId:            addressing.shelf.id,
+        shelfCode:          addressing.shelf.code,
+        shelfName:          addressing.shelf.name,
+        positionId:         addressing.position.id,
+        positionCode:       addressing.position.code,
+        positionName:       addressing.position.name,
+        materialId:         addressing.material.id,
+        materialCode:       addressing.material.code,
+        materialName:       addressing.material.name,
+        materialDescription: addressing.material.description ?? '',
+        materialUnit:       unit,
+      };
 
       // ── Gera entradas distribuídas ao longo do período ──────────────────
       for (let i = 0; i < nIn; i++) {
         const inQty  = qty(range);
         const inType = randomFrom(inTypes);
-        const date   = randomDateBetween(SEED_START, SEED_END);
-        const userId = randomFrom(users).id;
-        const obs    = randomFrom(IN_OBSERVATIONS);
+        const user   = randomFrom(users);
 
         movementsToCreate.push({
-          companyId:      company.id,
-          addressingId:   addressing.id,
-          movementTypeId: inType.id,
-          userId,
-          quantity:       inQty,
-          date,
-          observation:    obs,
+          ...baseFields,
+          movementTypeId:        inType.id,
+          movementTypeName:      inType.name,
+          movementTypeDirection: MovementDirection.IN,
+          userId:                user.id,
+          userName:              user.name,
+          quantity:              inQty,
+          date:                  randomDateBetween(SEED_START, SEED_END),
+          observation:           randomFrom(IN_OBSERVATIONS),
         });
 
         currentBalance += inQty;
@@ -217,21 +266,21 @@ export async function seedMovements(prisma: PrismaClient) {
         outAttempts++;
         const outQty = qty(range);
 
-        if (currentBalance < outQty) continue; // sem saldo suficiente
+        if (currentBalance < outQty) continue;
 
         const outType = randomFrom(outTypes);
-        const date    = randomDateBetween(SEED_START, SEED_END);
-        const userId  = randomFrom(users).id;
-        const obs     = randomFrom(OUT_OBSERVATIONS);
+        const user    = randomFrom(users);
 
         movementsToCreate.push({
-          companyId:      company.id,
-          addressingId:   addressing.id,
-          movementTypeId: outType.id,
-          userId,
-          quantity:       outQty,
-          date,
-          observation:    obs,
+          ...baseFields,
+          movementTypeId:        outType.id,
+          movementTypeName:      outType.name,
+          movementTypeDirection: MovementDirection.OUT,
+          userId:                user.id,
+          userName:              user.name,
+          quantity:              outQty,
+          date:                  randomDateBetween(SEED_START, SEED_END),
+          observation:           randomFrom(OUT_OBSERVATIONS),
         });
 
         currentBalance = parseFloat((currentBalance - outQty).toFixed(2));
@@ -274,10 +323,9 @@ export async function seedMovements(prisma: PrismaClient) {
       );
     }
 
-    const inCount  = movementsToCreate.filter(m => {
-      const type = movementTypes.find(t => t.id === m.movementTypeId);
-      return type?.direction === MovementDirection.IN;
-    }).length;
+    const inCount  = movementsToCreate.filter(
+      m => m.movementTypeDirection === MovementDirection.IN
+    ).length;
     const outCount = totalCreated - inCount;
 
     console.log(

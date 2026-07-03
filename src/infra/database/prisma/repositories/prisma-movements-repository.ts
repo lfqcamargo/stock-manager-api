@@ -1,4 +1,4 @@
-import { Prisma } from '@generated/prisma/client';
+import { $Enums, Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
@@ -35,17 +35,7 @@ export class PrismaMovementsRepository implements MovementsRepository {
   }
 
   async fetchAll(
-    {
-      companyId,
-      addressingId,
-      movementTypeId,
-      userId,
-      dateFrom,
-      dateTo,
-      minQuantity,
-      maxQuantity,
-      orderBy,
-    }: FetchMovementsFilterParams,
+    filter: FetchMovementsFilterParams,
     { page, itemsPerPage }: PaginationParams,
     _options?: TransactionContextParams,
   ): Promise<{
@@ -58,16 +48,7 @@ export class PrismaMovementsRepository implements MovementsRepository {
       currentPage: number;
     };
   }> {
-    const where = this.buildWhere({
-      companyId,
-      addressingId,
-      movementTypeId,
-      userId,
-      dateFrom,
-      dateTo,
-      minQuantity,
-      maxQuantity,
-    });
+    const where = await this.buildWhere(filter);
 
     const [totalItems, movements] = await Promise.all([
       this.prisma.movement.count({ where }),
@@ -75,8 +56,8 @@ export class PrismaMovementsRepository implements MovementsRepository {
         where,
         skip: (page - 1) * itemsPerPage,
         take: itemsPerPage,
-        orderBy: orderBy
-          ? { [orderBy.field]: orderBy.direction }
+        orderBy: filter.orderBy
+          ? { [filter.orderBy.field]: filter.orderBy.direction }
           : { date: 'desc' },
       }),
     ]);
@@ -102,26 +83,61 @@ export class PrismaMovementsRepository implements MovementsRepository {
     _options?: TransactionContextParams,
   ): Promise<void> {
     await this.prisma.movement.deleteMany({
-      where: this.buildWhere(filters),
+      where: await this.buildWhere(filters),
     });
   }
 
-  private buildWhere({
+  private async buildWhere({
     companyId,
     addressingId,
+    locationId,
+    subLocationId,
+    rowId,
+    shelfId,
+    positionId,
+    materialId,
     movementTypeId,
+    direction,
     userId,
     dateFrom,
     dateTo,
     minQuantity,
     maxQuantity,
-  }: Partial<FetchMovementsFilterParams>): Prisma.MovementWhereInput {
+  }: Partial<FetchMovementsFilterParams>): Promise<Prisma.MovementWhereInput> {
     const where: Prisma.MovementWhereInput = {};
 
     if (companyId) where.companyId = companyId;
-    if (addressingId) where.addressingId = addressingId;
     if (movementTypeId) where.movementTypeId = movementTypeId;
+    if (direction) where.movementTypeDirection = direction as $Enums.MovementDirection;
     if (userId) where.userId = userId;
+
+    // Se filtros espaciais foram fornecidos, resolve os addressingIds via subquery
+    const hasSpatialFilter =
+      locationId ||
+      subLocationId ||
+      rowId ||
+      shelfId ||
+      positionId ||
+      materialId;
+
+    if (addressingId) {
+      where.addressingId = addressingId;
+    } else if (hasSpatialFilter && companyId) {
+      const matchingAddressings = await this.prisma.addressing.findMany({
+        where: {
+          companyId,
+          ...(locationId && { locationId }),
+          ...(subLocationId && { subLocationId }),
+          ...(rowId && { rowId }),
+          ...(shelfId && { shelfId }),
+          ...(positionId && { positionId }),
+          ...(materialId && { materialId }),
+        },
+        select: { id: true },
+      });
+      where.addressingId = { in: matchingAddressings.map((a) => a.id) };
+    }
+
     if (dateFrom || dateTo) {
       where.date = {};
       if (dateFrom) where.date.gte = dateFrom;

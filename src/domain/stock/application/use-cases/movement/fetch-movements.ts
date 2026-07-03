@@ -15,7 +15,14 @@ interface PaginationParams {
 interface FetchMovementsUseCaseRequest extends PaginationParams {
   authenticatedId: string;
   addressingId?: string;
+  locationId?: string;
+  subLocationId?: string;
+  rowId?: string;
+  shelfId?: string;
+  positionId?: string;
+  materialId?: string;
   movementTypeId?: string;
+  direction?: 'IN' | 'OUT';
   userId?: string;
   dateFrom?: Date;
   dateTo?: Date;
@@ -51,7 +58,14 @@ export class FetchMovementsUseCase {
   async execute({
     authenticatedId,
     addressingId,
+    locationId,
+    subLocationId,
+    rowId,
+    shelfId,
+    positionId,
+    materialId,
     movementTypeId,
+    direction,
     userId,
     dateFrom,
     dateTo,
@@ -68,7 +82,14 @@ export class FetchMovementsUseCase {
       {
         companyId: user.companyId.toString(),
         addressingId,
+        locationId,
+        subLocationId,
+        rowId,
+        shelfId,
+        positionId,
+        materialId,
         movementTypeId,
+        direction,
         userId,
         dateFrom,
         dateTo,

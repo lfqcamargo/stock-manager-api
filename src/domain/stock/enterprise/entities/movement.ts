@@ -11,6 +11,37 @@ export interface MovementProps {
   date: Date;
   observation?: string | null;
   createdAt: Date;
+
+  movementTypeName: string;
+  movementTypeDirection: 'IN' | 'OUT';
+
+  userName: string;
+
+  locationId: string;
+  locationCode: string;
+  locationName: string;
+
+  subLocationId: string;
+  subLocationCode: string;
+  subLocationName: string;
+
+  rowId: string;
+  rowCode: string;
+  rowName: string;
+
+  shelfId: string;
+  shelfCode: string;
+  shelfName: string;
+
+  positionId: string;
+  positionCode: string;
+  positionName: string;
+
+  materialId: string;
+  materialCode: string;
+  materialName: string;
+  materialDescription: string;
+  materialUnit: string;
 }
 
 export class Movement extends AggregateRoot<MovementProps> {
@@ -68,6 +99,98 @@ export class Movement extends AggregateRoot<MovementProps> {
 
   get createdAt(): Date {
     return this.props.createdAt;
+  }
+
+  get movementTypeName(): string {
+    return this.props.movementTypeName;
+  }
+
+  get movementTypeDirection(): 'IN' | 'OUT' {
+    return this.props.movementTypeDirection;
+  }
+
+  get userName(): string {
+    return this.props.userName;
+  }
+
+  get locationId(): string {
+    return this.props.locationId;
+  }
+
+  get locationCode(): string {
+    return this.props.locationCode;
+  }
+
+  get locationName(): string {
+    return this.props.locationName;
+  }
+
+  get subLocationId(): string {
+    return this.props.subLocationId;
+  }
+
+  get subLocationCode(): string {
+    return this.props.subLocationCode;
+  }
+
+  get subLocationName(): string {
+    return this.props.subLocationName;
+  }
+
+  get rowId(): string {
+    return this.props.rowId;
+  }
+
+  get rowCode(): string {
+    return this.props.rowCode;
+  }
+
+  get rowName(): string {
+    return this.props.rowName;
+  }
+
+  get shelfId(): string {
+    return this.props.shelfId;
+  }
+
+  get shelfCode(): string {
+    return this.props.shelfCode;
+  }
+
+  get shelfName(): string {
+    return this.props.shelfName;
+  }
+
+  get positionId(): string {
+    return this.props.positionId;
+  }
+
+  get positionCode(): string {
+    return this.props.positionCode;
+  }
+
+  get positionName(): string {
+    return this.props.positionName;
+  }
+
+  get materialId(): string {
+    return this.props.materialId;
+  }
+
+  get materialCode(): string {
+    return this.props.materialCode;
+  }
+
+  get materialName(): string {
+    return this.props.materialName;
+  }
+
+  get materialDescription(): string {
+    return this.props.materialDescription;
+  }
+
+  get materialUnit(): string {
+    return this.props.materialUnit;
   }
 
   static create(
