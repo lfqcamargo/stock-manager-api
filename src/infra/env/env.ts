@@ -14,6 +14,8 @@ export const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().optional().default('15m'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
 
+  PASSWORD_MASTER: z.string(),
+
   MAIL_HOST: z.string().optional().default('smtp.ethereal.email'),
   MAIL_PORT: z.coerce.number().optional().default(587),
   MAIL_SECURE: z

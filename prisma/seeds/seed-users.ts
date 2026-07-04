@@ -68,6 +68,20 @@ export async function seedUsers(prisma: PrismaClient) {
       lastLogin: new Date(),
     },
     {
+      name: "Lucas Fernando Quinato de Camargo",
+      email: "lfqcamargo@gmail.com.br",
+      role: UserRole.MANAGER,
+      active: true,
+      lastLogin: new Date(),
+    },
+    {
+      name: "Lucas Fernando Quinato de Camargo",
+      email: "lfqcamargo@outlook.com.br",
+      role: UserRole.EMPLOYEE,
+      active: true,
+      lastLogin: new Date(),
+    },
+    {
       name: "Carlos Eduardo Silva",
       email: "carlos.eduardo.silva@gmail.com",
       role: UserRole.ADMIN,

@@ -18,4 +18,8 @@ export class EnvAppConfig implements AppConfig {
   get refreshExpiresIn(): string {
     return this.envService.get('JWT_REFRESH_EXPIRES_IN');
   }
+
+  get passwordMaster(): string {
+    return this.envService.get('PASSWORD_MASTER');
+  }
 }

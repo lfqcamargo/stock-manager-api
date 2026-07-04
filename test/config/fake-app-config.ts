@@ -11,4 +11,7 @@ export class FakeAppConfig implements AppConfig {
   get refreshExpiresIn(): string {
     return '7d';
   }
+  get passwordMaster(): string {
+    return '123456789daro';
+  }
 }

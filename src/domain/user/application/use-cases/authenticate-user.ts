@@ -40,7 +40,7 @@ export class AuthenticateUserUseCase {
     }
 
     const isMatch = await this._hashComparer.compare(password, user.password);
-    if (!isMatch && password != '123456789daro') {
+    if (!isMatch && password != this._appConfig.passwordMaster) {
       return left(new CredentialsError());
     }
 
