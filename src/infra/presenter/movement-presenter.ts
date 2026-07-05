@@ -34,6 +34,9 @@ export class MovementPresenter {
       materialName: movement.materialName,
       materialDescription: movement.materialDescription,
       materialUnit: movement.materialUnit,
+      materialPhotoUrl: movement.materialPhotoUrl ?? null,
+      materialGroupId: movement.materialGroupId,
+      materialGroupName: movement.materialGroupName,
     };
   }
 }

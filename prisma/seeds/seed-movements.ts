@@ -139,7 +139,7 @@ export async function seedMovements(prisma: PrismaClient) {
           row:         { select: { id: true, code: true, name: true } },
           shelf:       { select: { id: true, code: true, name: true } },
           position:    { select: { id: true, code: true, name: true } },
-          material:    { select: { id: true, code: true, name: true, description: true, unit: true } },
+          material:    { select: { id: true, code: true, name: true, description: true, unit: true, photoUrl: true, group: { select: { id: true, name: true } } } },
         },
       }),
       prisma.movementType.findMany({
@@ -196,6 +196,9 @@ export async function seedMovements(prisma: PrismaClient) {
       materialName:         string;
       materialDescription:  string;
       materialUnit:         string;
+      materialPhotoUrl?:    string | null;
+      materialGroupId:      string;
+      materialGroupName:    string;
     }[] = [];
 
     // Mapa de saldo final para atualizar os addressings
@@ -236,6 +239,9 @@ export async function seedMovements(prisma: PrismaClient) {
         materialName:       addressing.material.name,
         materialDescription: addressing.material.description ?? '',
         materialUnit:       unit,
+        materialPhotoUrl:   addressing.material.photoUrl ?? null,
+        materialGroupId:    addressing.material.group.id,
+        materialGroupName:  addressing.material.group.name,
       };
 
       // ── Gera entradas distribuídas ao longo do período ──────────────────

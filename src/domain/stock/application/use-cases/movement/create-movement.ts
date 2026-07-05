@@ -119,6 +119,9 @@ export class CreateMovementUseCase {
       materialName: addressingDetails.material.name,
       materialDescription: addressingDetails.material.description ?? '',
       materialUnit: String(addressingDetails.material.unit),
+      materialPhotoUrl: addressingDetails.material.photoUrl ?? null,
+      materialGroupId: addressingDetails.material.groupId.toString(),
+      materialGroupName: addressingDetails.material.groupName ?? '',
     });
 
     const addressing = await this._addressingsRepository.findById(addressingId);

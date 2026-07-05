@@ -28,6 +28,12 @@ export class InMemoryAddressingsRepository implements AddressingsRepository {
     return Promise.resolve(addressing ?? null);
   }
 
+  async findByIdWithDetails(id: string): Promise<AddressingDetails | null> {
+    const addressing = this.items.find((item) => item.id.toString() === id);
+    if (!addressing) return Promise.resolve(null);
+    return Promise.resolve(this.toDetails(addressing));
+  }
+
   async findByAddress({
     companyId,
     locationId,

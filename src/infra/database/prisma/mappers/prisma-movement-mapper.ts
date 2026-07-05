@@ -45,6 +45,9 @@ export class PrismaMovementMapper {
         materialName: raw.materialName,
         materialDescription: raw.materialDescription,
         materialUnit: raw.materialUnit,
+        materialPhotoUrl: raw.materialPhotoUrl ?? null,
+        materialGroupId: raw.materialGroupId,
+        materialGroupName: raw.materialGroupName,
       },
       new UniqueEntityID(raw.id),
     );
@@ -91,6 +94,9 @@ export class PrismaMovementMapper {
       materialName: movement.materialName,
       materialDescription: movement.materialDescription,
       materialUnit: movement.materialUnit,
+      materialPhotoUrl: movement.materialPhotoUrl ?? null,
+      materialGroupId: movement.materialGroupId,
+      materialGroupName: movement.materialGroupName,
     };
   }
 }

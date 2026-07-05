@@ -1,4 +1,5 @@
 import {
+  Group as PrismaGroup,
   Material as PrismaMaterial,
   Prisma,
   UnitMeasure as PrismaUnitMeasure,
@@ -14,6 +15,23 @@ export class PrismaMaterialMapper {
       {
         companyId: new UniqueEntityID(raw.companyId),
         groupId: new UniqueEntityID(raw.groupId),
+        code: raw.code,
+        name: raw.name,
+        description: raw.description,
+        unit: UnitMeasure.fromCode(raw.unit),
+        active: raw.active,
+        photoUrl: raw.photoUrl ?? null,
+      },
+      new UniqueEntityID(raw.id),
+    );
+  }
+
+  static toDomainWithGroup(raw: PrismaMaterial, group: PrismaGroup): Material {
+    return Material.create(
+      {
+        companyId: new UniqueEntityID(raw.companyId),
+        groupId: new UniqueEntityID(raw.groupId),
+        groupName: group.name,
         code: raw.code,
         name: raw.name,
         description: raw.description,

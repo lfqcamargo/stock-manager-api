@@ -276,7 +276,6 @@ model Movement {
   observation     String?
   createdAt       DateTime @default(now()) @map("created_at")
 
-  // Desnormalizado — sem FK para preservar histórico completo do momento da movimentação
   companyId       String   @map("company_id")
   addressingId    String   @map("addressing_id")
   movementTypeId  String   @map("movement_type_id")
@@ -312,6 +311,9 @@ model Movement {
   materialName        String   @map("material_name")
   materialDescription String   @map("material_description")
   materialUnit        String   @map("material_unit")
+  materialPhotoUrl    String?  @map("material_photo_url")
+  materialGroupId     String   @map("material_group_id")
+  materialGroupName   String   @map("material_group_name")
 
   company         Company  @relation(fields: [companyId], references: [id])
 

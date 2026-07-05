@@ -6,6 +6,7 @@ import { UnitMeasure } from './value-objects/unit-measure';
 export interface MaterialProps {
   companyId: UniqueEntityID;
   groupId: UniqueEntityID;
+  groupName?: string;
 
   code: string;
   name: string;
@@ -26,6 +27,14 @@ export class Material extends AggregateRoot<MaterialProps> {
 
   set groupId(value: UniqueEntityID) {
     this.props.groupId = value;
+  }
+
+  get groupName(): string | undefined {
+    return this.props.groupName;
+  }
+
+  set groupName(value: string | undefined) {
+    this.props.groupName = value;
   }
 
   get code() {

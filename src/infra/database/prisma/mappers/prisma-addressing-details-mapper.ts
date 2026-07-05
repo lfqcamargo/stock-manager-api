@@ -1,5 +1,6 @@
 import {
   Addressing as PrismaAddressing,
+  Group as PrismaGroup,
   Location as PrismaLocation,
   Material as PrismaMaterial,
   Position as PrismaPosition,
@@ -24,7 +25,7 @@ type PrismaAddressingDetails = PrismaAddressing & {
   row: PrismaRow;
   shelf: PrismaShelf;
   position: PrismaPosition;
-  material: PrismaMaterial | null;
+  material: (PrismaMaterial & { group: PrismaGroup }) | null;
 };
 
 export class PrismaAddressingDetailsMapper {
@@ -38,7 +39,7 @@ export class PrismaAddressingDetailsMapper {
       shelf: PrismaShelfMapper.toDomain(raw.shelf),
       position: PrismaPositionMapper.toDomain(raw.position),
       material: raw.material
-        ? PrismaMaterialMapper.toDomain(raw.material)
+        ? PrismaMaterialMapper.toDomainWithGroup(raw.material, raw.material.group)
         : null,
       amount: raw.amount,
       active: raw.active,

@@ -53,6 +53,9 @@ export function makeMovement(
       materialName: faker.commerce.productName(),
       materialDescription: faker.commerce.productDescription(),
       materialUnit: faker.helpers.arrayElement(['UN', 'KG', 'L', 'M', 'CX']),
+      materialPhotoUrl: null,
+      materialGroupId: new UniqueEntityID().toString(),
+      materialGroupName: faker.word.noun(),
 
       ...override,
     },

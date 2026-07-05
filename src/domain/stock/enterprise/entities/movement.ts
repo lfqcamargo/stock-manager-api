@@ -42,6 +42,9 @@ export interface MovementProps {
   materialName: string;
   materialDescription: string;
   materialUnit: string;
+  materialPhotoUrl?: string | null;
+  materialGroupId: string;
+  materialGroupName: string;
 }
 
 export class Movement extends AggregateRoot<MovementProps> {
@@ -191,6 +194,18 @@ export class Movement extends AggregateRoot<MovementProps> {
 
   get materialUnit(): string {
     return this.props.materialUnit;
+  }
+
+  get materialPhotoUrl(): string | null | undefined {
+    return this.props.materialPhotoUrl;
+  }
+
+  get materialGroupId(): string {
+    return this.props.materialGroupId;
+  }
+
+  get materialGroupName(): string {
+    return this.props.materialGroupName;
   }
 
   static create(

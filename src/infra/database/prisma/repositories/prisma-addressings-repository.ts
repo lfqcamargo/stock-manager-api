@@ -39,7 +39,9 @@ export class PrismaAddressingsRepository implements AddressingsRepository {
         row: true,
         shelf: true,
         position: true,
-        material: true,
+        material: {
+          include: { group: true },
+        },
       },
     });
     return addressing
@@ -113,7 +115,9 @@ export class PrismaAddressingsRepository implements AddressingsRepository {
           row: true,
           shelf: true,
           position: true,
-          material: true,
+          material: {
+            include: { group: true },
+          },
         },
       }),
     ]);
