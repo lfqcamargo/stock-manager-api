@@ -1,4 +1,4 @@
-import { $Enums, Prisma } from '@generated/prisma/client';
+import { Prisma } from '@generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
@@ -108,7 +108,7 @@ export class PrismaMovementsRepository implements MovementsRepository {
 
     if (companyId) where.companyId = companyId;
     if (movementTypeId) where.movementTypeId = movementTypeId;
-    if (direction) where.movementTypeDirection = direction as $Enums.MovementDirection;
+    if (direction) where.movementTypeDirection = direction;
     if (userId) where.userId = userId;
 
     // Se filtros espaciais foram fornecidos, resolve os addressingIds via subquery

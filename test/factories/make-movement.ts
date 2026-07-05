@@ -21,7 +21,39 @@ export function makeMovement(
       userId: new UniqueEntityID(),
       quantity: faker.number.int({ min: 1, max: 100 }),
       date: faker.date.recent(),
-      observation: faker.helpers.maybe(() => faker.lorem.sentence()),
+      observation: faker.helpers.maybe(() => faker.lorem.sentence()) ?? null,
+
+      movementTypeName: faker.word.noun(),
+      movementTypeDirection: faker.helpers.arrayElement(['IN', 'OUT'] as const),
+
+      userName: faker.person.fullName(),
+
+      locationId: new UniqueEntityID().toString(),
+      locationCode: faker.string.alphanumeric(4).toUpperCase(),
+      locationName: faker.word.noun(),
+
+      subLocationId: new UniqueEntityID().toString(),
+      subLocationCode: faker.string.alphanumeric(4).toUpperCase(),
+      subLocationName: faker.word.noun(),
+
+      rowId: new UniqueEntityID().toString(),
+      rowCode: faker.string.alphanumeric(4).toUpperCase(),
+      rowName: faker.word.noun(),
+
+      shelfId: new UniqueEntityID().toString(),
+      shelfCode: faker.string.alphanumeric(4).toUpperCase(),
+      shelfName: faker.word.noun(),
+
+      positionId: new UniqueEntityID().toString(),
+      positionCode: faker.string.alphanumeric(4).toUpperCase(),
+      positionName: faker.word.noun(),
+
+      materialId: new UniqueEntityID().toString(),
+      materialCode: faker.string.alphanumeric(6).toUpperCase(),
+      materialName: faker.commerce.productName(),
+      materialDescription: faker.commerce.productDescription(),
+      materialUnit: faker.helpers.arrayElement(['UN', 'KG', 'L', 'M', 'CX']),
+
       ...override,
     },
     id,

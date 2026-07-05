@@ -17,7 +17,7 @@ export class PrismaMovementMapper {
         createdAt: raw.createdAt,
 
         movementTypeName: raw.movementTypeName,
-        movementTypeDirection: raw.movementTypeDirection as 'IN' | 'OUT',
+        movementTypeDirection: raw.movementTypeDirection,
         userName: raw.userName,
 
         locationId: raw.locationId,
