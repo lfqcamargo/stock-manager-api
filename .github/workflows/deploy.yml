@@ -38,11 +38,11 @@ jobs:
         run: |
           docker build \
             --platform linux/amd64 \
-            -t ${{ vars.DOCKERHUB_USERNAME }}/api-stock:latest \
+            -t ${{ vars.DOCKERHUB_USERNAME }}/stock-api:latest \
             ./
 
       - name: Push Docker image
-        run: docker push ${{ vars.DOCKERHUB_USERNAME }}/api-stock:latest
+        run: docker push ${{ vars.DOCKERHUB_USERNAME }}/stock-api:latest
 
   deploy:
     needs: build
@@ -56,10 +56,10 @@ jobs:
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ vars.DOCKERHUB_USERNAME }}/api-stock:latest
+            docker pull ${{ vars.DOCKERHUB_USERNAME }}/stock-api:latest
 
-            docker stop api-stock 2>/dev/null || true
-            docker rm api-stock 2>/dev/null || true
+            docker stop stock-api 2>/dev/null || true
+            docker rm stock-api 2>/dev/null || true
 
             docker run -d \
               --name api-stock \
