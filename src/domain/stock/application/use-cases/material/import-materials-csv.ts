@@ -20,7 +20,7 @@ export interface MaterialCsvRow {
   name: string;
   unit: string;
   description?: string;
-  active?: boolean;
+  active?: string;
 }
 
 interface ImportMaterialsCsvUseCaseRequest {
@@ -110,8 +110,7 @@ export class ImportMaterialsCsvUseCase {
         continue;
       }
 
-      const active =
-        row.active === 'false' || row.active === false ? false : true;
+      const active = parseBool(row.active, true);
       const existing = await this._materialsRepository.findByCode(
         companyId,
         code,
@@ -146,4 +145,11 @@ export class ImportMaterialsCsvUseCase {
 
     return right({ imported, skipped });
   }
+}
+
+function parseBool(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value?.trim()) return defaultValue;
+  return ['true', '1', 'yes', 'sim', 'ativo', 'active'].includes(
+    value.trim().toLowerCase(),
+  );
 }

@@ -39,7 +39,10 @@ export class PrismaAddressingDetailsMapper {
       shelf: PrismaShelfMapper.toDomain(raw.shelf),
       position: PrismaPositionMapper.toDomain(raw.position),
       material: raw.material
-        ? PrismaMaterialMapper.toDomainWithGroup(raw.material, raw.material.group)
+        ? PrismaMaterialMapper.toDomainWithGroup(
+            raw.material,
+            raw.material.group,
+          )
         : null,
       amount: raw.amount,
       active: raw.active,

@@ -16,7 +16,7 @@ export interface GroupCsvRow {
   code: string;
   name: string;
   description?: string;
-  active?: boolean;
+  active?: string;
 }
 
 interface ImportGroupsCsvUseCaseRequest {
@@ -84,8 +84,7 @@ export class ImportGroupsCsvUseCase {
         continue;
       }
 
-      const active =
-        row.active === 'false' || row.active === false ? false : true;
+      const active = parseBool(row.active, true);
       const existing = await this._groupsRepository.findByCode(companyId, code);
 
       if (existing) {
@@ -113,4 +112,11 @@ export class ImportGroupsCsvUseCase {
 
     return right({ imported, skipped });
   }
+}
+
+function parseBool(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value?.trim()) return defaultValue;
+  return ['true', '1', 'yes', 'sim', 'ativo', 'active'].includes(
+    value.trim().toLowerCase(),
+  );
 }

@@ -26,7 +26,7 @@ export interface AddressingCsvRow {
   shelfCode: string;
   positionCode: string;
   materialCode?: string;
-  active?: boolean;
+  active?: string;
 }
 
 interface ImportAddressingsCsvUseCaseRequest {
@@ -146,7 +146,7 @@ export class ImportAddressingsCsvUseCase {
         materialId = material.id;
       }
 
-      const active = row.active ?? true;
+      const active = parseBool(row.active, true);
       const existing = await this._addressingsRepository.findByAddress({
         companyId,
         locationId: location.id.toString(),
@@ -192,4 +192,11 @@ export class ImportAddressingsCsvUseCase {
     );
     return data.length > 0;
   }
+}
+
+function parseBool(value: string | undefined, defaultValue: boolean): boolean {
+  if (!value?.trim()) return defaultValue;
+  return ['true', '1', 'yes', 'sim', 'ativo', 'active'].includes(
+    value.trim().toLowerCase(),
+  );
 }

@@ -1,10 +1,10 @@
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { TransactionContextParams } from '@/core/repositories/transaction-context';
 import {
   AddressingsRepository,
   FetchAddressingsFilterParams,
 } from '@/domain/stock/application/repositories/addressings-repository';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Addressing } from '@/domain/stock/enterprise/entities/addressing';
 import { Location } from '@/domain/stock/enterprise/entities/location';
 import { Material } from '@/domain/stock/enterprise/entities/material';
