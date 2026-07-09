@@ -38,7 +38,7 @@ jobs:
         run: |
           docker build \
             --platform linux/amd64 \
-            -t ${{ vars.DOCKERHUB_USERNAME }}/stock-api:latest \
+            -t ${{ vars.DOCKERHUB_USERNAME }}/api-stock:latest \
             ./
 
       - name: Push Docker image
