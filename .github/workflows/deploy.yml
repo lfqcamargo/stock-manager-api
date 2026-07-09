@@ -65,8 +65,8 @@ jobs:
               --name api-stock \
               --network stock-network \
               --restart unless-stopped \
-              -p ${{ vars.API_PORT }}:${{ vars.API_PORT }} \
-              -e API_PORT="${{ vars.API_PORT }}" \
+              -p ${{ vars.PORT }}:${{ vars.PORT }} \
+              -e PORT="${{ vars.PORT }}" \
               -e APP_URL="${{ vars.APP_URL }}" \
               -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
               -e JWT_PRIVATE_KEY="${{ secrets.JWT_PRIVATE_KEY }}" \

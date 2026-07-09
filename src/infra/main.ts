@@ -80,7 +80,7 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api');
 
   const configService = app.get<ConfigService<Env, true>>(ConfigService);
-  const port = configService.get('API_PORT', { infer: true });
+  const port = configService.get('PORT', { infer: true });
 
   await app.listen(port);
 }
