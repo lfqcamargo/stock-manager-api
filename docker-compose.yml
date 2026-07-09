@@ -3,7 +3,7 @@ services:
     container_name: stock-manager-pg
     image: postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
@@ -11,3 +11,9 @@ services:
       PGDATA: /data/postgres
     volumes:
       - ./data/pg:/data/postgres
+    networks:
+      - stock-network
+
+networks:
+  stock-network:
+    external: true

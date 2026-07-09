@@ -86,7 +86,7 @@ export class FetchAddressingsUseCase {
       { page, itemsPerPage },
     );
 
-    if (!result?.data) {
+    if (!result?.data?.length) {
       return left(new AddressingNotFoundError());
     }
 

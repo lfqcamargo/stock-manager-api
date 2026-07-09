@@ -60,6 +60,11 @@ export class GetDashboardUseCase {
     private readonly _prisma: PrismaService,
   ) {}
 
+  // Format a Date as YYYY-MM-DD in UTC (matches Date.toISOString().slice(0,10))
+  private toDateKey(date: Date): string {
+    return date.toISOString().slice(0, 10);
+  }
+
   async execute({
     authenticatedId,
   }: GetDashboardUseCaseRequest): Promise<GetDashboardUseCaseResponse> {
@@ -80,8 +85,8 @@ export class GetDashboardUseCase {
       999,
     );
     const thirtyDaysAgo = new Date(now);
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
-    thirtyDaysAgo.setHours(0, 0, 0, 0);
+    thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 29);
+    thirtyDaysAgo.setUTCHours(0, 0, 0, 0);
 
     // Run all queries in parallel
     const [
@@ -186,12 +191,12 @@ export class GetDashboardUseCase {
     const dayMap = new Map<string, { in: number; out: number }>();
     for (let i = 0; i < 30; i++) {
       const d = new Date(thirtyDaysAgo);
-      d.setDate(d.getDate() + i);
-      const key = d.toISOString().slice(0, 10);
+      d.setUTCDate(d.getUTCDate() + i);
+      const key = this.toDateKey(d);
       dayMap.set(key, { in: 0, out: 0 });
     }
     for (const m of movementsLast30Days) {
-      const key = new Date(m.date).toISOString().slice(0, 10);
+      const key = this.toDateKey(new Date(m.date));
       const entry = dayMap.get(key);
       if (entry) {
         const mt = movementTypeMap.get(m.movementTypeId);

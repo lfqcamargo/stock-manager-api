@@ -4,13 +4,16 @@ import {
   AddressingsRepository,
   FetchAddressingsFilterParams,
 } from '@/domain/stock/application/repositories/addressings-repository';
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Addressing } from '@/domain/stock/enterprise/entities/addressing';
 import { Location } from '@/domain/stock/enterprise/entities/location';
+import { Material } from '@/domain/stock/enterprise/entities/material';
 import { Position } from '@/domain/stock/enterprise/entities/position';
 import { Row } from '@/domain/stock/enterprise/entities/row';
 import { Shelf } from '@/domain/stock/enterprise/entities/shelf';
 import { SubLocation } from '@/domain/stock/enterprise/entities/sub-location';
 import { AddressingDetails } from '@/domain/stock/enterprise/entities/value-objects/addressing-details';
+import { UnitMeasure } from '@/domain/stock/enterprise/entities/value-objects/unit-measure';
 
 export class InMemoryAddressingsRepository implements AddressingsRepository {
   public items: Addressing[] = [];
@@ -205,6 +208,22 @@ export class InMemoryAddressingsRepository implements AddressingsRepository {
 
   toDetails(addressing: any): AddressingDetails {
     if (addressing instanceof AddressingDetails) return addressing;
+
+    // Build a stub material. The in-memory repository has no real material
+    // records, so we always supply a stub so use-case guards on
+    // `addressingDetails.material` don't produce false negatives in unit tests.
+    const material = Material.create(
+      {
+        companyId: addressing.companyId,
+        groupId: addressing.companyId, // stub — not meaningful in unit tests
+        code: 'MOCK',
+        name: 'Mock Material',
+        unit: UnitMeasure.fromCode('UN'),
+        active: true,
+      },
+      addressing.materialId ?? new UniqueEntityID(),
+    );
+
     return AddressingDetails.create({
       companyId: addressing.companyId,
       id: addressing.id,
@@ -234,7 +253,7 @@ export class InMemoryAddressingsRepository implements AddressingsRepository {
         name: 'Mock Position',
         code: 'MOCK',
       }),
-      material: null,
+      material,
       amount: addressing.amount,
       active: addressing.active,
     });

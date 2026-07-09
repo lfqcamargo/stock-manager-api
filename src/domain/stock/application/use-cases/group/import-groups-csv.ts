@@ -84,7 +84,8 @@ export class ImportGroupsCsvUseCase {
         continue;
       }
 
-      const active = row.active ?? true;
+      const active =
+        row.active === 'false' || row.active === false ? false : true;
       const existing = await this._groupsRepository.findByCode(companyId, code);
 
       if (existing) {
