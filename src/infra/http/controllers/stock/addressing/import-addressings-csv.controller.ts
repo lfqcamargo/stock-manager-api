@@ -19,7 +19,6 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Roles } from '@/infra/auth/roles.decorator';
 import { mapUseCaseErrorToHttpException } from '@/infra/http/errors/map-use-case-error';
-import { parseBool } from '@/infra/http/utils/parse-bool';
 import { parseCsvBuffer } from '@/infra/http/utils/parse-csv-buffer';
 
 @Controller('csv/addressings')
@@ -45,7 +44,7 @@ export class ImportAddressingsCsvController {
       shelfCode: r.shelfCode,
       positionCode: r.positionCode,
       materialCode: r.materialCode,
-      active: r.active !== undefined ? parseBool(r.active, true) : undefined,
+      active: r.active,
     }));
 
     const result = await this._useCase.execute({
