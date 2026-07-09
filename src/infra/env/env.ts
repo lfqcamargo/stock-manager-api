@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
 export const envSchema = z.object({
-  PORT: z.coerce.number(),
+  API_PORT: z.coerce.number(),
 
   APP_URL: z.url().optional().default('http://localhost:5173'),
-  API_URL: z.url().optional().default('http://localhost:3333'),
 
   DATABASE_URL: z.string(),
 
