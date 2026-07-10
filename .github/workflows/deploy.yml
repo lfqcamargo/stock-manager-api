@@ -63,7 +63,6 @@ jobs:
 
             docker run -d \
               --name stock-api \
-              --network stock-network \
               --restart unless-stopped \
               -p 127.0.0.1:${{ vars.PORT }}:3000 \
               -e PORT="3000" \
