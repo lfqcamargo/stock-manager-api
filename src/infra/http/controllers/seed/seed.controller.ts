@@ -6,10 +6,12 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { Public } from '@/infra/auth/public';
 import { EnvService } from '@/infra/env/env.service';
 
 import { SeedService } from './seed.service';
 
+@Public()
 @Controller('seed')
 export class SeedController {
   constructor(
