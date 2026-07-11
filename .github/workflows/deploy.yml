@@ -76,3 +76,12 @@ jobs:
               ${{ vars.DOCKERHUB_USERNAME }}/stock-api:latest
 
             echo "✅ Deployment API completed!"
+
+            echo "⏳ Waiting for API to be ready..."
+            sleep 10
+
+            echo "🌱 Running database seed..."
+            curl -sf -X POST http://localhost:${{ vars.PORT }}/api/seed \
+              -H "x-seed-key: ${{ secrets.PASSWORD_MASTER }}" \
+              && echo "✅ Seed completed!" \
+              || echo "⚠️  Seed skipped or failed (non-blocking)"
